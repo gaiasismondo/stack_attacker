@@ -1,0 +1,9 @@
+<ruby>
+
+run_single("set LHOST #{framework.datastore["l_host"]}")
+run_single("use auxiliary/analyze/crack_linux")
+run_single("set ACTION hashcat")
+run_single("set JOHN_BASE #{Msf::Config.install_root}/data/john")
+run_single("set JOHN_PATH #{Msf::Config.install_root}/data/john")
+
+</ruby>

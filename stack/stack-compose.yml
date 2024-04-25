@@ -1,0 +1,99 @@
+networks:
+  opensearch-net:
+    name: opensearch-net
+services:
+  exploits-repo:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==rse-docker23
+      restart_policy:
+        condition: any
+    image: 192.168.40.12:5000/lab/exploitcves
+    networks:
+    - opensearch-net
+    ports:
+    - mode: host
+      protocol: tcp
+      published: 80
+      target: 80
+    stdin_open: true
+    tty: true
+    volumes:
+    - source: ./lab/ExploitsCVEs/CVEs
+      target: /usr/share/nginx/html/CVEs
+      type: bind
+  metasploit_new:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname==rse-docker23
+      restart_policy:
+        condition: on-failure
+    image: 192.168.40.12:5000/lab/metasploit_new
+    networks:
+    - opensearch-net
+    ports:
+    - mode: host
+      protocol: tcp
+      published: 55557
+      target: 55557
+    - mode: host
+      protocol: tcp
+      published: 1234
+      target: 1234
+    - mode: host
+      protocol: tcp
+      published: 1235
+      target: 1235
+    - published: 2345
+      target: 2345
+    stdin_open: true
+    tty: true
+    volumes:
+    - source: ./data
+      target: /data
+      type: bind
+  opensmtpd-container:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == rse-docker22
+      restart_policy:
+        condition: any
+    image: 192.168.40.12:5000/lab/mail_server
+    networks:
+    - opensearch-net
+    ports:
+    - mode: host
+      protocol: tcp
+      published: 25
+      target: 25
+    - mode: host
+      protocol: tcp
+      published: 55555
+      target: 55555
+    stdin_open: true
+    tty: true
+  tomcat_vuln:
+    deploy:
+      placement:
+        constraints:
+        - node.hostname == rse-docker21
+      restart_policy:
+        condition: any
+    image: 192.168.40.12:5000/lab/tomcat
+    networks:
+    - opensearch-net
+    ports:
+    - mode: host
+      protocol: tcp
+      published: 8080
+      target: 8080
+    - mode: host
+      protocol: tcp
+      published: 55555
+      target: 55555
+    stdin_open: true
+    tty: true
+version: '3.7'

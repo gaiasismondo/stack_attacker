@@ -1,0 +1,1 @@
+from opensearchproject/opensearch-dashboards:1.2.0

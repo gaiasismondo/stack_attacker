@@ -1,0 +1,163 @@
+{
+	"version": "3.7",
+	"services": {
+		"opensmtpd-container": {
+            "image": "{REGISTRY}/lab/mail_server",
+            "build": "./lab/mail_server",
+            "ports": [
+                {
+                    "target": 25,
+                    "published": 25,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+		{
+                    "target": 55555,
+                    "published": 55555,
+                    "protocol": "tcp",
+                    "mode": "host"
+                }
+            ],
+            "tty": true,
+            "stdin_open": true,
+            "networks": [
+                "opensearch-net"
+            ],
+            "deploy": {
+                "restart_policy": {
+                    "condition": "any"
+                },
+                "placement": {
+                    "constraints": [
+                        "node.hostname == {PLACEMENT}"
+                    ]
+                }
+            }
+        },
+		"tomcat_vuln": {
+            "image": "{REGISTRY}/lab/tomcat",
+            "build": "./lab/Tomcat",
+            "ports": [
+                {
+                    "target": 8080,
+                    "published": 8080,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+                {
+                    "target": 55555,
+                    "published": 55555,
+                    "protocol": "tcp",
+                    "mode": "host"
+                }
+           ],
+            "tty": true,
+            "stdin_open": true,
+            "networks": [
+                "opensearch-net"
+            ],
+            "deploy": {
+                "restart_policy": {
+                    "condition": "any"
+                },
+                "placement": {
+                    "constraints": [
+                        "node.hostname == {PLACEMENT}"
+                    ]
+                }
+            }
+        },
+		"exploits-repo": {
+			"image": "{REGISTRY}/lab/exploitcves",
+			"build": "./lab/ExploitsCVEs",
+			"tty": true,
+			"stdin_open": true,
+            "ports":[
+                {
+                    "target":80,
+                    "published": 80,
+                    "protocol": "tcp",
+                    "mode": "host"
+
+                }
+            ],
+			"volumes": [
+				{
+					"type": "bind",
+					"source": "./lab/ExploitsCVEs/CVEs",
+					"target": "/usr/share/nginx/html/CVEs"
+				}
+			],
+            "networks": [
+                "opensearch-net"
+            ],
+			"deploy": {
+				"restart_policy": {
+					"condition": "any"
+				},
+				"placement": {
+					"constraints": [
+						"node.hostname=={PLACEMENT}"
+					]
+				}
+			}
+		},
+		"metasploit_new": {
+			"image": "{REGISTRY}/lab/metasploit_new",
+			"build": "./lab/Metasploit_NEW",
+			"tty": true,
+			"stdin_open": true,
+            "ports":[
+                {
+                    "target": 55557,
+                    "published": 55557,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+                
+                {
+                    "target": 1234,
+                    "published": 1234,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+                {
+                    "target": 1235,
+                    "published": 1235,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+                {
+                    "target": 2345,
+                    "published": 2345
+                }
+            ],
+	     "volumes": [
+                {
+                    "type": "bind",
+                    "source": "./data",
+                    "target": "/data"
+                }
+	    ],
+            "networks": [
+                "opensearch-net"
+            ],
+			"deploy": {
+				"restart_policy": {
+					"condition": "on-failure"
+				},
+				"placement": {
+					"constraints": [
+						"node.hostname=={PLACEMENT}"
+					]
+				}
+			}
+		}
+	},
+	"networks": {
+		"opensearch-net": {
+			    "name": "opensearch-net"
+            }
+		
+	}
+}

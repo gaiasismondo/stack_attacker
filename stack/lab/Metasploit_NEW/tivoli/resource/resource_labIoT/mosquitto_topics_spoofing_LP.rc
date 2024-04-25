@@ -1,0 +1,95 @@
+<ruby>
+require 'paho-mqtt'
+
+### Create a simple client with default attributes
+client = PahoMqtt::Client.new
+topics = []
+
+### Register a callback on message event to save the topics
+client.on_message do |message|
+	if !topics.include? message.topic
+		topics << message.topic
+	end
+end
+
+
+# Test and see if we have a database connected
+begin
+	framework.db.hosts
+rescue ::ActiveRecord::ConnectionNotEstablished
+	print_error("Database connection isn't established")
+	return
+end
+
+def sub(client)
+	### Subscribe to a topic
+	client.subscribe(['#', 2])
+	waiting_suback = true
+	client.on_suback do
+	  waiting_suback = false
+	  print_good "Subscribed to all topics!"
+	end
+	### Waiting for the suback answer and excute the previously set on_suback callback
+	while waiting_suback do
+		sleep 0.001
+	end
+	print_status("Waiting for topics!")
+	time_range = framework.datastore["spoofing_time_range"].to_i
+	1.upto(time_range) do |n|
+		sleep 1 # second
+	end
+end
+
+def print_topics(topics)
+	open('/tmp/topics.txt', 'w') { |f|
+		topics.sort.each do |topic|
+			f.puts topic
+		end
+	}
+end
+
+client.on_connack = proc {
+	 print_good("Connected to the broker!")
+}
+
+begin
+	if framework.datastore["full_automatic"]
+		print_line("---- RUNNING FULL AUTOMATIC ----")
+		if framework.sessions.count < 1
+			print_error("No sessions founded: exiting!")
+		end
+		mosquitto_port = framework.datastore["mosquitto_port"]
+		framework.sessions.each do |session|
+			if framework.datastore["mosquitto_debug"] == true
+				client.connect('test.mosquitto.org', mosquitto_port)
+			else
+				client.connect(session[1].session_host, mosquitto_port)
+			end
+			sub(client)
+		end
+		if framework.datastore["mosquitto_debug"] == true
+			print_topics(topics)
+		end
+	else
+		print_line("---- RUNNING ON TARGETS ----")
+		mosquitto_port = framework.datastore["mosquitto_port"]
+		for i in framework.datastore["targets"]
+				if framework.datastore["mosquitto_debug"] == true
+					client.connect('test.mosquitto.org', mosquitto_port)
+				else
+					client.connect(i, mosquitto_port)
+				end
+				sub(client)
+		end
+		if framework.datastore["mosquitto_debug"] == true
+			print_topics(topics)
+		end
+	end
+	framework.datastore["topics"] = topics
+rescue Msf::Exception
+	print_error("Exception in mosquitto_topics_spoofing_LP.rc")
+	return
+end
+
+
+</ruby>

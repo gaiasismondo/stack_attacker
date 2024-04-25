@@ -1,0 +1,40 @@
+{
+    "targets":[
+       
+        {
+           "target": "IPopensmtpd-container"
+        },
+        {
+           "target":"IPtomcat_vuln",  
+           "other_subnet":"yes"
+        }
+     ],
+    "Attacker_VM": "IPexploits-repo",  
+    "docker":{
+        "IPopensmtpd-container":  
+        [
+            {
+                "docker_name": "smtp_server",
+                "exposed_port": "55555",
+                "VM_Port": "55555",
+                "attack_list": ["smtp_server"]
+            }
+        ],
+        "IPtomcat_vuln":[     
+            {
+                "docker_name": "tomcat_server",
+                "exposed_port": "55555",
+                "VM_Port": "55555",
+                "attack_list": ["tomcat_server"]
+                
+            }
+        ]
+    },
+    "DEFAULT_LPORT": "55555",
+    "ATTACKER_CLIENT_PORT": 1234,
+    "BACKDOOR_CLIENT_PORT": 1235,
+    "TOMCAT_VM":"IPtomcat_vuln", 
+    "SMTP_VM":"IPopensmtpd-container", 
+    "NETCAT_PORT": 2345,
+    "METERPRETER_PORT":"55557"
+}

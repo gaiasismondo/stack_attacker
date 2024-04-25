@@ -1,0 +1,4 @@
+#!/bin/bash
+sudo docker rm -f sslproxy
+sudo docker build --tag sslproxy .
+sudo docker run -ti --privileged=true -v /sys/fs/cgroup/:/sys/fs/cgroup:ro --name sslproxy -w /MMSproxy sslproxy

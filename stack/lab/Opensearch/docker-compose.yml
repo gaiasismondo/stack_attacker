@@ -1,0 +1,79 @@
+version: '3.5'
+services:
+  opensearch-node1:
+    image: opensearchproject/opensearch:1.2.3
+    container_name: opensearch-node1
+    ports:
+      - 9300:9200
+      - 9700:9600 # required for Performance Analyzer
+    expose:
+      - "9200"
+      - "9600"
+    networks:
+      - opensearch-net
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node1
+      - discovery.type=single-node
+      - compatibility.override_main_response_version=true
+      - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+      - plugins.security.ssl.transport.pemcert_filepath=certificati/elasticsearch/node.crt
+      - plugins.security.ssl.transport.pemkey_filepath=certificati/elasticsearch/node.key
+      - plugins.security.ssl.transport.pemtrustedcas_filepath=certificati/ca/ca.crt
+      - plugins.security.ssl.http.pemcert_filepath=certificati/elasticsearch/node.crt
+      - plugins.security.ssl.http.pemkey_filepath=certificati/elasticsearch/node.key
+      - plugins.security.ssl.http.pemtrustedcas_filepath=certificati/ca/ca.crt
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
+    volumes:
+      - opensearch-data1:/usr/share/opensearch/data
+      - ./certificati:/usr/share/opensearch/config/certificati
+      - ./opensearch.yml:/usr/share/opensearch/config/opensearch.yml
+    restart: unless-stopped
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:1.2.0
+    container_name: opensearch-dashboards
+    ports:
+      - 5602:5601
+    expose:
+      - "5601"
+    networks:
+      - opensearch-net
+    environment:
+      #SERVER_PORT: '5701'
+      OPENSEARCH_HOSTS: '["https://opensearch-node1:9200"]' # must be a string with no spaces when specified as an environment variable
+    restart: unless-stopped
+    depends_on:
+      - opensearch-node1
+  logstash-opensearch:
+    image: docker.elastic.co/logstash/logstash-oss:7.10.2
+    #image: opensearchproject/logstash-oss-with-opensearch-output-plugin:7.16.2
+    container_name: logstash-opensearch
+    volumes:
+      #- type: volume
+      #  source: "./logstash/config"
+      #  target: "/usr/share/logstash/config"
+      - logstash-oss:/usr/share/logstash
+      - ./logstash/config:/usr/share/logstash/config
+    networks:
+      - opensearch-net
+    ports:
+      - "5044-5046:5044-5046"
+    expose:
+      - "5044-5046"
+    restart: unless-stopped
+    depends_on:
+      - opensearch-node1
+      - opensearch-dashboards
+volumes:
+  opensearch-data1:
+  logstash-oss:
+networks:
+  opensearch-net:
+    name: opensearch-net

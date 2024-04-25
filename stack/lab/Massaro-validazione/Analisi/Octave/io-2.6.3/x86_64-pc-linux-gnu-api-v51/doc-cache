@@ -1,0 +1,206 @@
+# doc-cache created by Octave 4.2.2
+# name: cache
+# type: cell
+# rows: 3
+# columns: 6
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 8
+cell2csv
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 422
+ -- Loadable Function: cell2csv (FILE, C)
+ -- Loadable Function: cell2csv (FILE, C, SEP)
+ -- Loadable Function: cell2csv (FILE, C, SEP, PROT)
+
+     Create a CSV file from a cell array.  SEP (character value) changes
+     the character used to separate two fields.  The default value is a
+     comma (',').  PROT (character value) changes the character used to
+     protect a string.  Default value is a double quote ('"').
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 36
+Create a CSV file from a cell array.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 7
+col2num
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 111
+ -- Loadable Function: N = col2num (CIDX)
+
+     Convert a spreadsheet column Id into a numerical column number.
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 63
+Convert a spreadsheet column Id into a numerical column number.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 8
+csv2cell
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 1968
+ -- Loadable Function: C = csv2cell (FILE)
+ -- Loadable Function: C = csv2cell (FILE, SEP)
+ -- Loadable Function: C = csv2cell (FILE, SEP, PROT)
+ -- Loadable Function: C = csv2cell (FILE, HL, ...)
+ -- Loadable Function: C = csv2cell (FILE, RANGE, ...)
+
+     Read a CSV (Comma Separated Values) file and convert it into a cell
+     array.
+
+     SEP (a character value) changes the character used to separate two
+     fields.  The default value is a comma (',').
+
+     PROT (a character value) changes the character used to protect a
+     string.  The default is a double quote ('"').
+
+     Optional argument HL (a numeric value >= 0) is the number of
+     headerlines to skip; negative values are ignored.  If HL is equal
+     to or larger than the total number of lines in the file, no data is
+     read and an empty cell array is returned.
+
+     Alternatively, optional argument RANGE can be specified as a
+     spreadsheet-style cell range to specify a block of fields to be
+     returned in C.  If the specified column range reaches beyond the
+     number of fields on a line, the output cell array is padded with
+     empty string values.  If the specified row range exceeds the number
+     of lines in the file, the range is silently truncated to match the
+     number of lines per file.
+
+     If no range argument is supplied, csv2cell assumes the first line
+     contains column headers and the number of fields in the first line
+     is supposed to be the number of columns in the output array.  A
+     warning is emitted then if any data line contains more fields than
+     the header line.
+
+     Note: newline characters in fields (i.e., multi-line text fields)
+     are not allowed.
+
+     The maximum line width of the csv file is set to 32768 characters.
+     (This is also the theoretical maximum number of columns - 1 in the
+     data if all fields are empty, i.e., a line containing just 32768
+     consecutive separators will yield 32769 empty values.)
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 74
+Read a CSV (Comma Separated Values) file and convert it into a cell
+array.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 9
+csvconcat
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 449
+ -- Loadable Function: STR = csvconcat (C)
+ -- Loadable Function: STR = csvconcat (C, SEP)
+ -- Loadable Function: STR = csvconcat (C, SEP, PROT)
+
+     Concatenate a cell into a CSV string or array of strings.  SEP
+     (character value) changes the character used to separate two
+     fields.  The default value is a comma (',').  PROT (character
+     value) changes the character used to protect a string.  The default
+     is a double quote ('"').
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 57
+Concatenate a cell into a CSV string or array of strings.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 10
+csvexplode
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 423
+ -- Loadable Function: C = csvexplode (STR)
+ -- Loadable Function: C = csvexplode (STR, SEP)
+ -- Loadable Function: C = csvexplode (STR, SEP, PROT)
+
+     Explode a CSV string into a cell.  SEP (character value) changes
+     the character used to separate two fields.  The default value is a
+     comma (',').  PROT (character value) changes the character used to
+     protect a string.  The default is a double quote ('"').
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 33
+Explode a CSV string into a cell.
+
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 7
+num2col
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 111
+ -- Loadable Function: CIDX = num2col (N)
+
+     Convert a numerical column number into a spreadsheet column Id.
+
+
+# name: <cell-element>
+# type: sq_string
+# elements: 1
+# length: 63
+Convert a numerical column number into a spreadsheet column Id.
+
+
+
+
+

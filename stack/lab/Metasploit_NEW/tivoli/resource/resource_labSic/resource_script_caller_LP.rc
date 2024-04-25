@@ -1,0 +1,71 @@
+<ruby>
+
+require "json"
+
+#initialize framework datastore from config file
+def initialize_from_json(json_data)
+	#set workspace name from config file
+	framework.datastore["workspace"] = json_data["workspace"]
+	framework.datastore["subnet_mask"] = json_data["subnet_mask"]
+	framework.datastore["max_nmap_port"] = json_data["max_nmap_port"]
+	framework.datastore["l_host"] = json_data["l_host"]
+	framework.datastore["ssh_username"] = json_data["ssh_username"]
+	framework.datastore["ssh_password"] = json_data["ssh_password"]
+	framework.datastore["password_cracker"] = json_data["password_cracker"]
+	framework.datastore["full_automatic"] = true?(json_data["full_automatic"])
+	framework.datastore["network"] = json_data["network"]
+	framework.datastore["targets"] = json_data["targets"]
+	framework.datastore["path_dos_script"] = json_data["path_dos_script"]
+	framework.datastore["name_dos_script"] = json_data["name_dos_script"]
+  framework.datastore["packet_count"] = json_data["packet_count"]
+end
+
+
+def true?(obj)
+  obj.to_s.downcase == "true"
+end
+
+# Test and see if we have a database connected
+begin
+	framework.db.hosts
+rescue ::ActiveRecord::ConnectionNotEstablished
+	print_error("Database connection isn't established")
+	return
+end
+
+if ARGV.length == 0
+	print_error("USAGE: msfconsole -q -r resource_script_caller_LP.rc /path/to/config.json")
+	run_single("exit -y")
+	return
+end
+
+json_file = File.read(ARGV[0])
+json_data = JSON.parse(json_file)
+initialize_from_json(json_data)
+
+#delete workspace with same name
+#run_single("workspace -d #{framework.datastore["workspace"]}")
+#set workspace to the selected one in config file
+#run_single("workspace -a #{framework.datastore["workspace"]}")
+print_status "USING WORKSPACE #{framework.datastore["workspace"]}"
+
+#set local host ip from config file
+framework.datastore["l_host"] = json_data["l_host"]
+
+begin
+  print_line("LOADING SCRIPTS...")
+
+  Dir.chdir("/opt/metasploit-framework/embedded/framework/resource/resource_common")
+
+  print_status("EXECUTING net_scan_LP...")
+  run_single("resource net_scan_LP.rc")
+
+  run_single("exit -y")
+rescue Msf::Exception
+  print_error("Exception in resource_script_caller_LP")
+  return
+end
+
+
+
+</ruby>

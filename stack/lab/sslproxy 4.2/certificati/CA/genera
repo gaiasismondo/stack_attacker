@@ -1,0 +1,14 @@
+#!/bin/bash
+#genera tre chiavi rsa da 2048 bit: una per la root CA, una per il client e una per il server
+openssl genrsa -out root.key 2048
+openssl genrsa -out server-key.pem 2048
+openssl genrsa -out client1-key.pem 2048
+#genera certificato root CA con openssl
+openssl req -new -x509 -days 1024 -key root.key -out root.cer
+
+#genera certificato client e lo firma con la root CA generata sopra
+openssl req -new -key client1-key.pem  -out client1.csr
+openssl x509 -req -in client1.csr -CA root.cer -CAkey root.key -CAcreateserial -out client1.cer -days 500 -sha256
+#genera certificato server e lo firma con la root CA generata sopra 
+openssl req -new -key server-key.pem  -out server.csr
+openssl x509 -req -in server.csr -CA root.cer -CAkey root.key -CAcreateserial -out server.cer -days 500 -sha256

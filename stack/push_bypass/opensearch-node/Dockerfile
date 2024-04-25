@@ -1,0 +1,1 @@
+from opensearchproject/opensearch:1.2.3

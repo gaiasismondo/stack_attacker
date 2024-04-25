@@ -1,0 +1,6 @@
+{
+   	 	"exploits-repo":"<IP of the VM>",
+   	 	"tomcat_vuln":"<IP of the VM>",
+        "opensmtpd-container":"<IP of the VM>"
+}
+    

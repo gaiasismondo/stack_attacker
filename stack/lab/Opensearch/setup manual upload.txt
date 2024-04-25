@@ -1,0 +1,42 @@
+AUDITBEAT
+
+1) auditbeat export template > auditbeat.template.json
+   curl -k -u admin:admin -XPUT -H 'Content-Type: application/json' https://192.168.1.11:9300/_template/fois-auditbeat -d@auditbeat.template.json
+
+2) auditbeat export index-pattern --es.version 7.10.2 > auditbeat.index-pattern.json
+   curl -XPOST -u admin:admin -H 'osd-xsrf: true' -H 'Content-Type: application/json' 'http://192.168.1.11:5602/api/opensearch-dashboards/dashboards/import?force=true' -d@auditbeat.index-pattern.json
+
+
+
+
+source: https://www.electricbrain.com.au/pages/analytics/opensearch-vs-elasticsearch.php
+
+METRICBEAT
+
+1) metricbeat export template > metricbeat.template.json
+   curl -k -u admin:admin -XPUT -H 'Content-Type: application/json' https://192.168.1.11:9300/_template/fois-metricbeat -d@metricbeat.template.json
+
+2) metricbeat export index-pattern --es.version 7.10.2 > metricbeat.index-pattern.json
+   curl -XPOST -u admin:admin -H 'osd-xsrf: true' -H 'Content-Type: application/json' 'http://192.168.1.11:5602/api/opensearch-dashboards/dashboards/import?force=true' -d@metricbeat.index-pattern.json
+
+
+curl -XPOST -u admin:admin -H 'osd-xsrf: true' -H 'Content-Type: application/json' 'http://192.168.1.11:5602/api/opensearch-dashboards/dashboards/import?exclude=index-pattern&force=true' -d@/usr/share/metricbeat/kibana/7/dashboard/Metricbeat-docker-overview.json
+
+
+FILEBEAT
+
+1) filebeat export template > filebeat.template.json
+   curl -k -u admin:admin -XPUT -H 'Content-Type: application/json' https://192.168.1.11:9300/_template/filebeat-7.13.4 -d@filebeat.template.json
+
+2) filebeat export index-pattern --es.version 7.13.4 > filebeat.index-pattern.json
+   curl -XPOST -u admin:admin -H 'osd-xsrf: true' -H 'Content-Type: application/json' 'http://192.168.1.11:5602/api/opensearch-dashboards/dashboards/import?force=true' -d@filebeat.index-pattern.json
+
+curl -XPOST -u admin:admin -H 'osd-xsrf: true' -H 'Content-Type: application/json' 'http://192.168.1.11:5602/api/opensearch-dashboards/dashboards/import?exclude=index-pattern&force=true' -d@/usr/share/filebeat/kibana/7/dashboard/Filebeat-syslog.json
+
+PACKETBEAT
+
+1) packetbeat export template > packetbeat.template.json
+   curl -k -u admin:admin -XPUT -H 'Content-Type: application/json' https://192.168.1.11:9300/_template/packetbeat-7.13.4 -d@packetbeat.template.json
+
+2) packetbeat export index-pattern --es.version 7.13.4 > packetbeat.index-pattern.json
+   curl -XPOST -u admin:admin -H 'osd-xsrf: true' -H 'Content-Type: application/json' 'http://192.168.1.11:5602/api/opensearch-dashboards/dashboards/import?force=true' -d@packetbeat.index-pattern.json

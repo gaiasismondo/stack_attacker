@@ -1,0 +1,40 @@
+{
+    "targets":[
+       
+        {
+           "target": "192.168.40.22"
+        },
+        {
+           "target":"192.168.40.21",  
+           "other_subnet":"yes"
+        }
+     ],
+    "Attacker_VM": "192.168.40.23",  
+    "docker":{
+        "192.168.40.22":  
+        [
+            {
+                "docker_name": "smtp_server",
+                "exposed_port": "55555",
+                "VM_Port": "55555",
+                "attack_list": ["smtp_server"]
+            }
+        ],
+        "192.168.40.21":[     
+            {
+                "docker_name": "tomcat_server",
+                "exposed_port": "55555",
+                "VM_Port": "55555",
+                "attack_list": ["tomcat_server"]
+                
+            }
+        ]
+    },
+    "DEFAULT_LPORT": "55555",
+    "ATTACKER_CLIENT_PORT": 1234,
+    "BACKDOOR_CLIENT_PORT": 1235,
+    "TOMCAT_VM":"192.168.40.21", 
+    "SMTP_VM":"192.168.40.22", 
+    "NETCAT_PORT": 2345,
+    "METERPRETER_PORT":"55557"
+}

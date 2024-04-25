@@ -1,0 +1,16 @@
+# file di configurazione del db usato da metasploit
+development: &pgsql
+  adapter: postgresql
+  database: msfdb
+  username: msfuser
+  password: msf
+  host: 127.0.0.1
+  port: 5432
+  pool: 200
+
+production: &production
+  <<: *pgsql
+
+test:
+  <<: *pgsql
+  database: msfdb

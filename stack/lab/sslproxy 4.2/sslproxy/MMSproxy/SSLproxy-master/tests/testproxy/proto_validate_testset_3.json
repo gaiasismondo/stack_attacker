@@ -1,0 +1,185 @@
+{
+  "comment": "Tests for POP3",
+  "configs": {
+    "1": {
+      "proto": {
+        "proto": "tcp"
+      },
+      "client": {
+        "ip": "127.0.0.1",
+        "port": "8188"
+      },
+      "server": {
+        "ip": "127.0.0.1",
+        "port": "9188"
+      }
+    },
+    "2": {
+      "proto": {
+        "proto": "ssl"
+      },
+      "client": {
+        "ip": "127.0.0.1",
+        "port": "8460"
+      },
+      "server": {
+        "ip": "127.0.0.1",
+        "port": "9460",
+        "crt": "server.crt",
+        "key": "server.key"
+      }
+    }
+  },
+  "tests": {
+    "1": {
+      "comment": "Validates CAPA",
+      "states": {
+        "1": {
+          "testend": "client",
+          "cmd": "send",
+          "payload": "CAPA"
+        },
+        "2": {
+          "testend": "server",
+          "cmd": "recv",
+          "payload": "CAPA"
+        }
+      }
+    },
+    "2": {
+      "comment": "Validates CAPA+CR",
+      "states": {
+        "1": {
+          "testend": "client",
+          "cmd": "send",
+          "payload": "CAPA\r"
+        },
+        "2": {
+          "testend": "server",
+          "cmd": "recv",
+          "payload": "CAPA\r"
+        }
+      }
+    },
+    "3": {
+      "comment": "Validates CAPA+NL",
+      "states": {
+        "1": {
+          "testend": "client",
+          "cmd": "send",
+          "payload": "CAPA\n"
+        },
+        "2": {
+          "testend": "server",
+          "cmd": "recv",
+          "payload": "CAPA\n"
+        }
+      }
+    },
+    "4": {
+      "comment": "Validates CAPA+CRNL",
+      "states": {
+        "1": {
+          "testend": "client",
+          "cmd": "send",
+          "payload": "CAPA\r\n"
+        },
+        "2": {
+          "testend": "server",
+          "cmd": "recv",
+          "payload": "CAPA\r\n"
+        }
+      }
+    },
+    "5": {
+      "comment": "Validates CAPA+TAB",
+      "states": {
+        "1": {
+          "testend": "client",
+          "cmd": "send",
+          "payload": "CAPA\t"
+        },
+        "2": {
+          "testend": "server",
+          "cmd": "recv",
+          "payload": "CAPA\t"
+        }
+      }
+    },
+    "6": {
+      "comment": "Validates CAPA+TABCRNL",
+      "states": {
+        "1": {
+          "testend": "client",
+          "cmd": "send",
+          "payload": "CAPA\t\r\n"
+        },
+        "2": {
+          "testend": "server",
+          "cmd": "recv",
+          "payload": "CAPA\t\r\n"
+        }
+      }
+    },
+    "7": {
+      "comment": "Does not validate CAP",
+      "states": {
+        "1": {
+          "testend": "client",
+          "cmd": "send",
+          "payload": "CAP"
+        },
+        "2": {
+          "testend": "client",
+          "cmd": "recv",
+          "payload": "Connection is terminated due to protocol error\r\n"
+        },
+        "3": {
+          "testend": "server",
+          "cmd": "recv",
+          "payload": ""
+        }
+      }
+    },
+    "8": {
+      "comment": "Does not validate CAP1",
+      "states": {
+        "1": {
+          "testend": "client",
+          "cmd": "send",
+          "payload": "CAP1"
+        },
+        "2": {
+          "testend": "client",
+          "cmd": "recv",
+          "payload": "Connection is terminated due to protocol error\r\n"
+        },
+        "3": {
+          "testend": "server",
+          "cmd": "recv",
+          "payload": ""
+        }
+      }
+    },
+    "9": {
+      "comment": "Does not validate CAPA1",
+      "states": {
+        "1": {
+          "testend": "client",
+          "cmd": "send",
+          "payload": "CAPA1"
+        },
+        "2": {
+          "testend": "client",
+          "cmd": "recv",
+          "payload": "Connection is terminated due to protocol error\r\n"
+        },
+        "3": {
+          "testend": "server",
+          "cmd": "recv",
+          "payload": ""
+        }
+      }
+    }
+  }
+}

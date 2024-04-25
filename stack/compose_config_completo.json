@@ -1,0 +1,501 @@
+{
+	"version": "3.7",
+	"services": {
+		"opensmtpd-container": {
+            "image": "{REGISTRY}/lab/mail_server",
+            "build": "./lab/mail_server",
+            "ports": [
+                {
+                    "target": 25,
+                    "published": 25,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+		{
+                    "target": 55555,
+                    "published": 55555,
+                    "protocol": "tcp",
+                    "mode": "host"
+                }
+            ],
+            "tty": true,
+            "stdin_open": true,
+            "networks": [
+                "opensearch-net"
+            ],
+            "deploy": {
+                "restart_policy": {
+                    "condition": "any"
+                },
+                "placement": {
+                    "constraints": [
+                        "node.hostname == {PLACEMENT}"
+                    ]
+                }
+            }
+        },
+		"MMSclient": {
+            "image": "{REGISTRY}/lab/client",
+            "build": {
+	    	"context": "./lab/sslproxy 4.2/CLIENT_SERVER",
+		"dockerfile": "ClientDockerfile"
+	    },
+            "ports": [
+                {
+                    "target": 90,
+                    "published": 90,
+                    "protocol": "tcp",
+                    "mode": "host"
+                }
+            ],
+            "volumes": [
+                {
+                    "type": "bind",
+                    "source": "/sys/fs/cgroup/",
+                    "target": "/sys/fs/cgroup",
+                    "read_only": true
+                }
+            ],
+            "tty": true,
+            "stdin_open": true,
+            "working_dir": "/libreriaMMS/examples/tls_client_example",
+            "networks": [
+                "opensearch-net"
+            ],
+            "deploy": {
+                "restart_policy": {
+                    "condition": "any"
+                },
+                "placement": {
+                    "constraints": [
+                        "node.hostname == {PLACEMENT}"
+                    ]
+                }
+            }
+        },
+		"MMSserver": {
+            "image": "{REGISTRY}/lab/server",
+            "build": {
+		    "context": "./lab/sslproxy 4.2/CLIENT_SERVER",
+		    "dockerfile": "ServerDockerfile"
+	    },
+            "ports": [
+                {
+                    "target": 100,
+                    "published": 100,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+                {
+                    "target": 3782,
+                    "published": 3782,
+                    "protocol": "tcp",
+                    "mode": "host"
+                }
+            ],
+            "volumes": [
+                {
+                    "type": "bind",
+                    "source": "/sys/fs/cgroup/",
+                    "target": "/sys/fs/cgroup",
+                    "read_only": true
+                }
+            ],
+            "tty": true,
+            "stdin_open": true,
+            "working_dir": "/libreriaMMS/examples/tls_server_example",
+            "networks": [
+                "opensearch-net"
+            ],
+            "deploy": {
+                "restart_policy": {
+                    "condition": "any"
+                },
+                "placement": {
+                    "constraints": [
+                        "node.hostname == {PLACEMENT}"
+                    ]
+                }
+            }
+        },
+		"tomcat_vuln": {
+            "image": "{REGISTRY}/lab/tomcat",
+            "build": "./lab/Tomcat",
+            "ports": [
+                {
+                    "target": 8080,
+                    "published": 8080,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+                {
+                    "target": 55555,
+                    "published": 55555,
+                    "protocol": "tcp",
+                    "mode": "host"
+                }
+           ],
+            "tty": true,
+            "stdin_open": true,
+            "networks": [
+                "opensearch-net"
+            ],
+            "deploy": {
+                "restart_policy": {
+                    "condition": "any"
+                },
+                "placement": {
+                    "constraints": [
+                        "node.hostname == {PLACEMENT}"
+                    ]
+                }
+            }
+        },
+		"exploits-repo": {
+			"image": "{REGISTRY}/lab/exploitcves",
+			"build": "./lab/ExploitsCVEs",
+			"tty": true,
+			"stdin_open": true,
+            "ports":[
+                {
+                    "target":80,
+                    "published": 80,
+                    "protocol": "tcp",
+                    "mode": "host"
+
+                }
+            ],
+			"volumes": [
+				{
+					"type": "bind",
+					"source": "./lab/ExploitsCVEs/CVEs",
+					"target": "/usr/share/nginx/html/CVEs"
+				}
+			],
+            "networks": [
+                "opensearch-net"
+            ],
+			"deploy": {
+				"restart_policy": {
+					"condition": "any"
+				},
+				"placement": {
+					"constraints": [
+						"node.hostname=={PLACEMENT}"
+					]
+				}
+			}
+		},
+		"metasploit_new": {
+			"image": "{REGISTRY}/lab/metasploit_new",
+			"build": "./lab/Metasploit_NEW",
+			"tty": true,
+			"stdin_open": true,
+            "ports":[
+                {
+                    "target": 55557,
+                    "published": 55557,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+                
+                {
+                    "target": 1234,
+                    "published": 1234,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+                {
+                    "target": 1235,
+                    "published": 1235,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+                {
+                    "target": 2345,
+                    "published": 2345
+                }
+            ],
+	     "volumes": [
+                {
+                    "type": "bind",
+                    "source": "./data",
+                    "target": "/data"
+                }
+	    ],
+            "networks": [
+                "opensearch-net"
+            ],
+			"deploy": {
+				"restart_policy": {
+					"condition": "on-failure"
+				},
+				"placement": {
+					"constraints": [
+						"node.hostname=={PLACEMENT}"
+					]
+				}
+			}
+		},
+		"tomcat_graph":{
+			"image": "{REGISTRY}/lab/tomcat_graph",
+            "build": "./lab/Massaro-validazione/Tomcat",
+            "ports": [
+                {
+                    "target": 8080,
+                    "published": 8080,
+                    "protocol": "tcp",
+                    "mode": "host"
+                }
+            ],
+			"volumes": [
+				{
+                    "type": "bind",
+                    "source": "./lab/Massaro-validazione/Analisi/Octave/grafico octave",
+                    "target": "/usr/local/tomcat/webapps/grafico"
+                }
+			],
+            "tty": true,
+            "stdin_open": true,
+			"networks": [
+                "opensearch-net"
+            ],
+            "deploy": {
+                "restart_policy": {
+                    "condition": "any"
+                },
+                "placement": {
+                    "constraints": [
+                        "node.hostname == {PLACEMENT}"
+                    ]
+                }
+            }
+		},
+        "analisi":{
+            "image": "{REGISTRY}/analisi",
+            "build":"./lab/Massaro-validazione/Analisi",
+            "tty": true,
+            "stdin_open": true,
+            "volumes": [
+				{
+                    "type": "bind",
+                    "source": "./lab/Massaro-validazione/Analisi/Octave",
+                    "target": "/home/OctaveScript"
+                }
+			],
+			"networks": [
+                "opensearch-net"
+            ],
+            "deploy": {
+                "restart_policy": {
+                    "condition": "any"
+                },
+                "placement": {
+                    "constraints": [
+                        "node.hostname == {PLACEMENT}"
+                    ]
+                }
+            }
+            
+        },
+        "kafkacat":{
+            "image": "{REGISTRY}/kafkacat",
+            "build": "./lab/kafkacat",
+            "tty": true,
+            "stdin_open": true,
+            "networks": [
+                "opensearch-net"
+            ],
+            "deploy": {
+                "restart_policy": {
+                    "condition": "any"
+                },
+                "placement": {
+                    "constraints": [
+                        "node.hostname == {PLACEMENT}"
+                    ]
+                }
+            }
+        },
+		"zookeeper": {
+            "image": "{REGISTRY}/confluentinc/cp-zookeeper:latest",
+            "build":"./push_bypass/zookeeper",
+            "networks": [
+                "opensearch-net"
+            ],
+            "environment": {
+                "ZOOKEEPER_CLIENT_PORT": 2181
+            },
+			"deploy": {
+				"placement": {
+					"constraints": [
+						"node.hostname == {PLACEMENT}"
+					]
+				},
+				"restart_policy": {
+					"condition": "any"
+				}
+			}
+        },
+        "brokerdc": {
+            "image": "{REGISTRY}/confluentinc/cp-kafka:latest",
+            "hostname": "brokerdc",
+            "build":"./push_bypass/brokerdc",
+            "networks": [
+                "opensearch-net"
+            ],
+			"ports": [
+				
+                {
+                    "target": 9092,
+                    "published": 9092,
+                    "protocol": "tcp",
+                    "mode": "host"
+                },
+                {
+                    "target": 29092,
+                    "published": 29092,
+                    "protocol": "tcp",
+                    "mode": "host"
+                }
+            ],
+
+            "depends_on": [
+                "zookeeper"
+            ],
+            "environment": {
+                "KAFKA_LISTENERS": "LISTENER_INSIDE://brokerdc:29092,LISTENER_OUTSIDE://brokerdc:9092",
+                "KAFKA_ADVERTISED_LISTENERS": "LISTENER_INSIDE://brokerdc:29092,LISTENER_OUTSIDE://brokerdc:9092",
+                "KAFKA_LISTENER_SECURITY_PROTOCOL_MAP": "LISTENER_INSIDE:PLAINTEXT,LISTENER_OUTSIDE:PLAINTEXT",
+                "KAFKA_INTER_BROKER_LISTENER_NAME": "LISTENER_INSIDE",
+                "KAFKA_BROKER_ID": 1,
+                "KAFKA_ZOOKEEPER_CONNECT": "zookeeper:2181",
+                "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR": 1
+            },
+			"deploy": {
+				"placement": {
+					"constraints": [
+						"node.hostname == {PLACEMENT}"
+					]
+				},
+				"restart_policy": {
+					"condition": "any"
+				}
+			}
+		},
+        "opensearch-node1": {
+			"image": "{REGISTRY}/opensearchproject/opensearch:1.2.3",
+			"build":"./push_bypass/opensearch-node",
+			"ports": [
+				"9200:9200",
+				"9700:9600"
+			],
+			"networks": [
+				"opensearch-net"
+			],
+			"environment": [
+				"cluster.name=opensearch-cluster",
+				"node.name=opensearch-node1",
+				"discovery.type=single-node",
+				"compatibility.override_main_response_version=true",
+				"bootstrap.memory_lock=true",
+				"OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m",
+				"plugins.security.ssl.transport.pemcert_filepath=certificati/elasticsearch/node.crt",
+				"plugins.security.ssl.transport.pemkey_filepath=certificati/elasticsearch/node.key",
+				"plugins.security.ssl.transport.pemtrustedcas_filepath=certificati/ca/ca.crt",
+				"plugins.security.ssl.http.pemcert_filepath=certificati/elasticsearch/node.crt",
+				"plugins.security.ssl.http.pemkey_filepath=certificati/elasticsearch/node.key",
+				"plugins.security.ssl.http.pemtrustedcas_filepath=certificati/ca/ca.crt"
+			],
+			"ulimits": {
+				"memlock": {
+					"soft": -1,
+					"hard": -1
+				},
+				"nofile": {
+					"soft": 65536,
+					"hard": 65536
+				}
+			},
+			"volumes": [
+				"opensearch-data1:/usr/share/opensearch/data",
+				"./lab/Opensearch/certificati:/usr/share/opensearch/config/certificati",
+				"./lab/Opensearch/opensearch.yml:/usr/share/opensearch/config/opensearch.yml"
+			],
+			"deploy": {
+				"placement": {
+					"constraints": [
+						"node.hostname == {PLACEMENT}"
+					]
+				},
+				"restart_policy": {
+					"condition": "any"
+				}
+			}
+		},
+		"opensearch-dashboards": {
+			"image": "{REGISTRY}/opensearchproject/opensearch-dashboards:1.2.0",
+            "build":"./push_bypass/opensearch-dashboards",
+			"ports": [
+				"5601:5601"
+			],
+			"networks": [
+				"opensearch-net"
+			],
+			"environment": {
+				"OPENSEARCH_HOSTS": "[\"https://opensearch-node1:9200\"]"
+			},
+			"deploy": {
+				"placement": {
+					"constraints": [
+						"node.hostname == {PLACEMENT}"
+					]
+				},
+				"restart_policy": {
+					"condition": "any"
+				}
+			},
+			"depends_on": [
+				"opensearch-node1"
+			]
+		},
+		"logstash-opensearch": {
+			"image": "{REGISTRY}/docker.elastic.co/logstash/logstash-oss:7.10.2",
+            "build":"./push_bypass/logstash",
+			"volumes": [
+				"logstash-oss:/usr/share/logstash",
+				"./lab/Opensearch/logstash/config:/usr/share/logstash/config"
+			],
+			"networks": [
+				"opensearch-net"
+			],
+			"ports": [
+				"5044-5046:5044-5046"
+			],
+			"deploy": {
+				"placement": {
+					"constraints": [
+						"node.hostname == {PLACEMENT}"
+					]
+				},
+				"restart_policy": {
+					"condition": "any"
+				}
+			},
+			"depends_on": [
+				"opensearch-node1",
+				"opensearch-dashboards"
+			]
+		}
+	},
+	"volumes": {
+		"opensearch-data1": null,
+		"logstash-oss": null
+	},
+	"networks": {
+		"opensearch-net": {
+			    "name": "opensearch-net"
+            }
+		
+	}
+}

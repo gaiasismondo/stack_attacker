@@ -1,0 +1,41 @@
+networks:
+  opensearch-net:
+    name: opensearch-net
+services:
+  exploits-repo:
+    build: ./lab/ExploitsCVEs
+    image: 192.168.40.12:5000/lab/exploitcves
+    networks:
+    - opensearch-net
+    stdin_open: true
+    tty: true
+    volumes:
+    - source: ./lab/ExploitsCVEs/CVEs
+      target: /usr/share/nginx/html/CVEs
+      type: bind
+  metasploit_new:
+    build: ./lab/Metasploit_NEW
+    image: 192.168.40.12:5000/lab/metasploit_new
+    networks:
+    - opensearch-net
+    stdin_open: true
+    tty: true
+    volumes:
+    - source: ./data
+      target: /data
+      type: bind
+  opensmtpd-container:
+    build: ./lab/mail_server
+    image: 192.168.40.12:5000/lab/mail_server
+    networks:
+    - opensearch-net
+    stdin_open: true
+    tty: true
+  tomcat_vuln:
+    build: ./lab/Tomcat
+    image: 192.168.40.12:5000/lab/tomcat
+    networks:
+    - opensearch-net
+    stdin_open: true
+    tty: true
+version: '3.7'

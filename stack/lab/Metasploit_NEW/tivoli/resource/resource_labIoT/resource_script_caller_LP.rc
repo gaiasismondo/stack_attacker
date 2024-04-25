@@ -1,0 +1,120 @@
+<ruby>
+
+require "json"
+
+#initialize framework datastore from config file
+def initialize_from_json(json_data)
+	#set workspace name from config file
+	framework.datastore["workspace"] = json_data["workspace"]
+	framework.datastore["subnet_mask"] = json_data["subnet_mask"]
+	framework.datastore["max_nmap_port"] = json_data["max_nmap_port"]
+	framework.datastore["l_host"] = json_data["l_host"]
+	framework.datastore["ssh_username"] = json_data["ssh_username"]
+	framework.datastore["ssh_password"] = json_data["ssh_password"]
+  framework.datastore["ssh_port"] = json_data["ssh_port"]
+	framework.datastore["password_cracker"] = json_data["password_cracker"]
+	framework.datastore["full_automatic"] = true?(json_data["full_automatic"])
+	framework.datastore["network"] = json_data["network"]
+	framework.datastore["targets"] = json_data["targets"]
+	framework.datastore["mosquitto_port"] = json_data["mosquitto_port"]
+	framework.datastore["mosquitto_debug"] = true?(json_data["mosquitto_debug"])
+    	framework.datastore["dictionary_file_path"] = json_data["dictionary_file_path"]
+	framework.datastore["spoofing_time_range"] = json_data["spoofing_time_range"]
+end
+
+
+def true?(obj)
+  obj.to_s.downcase == "true"
+end
+
+# Test and see if we have a database connected
+begin
+	framework.db.hosts
+rescue ::ActiveRecord::ConnectionNotEstablished
+	print_error("Database connection isn't established")
+	return
+end
+
+if ARGV.length == 0
+	print_error("USAGE: msfconsole -q -r resource_script_caller_LP.rc /path/to/config.json")
+	run_single("exit -y")
+	return
+end
+
+json_file = File.read(ARGV[0])
+json_data = JSON.parse(json_file)
+initialize_from_json(json_data)
+
+#delete workspace with same name
+run_single("workspace -d #{framework.datastore["workspace"]}")
+#set workspace to the selected one in config file
+run_single("workspace -a #{framework.datastore["workspace"]}")
+print_status "USING WORKSPACE #{framework.datastore["workspace"]}"
+
+#set local host ip from config file
+framework.datastore["l_host"] = json_data["l_host"]
+
+
+begin
+  print_line("LOADING SCRIPTS...")
+
+  # common resources
+  # changing directory
+    Dir.chdir("/opt/metasploit-framework/embedded/framework/resource/resource_common")
+
+  # print_status("EXECUTING net_scan_LP...")
+  # run_single("resource net_scan_LP.rc")
+
+  # print_status("EXECUTING ssh_login_LP...")
+   run_single("resource ssh_login_LP.rc")
+
+  # print_status("EXECUTING gain_root_LP...")
+   run_single("resource gain_root_LP.rc")
+
+  # print_status("EXECUTING hash_dump_LP...")
+  # run_single("resource hash_dump_LP.rc")
+
+  # IoT Laboratory
+  # changing directory
+    Dir.chdir("/opt/metasploit-framework/embedded/framework/resource/resource_labIoT")
+
+  # print_status("EXECUTING mosquitto_break_LP...")
+   run_single("resource mosquitto_break_LP.rc")
+
+  # print_status("EXECUTING mosquitto_messages_spoofing_LP...")
+  # run_single("resource mosquitto_messages_spoofing_LP.rc")
+
+  # print_status("EXECUTING mosquitto_topics_spoofing_LP...")
+  # run_single("resource mosquitto_topics_spoofing_LP.rc")
+
+  # print_status("EXECUTING mosquitto_topics_jammer_LP_PT...")
+  # run_single("resource mosquitto_topics_jammer_LP_PT.rc")
+
+  # print_status("EXECUTING mosquitto_brute_force_jammer_PT.rc...")
+   run_single("resource mosquitto_brute_force_jammer_PT.rc")
+
+=begin
+uncomment the following lines to brute forcing passwords
+=end
+# Dir.chdir("/opt/metasploit-framework/embedded/framework/resource/resource_common")
+# if json_data["password_cracker"] == "john"
+#   print_status("EXECUTING jtr_LP...")
+#   run_single("resource jtr_LP.rc")
+#   run_single("run")
+#
+# else
+#   print_status("EXECUTING hashcat_LP...")
+#   run_single("resource hashcat_LP.rc")
+#   run_single("run")
+#
+# end
+
+  run_single("exit -y")
+rescue Msf::Exception
+  print_error("Exception in resource_script_caller_LP")
+  return
+end
+
+
+
+</ruby>

