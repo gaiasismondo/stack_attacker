@@ -2,6 +2,8 @@ import argparse
 import os
 import json
 
+
+#Viene fatto il parsing dell'argomento passato da linea di comando a setupAttacks (PWD)(path directory corrente)
 def parse_args():
 
     parser = argparse.ArgumentParser(
@@ -12,6 +14,8 @@ def parse_args():
 
     return parser.parse_args()
 
+
+#Legge il file config e restituisce un dizionario che contiene nomi dei servizi come chiave e ip della macchina su cui girano come valore
 def serviceIP(config):
     service_ips={}
     for service in config["containers"].keys():
@@ -22,6 +26,11 @@ def serviceIP(config):
 
 
 #Main function
+#path_escape contiene il path dell'exploit docker_escape
+#path_tar contiene il path degli archivi tar contenenti gli exploit CVE 
+#path_breakout contiene il path dell'exploit CVE breakout 
+#infilenames contiene i template degli exploit
+#outfilenames contiene gli exploit veri e propri
 pwd=parse_args().pwd
 home =pwd.split("Netsploit")[0]
 path_escape=home+"stack/data/attacker/custom_attacks/docker_escape/"
@@ -32,12 +41,17 @@ outfilenames = [path_escape+"CVE-2019-14271_PostExploitScript.sh",path_escape+"c
 
 CONFIG_FILE="../stack/config_all.json"
 
+#Viene estratto dizionario con servizi e ip contenuti in config_all.json (service_ips)
 with open(CONFIG_FILE) as f: 
     config=json.load(f)
 service_ips=serviceIP(config)
 
 containers=False
             
+#Vengono aperti contemporaneamente template ed exploit corrispondente
+#si scorrono tutte le righe del template e si sostituiscono tutte le occorrenze di IP+nomeservizio
+#con l'ip corrispondente estratto da service_ips. 
+#il template viene lasciato invariato e le modifiche vengono riportate sull'exploit
 for (infile,outfile) in zip(infilenames, outfilenames):
     with open(infile) as template:
         out=[]
@@ -49,5 +63,6 @@ for (infile,outfile) in zip(infilenames, outfilenames):
     with open(outfile,'w') as dest:
         for line in out:
             dest.write(line)
+
 
 os.system("tar cf "+path_tar+"CVE201914271.tar -C "+path_tar+" CVE201914271")
