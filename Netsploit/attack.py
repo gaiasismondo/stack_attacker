@@ -8,6 +8,10 @@ from util import time_limit
 import json
 from util import Logger
 
+
+#Classe astratta
+#Un attacco ha proprietà: nome, istruzioni, tempo di attesa e tipo
+#Le sottoclassi dovranno implementare i metodi execute (esecuzione dell'attacco) e check (verifica dell'esito dell'attacco)
 class Attack(ABC):
     def __init__(self,name,instructions,wait_time,attack_type=None):
         self.attack=name
@@ -20,8 +24,9 @@ class Attack(ABC):
 
     def check(self):
         raise NotImplementedError("Use specific attacks!")
+    
 
-
+#Estende la classe Attack e fornisce l'implementazione specifica per eseguire un attacco usando il framework Metasploit
 class Metasploit_Attack(Attack):
     def __init__(self, name, instructions, wait_time=10,client=None):
         
@@ -29,6 +34,10 @@ class Metasploit_Attack(Attack):
         self.client=client
         self.output=""
 
+    #instr_list è un array con le istruzioni recuperate da attacK_db.json (separate per \n)
+    #se l'istruzione contiene setg salva nome parametro e valore nel dizionario settings
+    #se l'istruzione contiene use salva chiave "exploit" e valore nel dizionario settings 
+    #viene restiruito settings
     def getSettings(self,instr_list):
         
         settings={}
@@ -44,6 +53,10 @@ class Metasploit_Attack(Attack):
                     settings["exploit"]=i.partition("use")[2].strip().partition(" ")[0][8:]
         return settings
 
+    #instr_list è un array con le istruzioni recuperate da attacK_db.json (separate per \n)
+    #se l'istruzione contiene setg salva nome parametro e valore nel dizionario settings
+    #se l'istruzione contiene use salva chiave "auxiliary" e valore nel dizionario settings 
+    #viene restiruito settings
     def getSettingScan(self,instr_list):
         
         settings={}
@@ -57,16 +70,20 @@ class Metasploit_Attack(Attack):
                 if(exploit_req): 
                     found=True
                     settings["auxiliary"]=i.partition("use")[2].strip().partition(" ")[0][10:]
-                    
         return settings
 
+    #Viene recuperato l'elenco delle sessioni attive prima di eseguire le istruzioni(old_sess)
+    #Viene richiamato il metodo getSettings e viene recuperato il dizionario con le impostazioni(settings)
+    #Se si tratta di un resource script si interrompe l'esecuzione
+    #Vengono settati payload(con eventuale porta) ed exploit se presenti in settings
+    #Vengono settate eventuali impostazioni dell'exploit presenti in settings
+    #Viene eseguito l'exploit con il payload specificato e il risultato viene salvato in output
     def execute(self):
         """
         Executes each instruction of an IB-attack
         """
         old_sess=self.client.get_active_sessions()
         instr_str=self.instruction
-        output=[]
         instr_list=instr_str.split("\n")
         settings=self.getSettings(instr_list)
         
@@ -85,7 +102,6 @@ class Metasploit_Attack(Attack):
             if(key=="payload" or key=="exploit" or key=="LPORT"):
                 continue
             exploit[key]=settings[key]
-            
          
         self.output=self.client.client.consoles.console(self.client.cid).run_module_with_output(exploit, payload=payload)
         
@@ -194,6 +210,7 @@ class ResourceAttack(Metasploit_Attack):
         else:
             Logger.log(self, f"unable to create session", level=Logger.INFO)
             return session
+        
 class VictimAttack(Attack):
     """
     Abstract class defining Out-Of-Band attacks from a compromised client.
@@ -251,7 +268,7 @@ class SshAttack(VictimAttack):
         # Run a shell command within a meterpreter session
         
         for c in self.instructions:
-            self.client.client.sessions.session.write(x)
+            self.client.client.sessions.session.write(x) #c?
             sleep(SshAttack.SLEEP_TIME)
             y = self.client.client.sessions.session.read()
             self.out.append(y)
@@ -276,7 +293,14 @@ class SshAttack(VictimAttack):
 
 
 
+#Carica i dati da attack_db.json
+#Crea un dizionario degli attacchi e per ogni attacco crea un istanza della classe Attack 
+#Crea un dizionario delle scansioni e per ogni scansione crea un istanza della classe Attack 
+#Crea un dizionario delle scansioni stealth e per ogni scansione stealth crea un istanza della classe Attack 
+#Crea un dizionario delgli attacchi stealth e per ogni attacco stealth crea un istanza della classe Attack
+#Crea un dizionario degli infect e per ogni infect crea un istanza della classe Attack 
 class Attack_DB:
+
     with open("attack_db.json") as db:
         db_string=json.load(db)
     attack=db_string["storage"]["attacks"]
@@ -284,6 +308,7 @@ class Attack_DB:
     stealth_scans=db_string["storage"]["stealth_scans"]
     stealth_attack=db_string["storage"]["stealth_attacks"]
     infect_attack=db_string["storage"]["infect"]
+
     attack_dict = {}
     for i_k in attack.keys():
         attack_dict[i_k] = Attack(i_k,attack[i_k]["instructions"],int(attack[i_k]["wait_time"]),attack[i_k]["attack_type"])

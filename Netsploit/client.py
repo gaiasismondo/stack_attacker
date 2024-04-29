@@ -32,6 +32,7 @@ class MetasploitWrapper:
 
         # flush the banner
         self.client.consoles.console(self.cid).read()
+        
 
     def get_active_sessions(self, sleep=True):
         """
