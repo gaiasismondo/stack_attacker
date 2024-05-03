@@ -107,20 +107,20 @@ class Metasploit_Attack(Attack):
         
         return self.check(old_sess)
        
-
+    #Verifica se siano state create nuove sessioni (attacco andato a buon fine)
+    #Se si vengono inserite nel dizionario session le informazioni sulla nuova sessione e viene restituito
+    #Altrimenti viene restituito il dizionario vuoto
     def check(self,old_sess):
-        
+    
         session={}
         new_sess=self.client.get_active_sessions()
         diff=set(new_sess)-set(old_sess)
-        
         
         if diff:
             session["id_sess"]=diff.pop()
             Logger.log(self, f"session created - {session['id_sess']}", level=Logger.INFO)
             obtained_session = new_sess[session["id_sess"]]
             session["obtained_session"]=obtained_session
-            
             session["session_host"]=obtained_session["session_host"]
             return session
 
@@ -128,6 +128,10 @@ class Metasploit_Attack(Attack):
             Logger.log(self, f"unable to create session", level=Logger.INFO)
             return session
     
+    #Viene richiamato il metodo getSettings e viene recuperato il dizionario con le impostazioni(settings)
+    #Vengono settati payload(con eventuale porta) ed exploit auxiliary se presenti in settings
+    #Vengono settate eventuali impostazioni dell'exploit auxiliary presenti in settings
+    #Viene eseguita la scansione ma il risultato viene ignorato
     def scan(self):
         instr_str=self.instruction
         instr_list=instr_str.split("\n")
@@ -153,19 +157,23 @@ class Metasploit_Attack(Attack):
         return
 
 
+#Estende la classe Metasploit_Attack e fornisce l'implementazione specifica per eseguire un moduli che utilizzano un resource script 
 class ResourceAttack(Metasploit_Attack):
     LONG_SLEEP_TIME=15
     SHORT_SLEEP_TIME=5
     def __init__(self, name, instructions, time_wait=10,client=None):
-        
         super().__init__(name,instructions, wait_time=time_wait)
         self.client=client
         self.output=[]
 
+    #Viene recuperato l'elenco delle sessioni attive prima di eseguire le istruzioni(old_sess)
+    #Vengono recuperate le istruzioni da eseguire e vengono scritte sulla console Metasploit
+    #L'output di ogni istruzione viene salvato nell'array out
+    #Pone un limite di 300 secondi allo svolgimento dell'attacco
+    #Verifica se siano state create nuove sessioni (attacco andato a buon fine)
     def execute(self):
         old_sess=self.client.get_active_sessions()
         instr_str=self.instruction
-        output=[]
         instr_list=instr_str.split("\n")
         
         _ = self.client.client.consoles.console(self.client.cid).read()
@@ -191,6 +199,9 @@ class ResourceAttack(Metasploit_Attack):
         
         return self.check(old_sess)
     
+    #Verifica se siano state create nuove sessioni (attacco andato a buon fine)
+    #Se si vengono inserite nel dizionario session le informazioni sulla nuova sessione e viene restituito
+    #Altrimenti viene restituito il dizionario vuoto
     def check(self,old_sess):
         
         session={}
@@ -211,6 +222,8 @@ class ResourceAttack(Metasploit_Attack):
             Logger.log(self, f"unable to create session", level=Logger.INFO)
             return session
         
+
+#Estende la classe Attack e fornisce l'implementazione specifica per eseguire un attacco da un client compromesso  
 class VictimAttack(Attack):
     """
     Abstract class defining Out-Of-Band attacks from a compromised client.
@@ -227,6 +240,8 @@ class VictimAttack(Attack):
     def execute(self):
         pass
 
+
+#Estende la classe Attack e fornisce l'implementazione per attacchi SSH Out Of Band
 class SshAttack(VictimAttack):
     """
     SSH Login OOB attack implementation through console interaction.
@@ -249,6 +264,7 @@ class SshAttack(VictimAttack):
         if type(self.session) == str:
             raise TypeError
 
+    #Verifica e restituisce se l'attacco ha avuto successo
     def checkSSH(self):
         """
         Checks if the attack succesfully logged in.
@@ -260,6 +276,7 @@ class SshAttack(VictimAttack):
         else:
             return False
 
+    #Itera attraverso le istruzioni e le esegue sulla sessione meterpreter
     def execute(self):
         """
         Executes each instruction of an attack on a console.
@@ -268,14 +285,17 @@ class SshAttack(VictimAttack):
         # Run a shell command within a meterpreter session
         
         for c in self.instructions:
-            self.client.client.sessions.session.write(x) #c?
+            self.client.client.sessions.session.write(c) 
             sleep(SshAttack.SLEEP_TIME)
             y = self.client.client.sessions.session.read()
             self.out.append(y)
 
         return self.check
     
-    def check(self):
+    #Verifica se siano state create nuove sessioni (attacco andato a buon fine)
+    #Se si vengono inserite nel dizionario session le informazioni sulla nuova sessione e viene restituito
+    #Altrimenti viene restituito il dizionario vuoto
+    def check(self,old_sess):
         session={}
         new_sess=self.client.get_active_sessions()
         diff=set(new_sess)-set(old_sess)       

@@ -146,6 +146,9 @@ class MetaClient:
         #print(cmd)
         self.client.add_portfwd(router,cmd)
         return
+    
+
+#NON UTILIZZATO
 class BackdoorCommander:
     """
     Class that manages backdoor operations.
