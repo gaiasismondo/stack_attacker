@@ -18,7 +18,7 @@ class MetasploitWrapper:
     READ_CONSOLE_BUSY_ATTEMPTS = 5
 
     #Prende in input la password (attualmente è "password"), porta, ip e ssl e tenta di stabilire una connessione con il server metasploit
-    #Se il tentativo di connessione ha successo crea una nuova console e memorizza il suo ID (cid) per le future interazioni.
+    #Se il tentativo di connessione ha successo crea una nuova console e memorizza il suo ID (cid) per le future interazioni
     def __init__(self, password, port=55553, server="0.0.0.0", ssl=True):
         try:
             self.client = MsfRpcClient(password, port=port, server=server, ssl=ssl)
@@ -47,7 +47,6 @@ class MetasploitWrapper:
         if self.client:
             return copy.deepcopy(self.client.sessions.list)
     
-
     #print route for debugging 
     def route_print(self):
         self.client.consoles.console(self.cid).write(C.ROUTE_PRINT)
@@ -67,8 +66,8 @@ class MetasploitWrapper:
         routes=self.client.consoles.console(self.cid).read()
         #print(routes)
 
-    #crea un port forwarding sulla shell della sessione passata
-    def add_portfwd(self,sess, cmd):
+    #crea un port forwarding sulla shell della sessione passata come parametro
+    def add_portfwd(self, sess, cmd):
         self.route_flush()
         self.client.sessions.session(sess).write(cmd)
         portfwd=self.client.sessions.session(sess).read()

