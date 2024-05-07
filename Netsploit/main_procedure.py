@@ -29,6 +29,8 @@ from time import sleep
         #La sessione ottenuta diventa la sessione di attacco corrente
         #La macchina target viene inserita tra le macchine compromesse 
         #Se l'attacco che ha avuto successo era un docker_escape da tomcat viene fatto port forwarding per ottenere accesso alla macchina in un altra sottorete dalla macchina attaccante
+    #Se non si è stati in grado di compromettere un target la procedura di attacco fallisce
+        
 
 def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
