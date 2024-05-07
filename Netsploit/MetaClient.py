@@ -149,7 +149,7 @@ class MetaClient:
         
 
     #Prepara il comando e richiama il metodo add_portfwd della classe client 
-    def prepare(self, router, atk_port, atk_ip, exposed_port):
+    def prepare(self, router, atk_port, exposed_port, atk_ip):
         cmd=C.ADD_PORTFWD.format(atk_ip,atk_port,exposed_port)
         #print(cmd)
         self.client.add_portfwd(router,cmd)

