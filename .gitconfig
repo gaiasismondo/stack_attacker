@@ -1,3 +1,5 @@
 [user]
 	email = 155229961+gaiasismondo@users.noreply.github.com
 	name = gaiasismondo
+[credential]
+	helper = "!f() { sleep 1; echo \"username=git token=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\"; }; f"

@@ -210,3 +210,146 @@ git commit -m "Primo commit"
 git remote add origin https://github.com/gaiasismondo/stack.git
 git remote set-url origin https://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@github.com/gaiasismondo/stack.git
 git push -u origin master
+git remote set-url origin https://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@github.com/gaiasismondo/stack.git
+git remote add origin https://github.com/gaiasismondo/stack.git
+git remote set-url origin https://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@github.com/gaiasismondo/stack.git
+git push -u origin master
+git add .
+git commit -m "Primo commit"
+git push -u origin master
+rm -rf .git
+git init
+git add .
+git remote add origin https://github.com/gaiasismondo/stack_attacker.git
+git remote set-url origin https://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@github.com/gaiasismondo/stack_attacker.git
+git commit -m "Primo commit"
+git push -u origin master
+git config --global user.email "155229961+gaiasismondo@users.noreply.github.com"
+git push -u origin master
+cd stack
+cd lab
+ls
+cd 'sslproxy 4.2'
+ls
+cd certificati
+ls
+mv 'CA attaccante' CA_attaccante
+mv 'CA attaccante ' CA_attaccante
+git add .
+git commit -m "Modificato nome CA_attaccante"
+git push
+cd ..
+cd stack
+ls -la
+rm -rf .git
+cd ..
+cd Netsploit
+ls -la
+rm -rf .git
+cd ..
+ls
+git init
+git add .
+git remote add origin https://github.com/gaiasismondo/stack_attacker.git
+git remote set-url origin https://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@github.com/gaiasismondo/stack_attacker.git
+git commit -m "Primo commit"
+git push
+git push -u origin master
+cd ..
+cd ubuntu
+git push -u origin master
+git reset --soft HEAD~1 
+git push -u origin master
+rm -rf .git
+git init
+git add .
+ls -la
+git pull origin master
+cd Netsploit
+cat setupAttacks.py
+ls -la
+git pull origin master
+cd Netsploit
+ls
+cat util.py
+exit
+ls -la
+git pull
+cd Netsploit
+cat attack.py
+exit() exit
+exit
+git pull
+exi
+exit
+git pull
+route
+route -n
+route -s
+netsat -rn
+netstat -rn
+ip route
+git pull
+exit
+git pull
+sudo python3 main_procedure.py
+exit
+sudo -1
+sudo -i
+sudo passwd ubuntu
+sudo -i
+exit
+rse-docker23
+sudo -i
+exit
+cd ../egidi
+
+tar cf stack.tar.gz stack
+ls
+sudo tar cf stack.tar.gz stack
+ls
+cp stack.tar.gz ../ubuntu
+cd ../ubuntu
+ls
+rm stack
+rm -r stack
+tar -xf stack.tar.gz
+ls
+rm stack.tar.gz
+ls
+exit
+ls
+cd stack
+ls
+compose_config.json
+cat compose_config.json
+ls
+cat compose_config_soloAttacchi.json
+cd ..
+ls
+exit
+cd stack
+ls
+cd stack
+ls
+./3-swarmCtl.sh v
+./3-swarmCtl.sh stop
+ls
+cd stack
+ls
+./3-swarmCtl.sh 
+cd ..
+ls
+cd Netsploit/
+ls
+./startAttacks.py
+./startAttack.sh
+clear
+exit
+ls
+cd stack
+ls
+./3-swarmCtl.sh 
+cd ../Netsploit/
+ls
+./startAttack.sh 

@@ -1,7 +1,0 @@
-#!/bin/bash
-#genera chiave rsa da 2048 bit
-openssl genrsa -out root.key 2048
-#genera certificato root CA con openssl 
-openssl req -new -x509 -days 1024 -key root.key -out root.cer
-
-
