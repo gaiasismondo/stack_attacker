@@ -353,3 +353,77 @@ ls
 cd ../Netsploit/
 ls
 ./startAttack.sh 
+cd
+ls
+git push origin master
+git config --global credential.helper '!f() { sleep 1; echo "username=git token=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"; }; f'
+git commit -m "Nuovi file di log"
+git add .
+git commit -m "Nuovi file di log"
+git push
+git remote set url origin https://gaiasismondo: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@github.com/gaiasismondo/stack_attacker.git
+git remote set-url origin https://gaiasismondo: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@github.com/gaiasismondo/stack_attacker.git
+git push
+git remote set-url origin https://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@github.com/gaiasismondo/stack_attacker.git
+git push
+git remote -v
+git push
+git remote remove origin
+git remote -v
+git remote add origin https://github.com/gaiasismondo/stack_attacker.git
+git remote set-url origin https://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@github.com/gaiasismondo/stack_attacker.git
+git push
+git push origin master
+git config --global --unset credential.helper
+git push origin master
+
+clear
+git remote -v
+git push
+git push origin master
+git remote remove origin
+git remote -v
+git remote add origin https://github.com/gaiasismondo/stack_attacker.git
+git push origin master
+curl -v -H "Authorization: token  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" https://api.github.com/user/issues
+curl -v -H "Authorization: token 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" https://api.github.com/user/issues
+curl -XGET -H 'authorization: token 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' '<https://api.github.com/repos/><owner>/<repo>'
+curl -XGET -H 'authorization: token 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' '<https://api.github.com/repos/>gaiasismondo/stack_attacker'
+clear
+git remote -v
+git remote show origin
+git remote get-url origin
+git push
+git push origin master
+git push
+git push origin master
+git remote set-url origin https://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@https://github.com/gaiasismondo/stack_attacker.git
+git push origin master
+clear
+git remote -v
+git remote set-url origin https://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@github.com/gaiasismondo/stack_attacker.git
+git push
+git push origin mastwe
+git push origin master
+git pull
+git pull origin master
+git pull
+ls
+ls -la
+rm -f 
+ls
+rm -f
+.
+git merge --abort
+clear
+git pull
+git pull origin
+git pull origin master
+git merge --abort
+git push origin master
+git pull origin master
+git pull
+git merge --abort
+git pull
+clear
+git pull origin master
