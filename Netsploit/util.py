@@ -12,7 +12,7 @@ import os
 import signal
 
 
-#TIMEOUT MANAGEMENT!
+#TIMEOUT MANAGEMENT!!
 #time_limit() viene associata ad un blocco with e si assicura che il blocco di codice all'interno venga eseguito entro seconds. 
 #se il tempo di esecuzione supera il limite, viene sollevata un'eccezione TimeoutException e si interrompe l'esecuzione del codice all'interno del blocco.
 class TimeoutException(Exception):
