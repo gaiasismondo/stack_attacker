@@ -150,7 +150,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 #trvata sia quella della macchina bersaglio attuale, e non di una vecchia
                 if (session[0:1][0] == target_ip):
                 #se abbiamo una connessione con la backdoor
-                #print(session)
+                    print(session)
                 #if("backdoor_sess" in session[1:2][0]):
                     #sessione della backdoor, potrebbe servire in futuro nel caso in cui si vogliano effettuare operazioni tramite la backdoor
                     #network_passing_session = session[1:2][0]["backdoor_sess"]
