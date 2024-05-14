@@ -427,3 +427,41 @@ git merge --abort
 git pull
 clear
 git pull origin master
+ls
+cd stack
+ls
+./3-swarmCtl.sh 
+ls
+cd ..
+ls
+cd Netsploit/
+ls
+./startAttack.sh 
+cd ..
+ls
+git add .
+git commit -m "log"
+git push origin master
+git pull
+cd Netsploit/
+LS
+ls
+cat util.py
+git pull origin master
+cat util.py
+nano util.py
+git add .
+git commit -m "prova"
+git push
+git push origin master
+git pull origin master
+cd Netsploit/
+cat util.py 
+cd ..
+ls
+cd stack/
+./3-swarmCtl.sh 
+cd ..
+cd Netsploit/
+ls
+./startAttack.sh 
