@@ -20,7 +20,7 @@ class MetaClient:
 
     #Viene chiamato il metodo execute sull'attacco attack preso in input
     #se ha successo viene restituito l'ip della macchina bersaglio compromessa un dizionazio con le info sulla nuova sessione creata 
-    def attempt_attack(self,attack,backdoor_port=0):
+    def attempt_attack(self, attack):
         sess = attack.execute()
         if not sess:
             return None

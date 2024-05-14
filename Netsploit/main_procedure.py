@@ -141,7 +141,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
                 continue
             
-            session=mc.attempt_attack(attack_obj,port)
+            session=mc.attempt_attack(attack_obj)
 
             #print(session)
             if(session):
