@@ -157,7 +157,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     #id della sessione del client degli attacchi, servirà per i successivi attacchi OOB
                     #print(session[1:2][0]["id_sess"])
                     atk_sess=session[1:2][0]["id_sess"]
-                    #print(atk_sess)
+                    print(atk_sess)
                     #TODO: Non essendo stato testato questo tipo di attacco tramite una sessione controllare che la funzione di attacco vada a buon fine
                     #togliendo il commento nella riga sottostante
                     #OOBSession = atk_sess
