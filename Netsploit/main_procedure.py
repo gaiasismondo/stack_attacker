@@ -53,7 +53,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     compromised_machines={attacker_ip}
     uncompromised_machines=set()
     #bc=BackdoorCommander("password",C.BACKDOOR_CLIENT_PORT,attacker_ip)
-    mc=MetaClient("password", C.ATTACKER_CLIENT_PORT, attacker_ip)
+    mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
     atk_sess=None
 
     while(machines):

@@ -74,7 +74,7 @@ class Constants:
     TARGETS_DOCKERS=config["docker"]
     ATTACKER_VM = config["Attacker_VM"]
     DEFAULT_LPORT=config["DEFAULT_LPORT"]
-    ATTACKER_CLIENT_PORT=config["ATTACKER_CLIENT_PORT"]
+    ATTACKER_SERVER_RPC_PORT=config["ATTACKER_SERVER_RPC_PORT"]
     BACKDOOR_CLIENT_PORT=config["BACKDOOR_CLIENT_PORT"]
     TOMCAT_VM=config["TOMCAT_VM"]
     SMTP_VM=config["SMTP_VM"]

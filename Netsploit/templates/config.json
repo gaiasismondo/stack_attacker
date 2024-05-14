@@ -31,7 +31,7 @@
         ]
     },
     "DEFAULT_LPORT": "55555",
-    "ATTACKER_CLIENT_PORT": 1234,
+    "ATTACKER_SERVER_RPC_PORT": 1234,
     "BACKDOOR_CLIENT_PORT": 1235,
     "TOMCAT_VM":"IPtomcat_vuln", 
     "SMTP_VM":"IPopensmtpd-container", 
