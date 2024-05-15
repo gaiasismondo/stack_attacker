@@ -36,22 +36,27 @@ class MetasploitWrapper:
         self.client.consoles.console(self.cid).read()
         
 
+
+
     #Recupera un elenco di tutte le sessioni attive associate al client
     #Se sleep = True aspetta prima di effettuare l'operazione
     def get_active_sessions(self, sleep=True):
         """
         Returns a list of open sessions associated with the client
-        """
+        """ 
         if sleep:
             time.sleep(MetasploitWrapper.GET_SESSIONS_DELAY)
         if self.client:
             return copy.deepcopy(self.client.sessions.list)
+        
+
     
     #print route for debugging 
     def route_print(self):
         self.client.consoles.console(self.cid).write(C.ROUTE_PRINT)
         routes=self.client.consoles.console(self.cid).read()
         #print(routes)
+        
     
     #aggiunge una nuova route al target
     def route_add(self,sess,target_ip):
