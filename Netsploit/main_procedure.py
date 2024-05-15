@@ -82,7 +82,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         scan_instr=Attack_DB.scans_dict[s].instruction.format(nmap_target,attacker_ip)
         scan_type=Attack_DB.scans_dict[s].attack_type
         scan_wait=Attack_DB.scans_dict[s].wait_time
-        scan_obj=Metasploit_Attack(scan_name,scan_instr,scan_wait,mc.client)
+        scan_obj=Metasploit_Attack(scan_name,scan_instr,scan_wait,mc)
         print(f"{C.COL_YELLOW}[*] Scanning for vulnerabilities {C.COL_RESET}")
         
         if(target_ip in other_subnet and other_subnet[target_ip]=="yes"):
@@ -130,11 +130,11 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 print(f"{C.COL_RED}[-] Exploit failed {C.COL_RESET}")
                 continue
             if(attack_type=="ResourceAttack"):
-                attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait, mc.client)
+                attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait, mc)
             elif(attack_type=="SshAttack"):
-                attack_obj=SshAttack(attack_name,attack_instr,attacker_ip,OOBSession,attack_wait, mc.client)
+                attack_obj=SshAttack(attack_name,attack_instr,attacker_ip,OOBSession,attack_wait, mc)
             else:
-                attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, mc.client)
+                attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, mc)
             
 
             if(type(attack_obj)==SshAttack and OOBSession==None):
