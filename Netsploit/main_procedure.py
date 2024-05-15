@@ -1,12 +1,11 @@
 import json
 import random
 import ipaddress
-from MetaClient import MetaClient,BackdoorCommander
+from MetaClient import MetaClient
 from util import Logger,Constants as C
 from attack import Attack,Metasploit_Attack,ResourceAttack,SshAttack,Attack_DB
 from time import sleep
 
-#
 #Viene recuperato l'elenco degli ip dei target da config_file e viene salvato in machine, se i target sono in un'altra subnet vengono salvati anche in other_subnet
 #Inizialmente l'unica macchina di cui si ha il controllo è quella su cui gira l'attaccante
 #Il server Metasploit gira sulla stessa macchina dell'attaccante, creando un istanza di Metaclient ci si connette a questo server
@@ -52,8 +51,9 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     OOBSession=None
     compromised_machines={attacker_ip}
     uncompromised_machines=set()
-    #bc=BackdoorCommander("password",C.BACKDOOR_CLIENT_PORT,attacker_ip)
+
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
+
     atk_sess=None
 
     while(machines):
@@ -157,7 +157,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     #id della sessione del client degli attacchi, servirà per i successivi attacchi OOB
                     #print(session[1:2][0]["id_sess"])
                     atk_sess=session[1:2][0]["id_sess"]
-                    print(atk_sess)
+                    #print(atk_sess)
                     #TODO: Non essendo stato testato questo tipo di attacco tramite una sessione controllare che la funzione di attacco vada a buon fine
                     #togliendo il commento nella riga sottostante
                     #OOBSession = atk_sess

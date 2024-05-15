@@ -8,13 +8,19 @@ from attack import Attack_DB
 import subprocess
 
 class MetaClient:
+
+    # Delay in seconds before checking for open sessions
+    GET_SESSIONS_DELAY = 1
+    READ_CONSOLE_DELAY = 1
+    READ_CONSOLE_BUSY_ATTEMPTS = 5
+
     
     #Viene creata un istanza di client Metasploit che si connette al server con password porta e ip specificati
-    def __init__(self, c_password, c_port, c_ip):
+    def __init__(self, server_password, server_port, server_ip):
         self.output = ""
-        self.client = MetasploitWrapper(c_password, port=c_port, server=c_ip)
+        self.client = MetasploitWrapper(server_password, port=server_port, server=server_ip)
         if self.client:
-            Logger.log(self, f"client connected - {c_ip=}, {c_port=}", level=Logger.INFO)
+            Logger.log(self, f"client connected - {server_ip=}, {server_port=}", level=Logger.INFO)
         #self.bc_client=bc
     
 
@@ -26,16 +32,6 @@ class MetaClient:
             return None
         compromised=sess["session_host"]
         success=None
-        """ if backdoor_port != 0:
-            Logger.log(self,f"establishing connection with backdoor - {compromised=}",level=Logger.INFO)
-            for i in range(0, 5):
-                success =self.bc_client.connect_to_backdoor(C.ATTACKER_VM, backdoor_port)
-                if success:
-                    Logger.log(self, f"connection with backdoor established- {compromised=}", level=Logger.INFO)
-                    sess["backdoor_sess"]=success
-                    break
-                else:
-                    Logger.log(self, f"can't establish connection with backdoor attempt {i} - {compromised=}", level=Logger.ERROR) """
         return compromised, sess
     
     #Viene chiamato il metodo scan sull'attacco scan_obj preso in input
@@ -155,6 +151,21 @@ class MetaClient:
         self.client.add_portfwd(router,cmd)
         return
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
