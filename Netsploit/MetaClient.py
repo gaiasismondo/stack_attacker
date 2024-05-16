@@ -30,7 +30,6 @@ class MetaClient:
             exit(1)
 
         Logger.log(self, f"RPC client connected - {server_port=}, {server_ip=}, {ssl=}", level=Logger.INFO)
-
         self.cid = self.client.consoles.console().cid
         Logger.log(self, f"Console created - {self.cid=}", level=Logger.INFO)
 
@@ -38,7 +37,6 @@ class MetaClient:
         self.client.consoles.console(self.cid).read()
         
     
-
     #Viene chiamato il metodo execute sull'attacco attack preso in input
     #se ha successo viene restituito l'ip della macchina bersaglio compromessa un dizionazio con le info sulla nuova sessione creata 
     def attempt_attack(self, attack):
@@ -49,10 +47,12 @@ class MetaClient:
         success=None
         return compromised, sess
     
+    
     #Viene chiamato il metodo scan sull'attacco scan_obj preso in input
     def attempt_scan(self,scan_obj):
         scan_obj.scan()
         return
+    
     
     #Vengono eseguiti massimo 5 tentativi di docker escape e se uno dei tentativi ha successo viene restituito un dizionario con la sessione creata
     def docker_escape(self, atk_sess):

