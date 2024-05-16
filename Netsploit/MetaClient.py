@@ -102,7 +102,7 @@ class MetaClient:
             Logger.log(self, f"Netcat session created - {diff=}", level=Logger.INFO)
             session={}
             session["id_sess"]=diff.pop()
-            obtained_session = self.new_sess[session["id_sess"]]
+            obtained_session = self.new_sessions[session["id_sess"]]
             session["obtained_session"]=obtained_session
             session["session_host"]=obtained_session["session_host"]
             return session
