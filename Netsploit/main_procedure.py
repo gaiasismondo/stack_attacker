@@ -96,6 +96,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 mc.route_add(met_sess, target_ip)
                 mc.route_print()
                 router=met_sess
+                print ("router =" + router )
             else:
                 print(f"{C.COL_RED}[*] Meterpreter session not received, can't add routes, skipping...{C.COL_RESET}")
                 continue
