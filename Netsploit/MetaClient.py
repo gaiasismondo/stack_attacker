@@ -100,7 +100,12 @@ class MetaClient:
 
         if diff:
             Logger.log(self, f"Netcat session created - {diff=}", level=Logger.INFO)
-            return diff.pop()
+            session={}
+            session["id_sess"]=diff.pop()
+            obtained_session = self.new_sess[session["id_sess"]]
+            session["obtained_session"]=obtained_session
+            session["session_host"]=obtained_session["session_host"]
+            return session
         else:
             Logger.log(self, f"unable to create netcat session", level=Logger.ERROR)
             return None
