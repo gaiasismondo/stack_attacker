@@ -157,7 +157,12 @@ class MetaClient:
         if diff:
             Logger.log(self, f"Meterpreter shell session created - {diff=}", level=Logger.INFO)
             print(f"{C.COL_YELLOW}[*] Meterpreter shell created with success{C.COL_RESET}")
-            return diff.pop()
+            session={}
+            session["id_sess"]=diff.pop()
+            obtained_session = self.new_sessions[session["id_sess"]]
+            session["obtained_session"]=obtained_session
+            session["session_host"]=obtained_session["session_host"]
+            return session
         else:
             Logger.log(self, f"unable to create meterpreter shell session", level=Logger.ERROR)
             print(f"{C.COL_RED}[-] Meterpreter shell was not created with success, can't add the routes required...{C.COL_RESET}")

