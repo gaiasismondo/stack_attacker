@@ -511,3 +511,70 @@ cd ../Netsploit/
 git add .
 git commit -m "Nuovi file di log"
 git push origin master
+git pull origin master
+cd stack
+./3-swarmCtl.sh 
+cd ..
+cd Netsploit/
+./startAttack.sh 
+cd stack
+./3-swarmCtl.sh 
+cd ..
+git pull
+git pull origin master
+cd Netsploit/
+ls
+./startAttack.sh 
+cd ..
+git add .
+git commit -m "Nuovi file di log"
+git push origin master
+git pull origin master
+cd stack/
+./3-swarmCtl.sh 
+cd ../Netsploit/
+./startAttack.sh 
+git pull origin master
+cd ../stack
+./3-swarmCtl.sh 
+../Netsploit/
+
+../Netsploit
+cd ../Netsploit/
+./startAttack.sh 
+cd ../stack
+./3-swarmCtl.sh 
+cd ../Netsploit/
+./startAttack.sh 
+cd ..
+git pull
+git pull origin master
+cd stack/
+./3-swarmCtl.sh 
+cd ../Netsploit/
+./startAttack.sh 
+clear
+cd ../stack/
+./3-swarmCtl.sh 
+cd ../Netsploit/
+./startAttack.sh 
+cd ..
+git pull
+git pull origin master
+cd stack
+./3-swarmCtl.sh 
+cd ../Netsploit/
+ls
+./startAttack.sh 
+cd ..
+git pull
+git pull origin master
+cd stack/
+./3-swarmCtl.sh 
+cd ../Netsploit/
+./startAttack.sh 
+git pull origin master
+cd ../stack/
+./3-swarmCtl.sh 
+cd ../Netsploit/
+./startAttack.sh 
