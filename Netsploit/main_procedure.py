@@ -145,7 +145,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             session=mc.attempt_attack(attack_obj)
             print(attack_obj.attack)
             print(attack_obj.attack_type)
-            print(attack_obj.instructions)
+            print(attack_obj.instruction)
             print(attack_obj.wait_time)
             print(attack_obj.client)
             print(attack_obj.ip)
