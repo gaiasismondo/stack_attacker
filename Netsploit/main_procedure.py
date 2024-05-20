@@ -128,7 +128,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
             if(attack_name=="smtp_server" and target_ip!=C.SMTP_VM):
-                print(f"{C.COL_RED}[-] AAAA Exploit failed {C.COL_RESET}")
+                print(f"{C.COL_RED}[-] Exploit failed {C.COL_RESET}")
                 continue
             if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait, mc)
@@ -143,6 +143,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 continue
             
             session=mc.attempt_attack(attack_obj)
+            print(attack_obj)
 
             #print(session)
             if(session):
