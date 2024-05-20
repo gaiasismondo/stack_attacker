@@ -143,13 +143,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 continue
             
             session=mc.attempt_attack(attack_obj)
-            print(mc.client.uri)
-            print(mc.client.port)
-            print(mc.client.host)
-            print(mc.client.ssl)
-            print(mc.client.token)
-            print(mc.client.headers)
-            print("\n\n\n\n")
             print(attack_obj.output)
 
             #print(session)
