@@ -8,7 +8,7 @@ from util import time_limit
 import json
 from util import Logger
 
-
+#
 #Classe astratta
 #Un attacco ha proprietà: nome, istruzioni, tempo di attesa e tipo
 #Le sottoclassi dovranno implementare i metodi execute (esecuzione dell'attacco) e check (verifica dell'esito dell'attacco)
