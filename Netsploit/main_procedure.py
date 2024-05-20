@@ -103,7 +103,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 continue
 
     
-        mc.attempt_scan(scan_obj)
+        #mc.attempt_scan(scan_obj)
 
         for ra in randomized_attack:
             attack_name=Attack_DB.attack_dict[ra].attack
