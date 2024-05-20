@@ -143,7 +143,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 continue
             
             session=mc.attempt_attack(attack_obj)
-            print(attack_obj)
+            print(attack_obj.attack)
 
             #print(session)
             if(session):
@@ -192,7 +192,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 # else:
                 #     print(f"{C.COL_YELLOW}[*] false positive occured, ignoring... {C.COL_RESET}")
             else:
-                uncompromised_machines.add(target_ip)
+                #uncompromised_machines.add(target_ip)
                 print(f"{C.COL_RED}[-] xx Exploit failed {C.COL_RESET}")
 
             if stealth_sleep:
