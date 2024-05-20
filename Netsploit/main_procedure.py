@@ -149,7 +149,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             print(attack_obj.wait_time)
             print(attack_obj.client)
             print(attack_obj.output)
-            print(attack_obj.out)
             print(attack_obj.session)
 
             #print(session)
