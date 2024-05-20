@@ -102,9 +102,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         scan_obj=Metasploit_Attack(scan_name,scan_instr,scan_wait,mc)
         print(f"{C.COL_YELLOW}[*] Scanning for vulnerabilities {C.COL_RESET}")
         
-      
-
-    
         mc.attempt_scan(scan_obj)
 
         for ra in randomized_attack:
@@ -131,7 +128,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
             if(attack_name=="smtp_server" and target_ip!=C.SMTP_VM):
-                print(f"{C.COL_RED}[-] Exploit failed {C.COL_RESET}")
+                print(f"{C.COL_RED}[-] AAAA Exploit failed {C.COL_RESET}")
                 continue
             if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait, mc)
