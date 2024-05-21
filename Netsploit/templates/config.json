@@ -2,13 +2,12 @@
     "targets":[
        
         {
-            "target":"IPtomcat_vuln",  
-            "other_subnet":"yes"
+           "target": "IPopensmtpd-container"
         },
         {
-           "target": "IPopensmtpd-container"
+           "target":"IPtomcat_vuln",  
+           "other_subnet":"yes"
         }
-        
      ],
     "Attacker_VM": "IPexploits-repo",  
     "docker":{

@@ -43,8 +43,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     #save the ip
     for ip in target_list["targets"]:
         machines.append(ip["target"])
-        if "other_subnet" in ip:
-            other_subnet.update({ip["target"]:ip["other_subnet"]})
+        #if "other_subnet" in ip:
+            #other_subnet.update({ip["target"]:ip["other_subnet"]})
     #print(other_subnet)
 
     router=None
