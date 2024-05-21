@@ -58,8 +58,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
     while(machines):
         #extract the first victim
-        t=machines.pop(0)
-        target_ip=t
+        target_ip=machines.pop(0)
+        print(target_ip)
         print(f"{C.COL_GREEN} [+] target for this step: {target_ip} {C.COL_RESET}")
 
         attack=list(Attack_DB.attack_dict)
