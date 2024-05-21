@@ -18,8 +18,7 @@ sudo docker exec -i $METASPLOIT_CONT /bin/bash -c 'msfdb init'
 # Start rpc servers for exploiting and backdooring 
 # Vengono avviate due istanze del servizio Metasploit remote procedure call in ascolto sulle porte 1234 e 1235 
 # 1234 viene usata per exploiting e 1235 per backdooring 
-sudo docker exec -i $METASPLOIT_CONT /bin/bash -c 'msfrpcd -p 1234 -P password ;   '
-#sudo docker exec -i $METASPLOIT_CONT /bin/bash -c 'msfrpcd -p 1234 -P password ;  msfrpcd -p 1235 -P password '
+sudo docker exec -i $METASPLOIT_CONT /bin/bash -c 'msfrpcd -p 1234 -P password ;  msfrpcd -p 1235 -P password '
 #sudo docker exec -i $METASPLOIT_CONT /bin/bash -c 'msfrpcd -p 1235 -P password &'
 
 echo 'Metasploit container initialized'
