@@ -1,12 +1,14 @@
 {
     "targets":[
+       
         {
-            "target": "192.168.40.22"
+           "target": "192.168.40.22"
         },
         {
             "target":"192.168.40.21",  
             "other_subnet":"yes"
         }
+        
      ],
     "Attacker_VM": "192.168.40.23",  
     "docker":{
