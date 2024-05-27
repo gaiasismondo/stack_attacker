@@ -192,8 +192,8 @@ class MetaClient:
     def route_print(self):
         self.client.consoles.console(self.cid).write(C.ROUTE_PRINT)
         routes=self.client.consoles.console(self.cid).read()
-        print(routes)
-        print("fine routes")
+        print(routes.data)
+       
 
     
     #aggiunge una nuova route al target

