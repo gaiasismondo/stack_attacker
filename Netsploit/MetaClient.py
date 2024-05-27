@@ -202,7 +202,7 @@ class MetaClient:
         #print(C.ROUTE_ADD.format(target_ip,sess))
         self.client.consoles.console(self.cid).write(C.ROUTE_ADD.format(target_ip,sess))
         routes=self.client.consoles.console(self.cid).read()
-        #print(routes)
+        print(routes)
 
 
     #elimina tutte le route attualmente configurate
