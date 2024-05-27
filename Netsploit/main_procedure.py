@@ -116,10 +116,9 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
 
             if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
-                print(C.TARGETS_DOCKERS[target_ip])
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-            if(attack_name=="smtp_server" and target_ip!=C.SMTP_VM):
+            if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
                 print(f"{C.COL_RED}[-] Exploit failed {C.COL_RESET}")
                 continue
             if(attack_type=="ResourceAttack"):
