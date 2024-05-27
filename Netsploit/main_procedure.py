@@ -105,7 +105,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             attack_name=Attack_DB.attack_dict[ra].attack
             # 0 se non ci serve connetterci alla backdoor, verrà sovrascritto dal valore presente dentro il file config se presente per quell'attacco
             port=0
-            LPORT=0 
+            LPORT=0  #PENTESTER LISTENING PORT
             #salviamo le informazioni necessarie per le porte delle backdoor (sulla macchina vittima e sulla macchina attaccante)
             for p in C.TARGETS_DOCKERS[target_ip]:
                 if(attack_name in p["attack_list"]):
