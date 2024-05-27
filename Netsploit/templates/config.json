@@ -34,8 +34,6 @@
 
     "DEFAULT_LPORT": "55555",   
     "ATTACKER_SERVER_RPC_PORT": 1234,
-    "TOMCAT_VM":"IPtomcat_vuln", 
-    "SMTP_VM":"IPopensmtpd-container", 
     "NETCAT_PORT": 2345,
     "METERPRETER_PORT":"55557"
 }
