@@ -35,17 +35,14 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
     Logger.init_logger()
 
-    #read the file that contains all the targets
     with open(config_file) as f:
         target_list=json.load(f)
     machines=[]
     other_subnet= dict()
-    #save the ip
     for ip in target_list["targets"]:
         machines.append(ip["target"])
         if "other_subnet" in ip:
             other_subnet.update({ip["target"]:ip["other_subnet"]})
-    #print(other_subnet)
 
     router=None
     OOBSession=None
@@ -65,7 +62,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
         randomized_attack=random.sample(attack,len(attack))
 
-        if(target_ip in other_subnet and other_subnet[target_ip]=="yes"):
+        if(target_ip in other_subnet):
             if(atk_sess==None):
                 print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}") 
                 return 
