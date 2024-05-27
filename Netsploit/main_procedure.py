@@ -62,12 +62,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
-            if(met_sess):
-                print(f"{C.COL_YELLOW}[*] session upgraded to Meterpreter session{C.COL_RESET}")
-            else:
-                print(f"{C.COL_RED}[*] upgrading session to Materpreter session failed, skipping...{C.COL_RESET}")
-                continue
-
 
 
         if(target_ip in other_subnet):
