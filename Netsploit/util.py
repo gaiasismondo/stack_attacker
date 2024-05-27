@@ -75,8 +75,6 @@ class Constants:
     ATTACKER_VM = config["Attacker_VM"]
     DEFAULT_LPORT=config["DEFAULT_LPORT"]   #PENTESTER DEFAULT LISTENING PORT
     ATTACKER_SERVER_RPC_PORT=config["ATTACKER_SERVER_RPC_PORT"]
-    TOMCAT_VM=config["TOMCAT_VM"]
-    SMTP_VM=config["SMTP_VM"]
     NETCAT_PORT=config["NETCAT_PORT"]
 
     #Vengono inzializzate alcune costanti con dei comandi
