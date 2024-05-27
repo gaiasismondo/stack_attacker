@@ -192,7 +192,7 @@ class MetaClient:
     def route_print(self):
         self.client.consoles.console(self.cid).write(C.ROUTE_PRINT)
         routes=self.client.consoles.console(self.cid).read()
-        #print(routes)
+        print(routes)
 
     
     #aggiunge una nuova route al target
@@ -200,7 +200,7 @@ class MetaClient:
         #print(C.ROUTE_ADD.format(target_ip,sess))
         self.client.consoles.console(self.cid).write(C.ROUTE_ADD.format(target_ip,sess))
         routes=self.client.consoles.console(self.cid).read()
-        print(routes)
+        #print(routes)
 
 
     #elimina tutte le route attualmente configurate
@@ -214,8 +214,8 @@ class MetaClient:
         self.route_flush()
         self.client.sessions.session(sess).write(cmd)
         portfwd=self.client.sessions.session(sess).read()
-        print(portfwd)
-        print(portfwd)
+        #print(portfwd)
+
 
 
 

