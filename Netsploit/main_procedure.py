@@ -175,12 +175,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                         else:
                             print(f"{C.COL_RED}docker_escape failed! Aborting...  {C.COL_RESET}")
                             break   
-                    break
-                """ else:
-                        print(f"{C.COL_RED}[-] can't connect to {target_ip}'s backdoor{C.COL_RESET}")
-                        break """
-                # else:
-                #     print(f"{C.COL_YELLOW}[*] false positive occured, ignoring... {C.COL_RESET}")
+                else:
+                    print(f"{C.COL_YELLOW}[*] false positive occured, ignoring... {C.COL_RESET}")
             else:
                 uncompromised_machines.add(target_ip)
                 print(f"{C.COL_RED}[-] xx Exploit failed {C.COL_RESET}")
