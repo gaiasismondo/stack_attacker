@@ -8,7 +8,7 @@ from util import time_limit
 import json
 from util import Logger
 
-#
+
 #Classe astratta
 #Un attacco ha proprietà: nome, istruzioni, tempo di attesa e tipo
 #Le sottoclassi dovranno implementare i metodi execute (esecuzione dell'attacco) e check (verifica dell'esito dell'attacco)
@@ -28,7 +28,7 @@ class Attack(ABC):
 
 #Estende la classe Attack e fornisce l'implementazione specifica per eseguire un attacco usando il framework Metasploit
 class Metasploit_Attack(Attack):
-    def __init__(self, name, instructions, wait_time=10,client=None):
+    def __init__(self, name, instructions, wait_time=10, client=None):
         
         super().__init__(name, instructions, wait_time=wait_time)
         self.client=client
