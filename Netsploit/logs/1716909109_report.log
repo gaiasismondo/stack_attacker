@@ -1,0 +1,17 @@
+INFO:root:RPC client connected - server_port=1234, server_ip='192.168.40.23', ssl=True
+INFO:root:Console created - self.cid='0'
+INFO:root:using payload - cmd/unix/bind_netcat
+INFO:root:using exploit - multi/samba/usermap_script
+INFO:root:unable to create session
+INFO:root:session created - 1
+INFO:root:session created - 2
+INFO:root:Meterpreter shell session created - diff={'3'}
+INFO:root:session created - 4
+INFO:root:unable to create netcat session
+INFO:root:can't establish connection from netcat attempt 0 -
+INFO:root:Netcat session created - diff={'5'}
+INFO:root:connection from netcat established, docker_escape successful
+INFO:root:using payload - cmd/unix/bind_netcat
+INFO:root:using exploit - multi/samba/usermap_script
+INFO:root:unable to create session
+INFO:root:unable to create session
