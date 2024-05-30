@@ -29,9 +29,17 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
 
-    while uncompromised_machines:
+    while machines:
 
-        target_ip=uncompromised_machines.pop(0)
+        print("machines")
+        print(machines)
+        print("uncompromised machines")
+        print(uncompromised_machines)
+        print("compromised machines")
+        print(compromised_machines)
+
+
+        target_ip=machines.pop(0)
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
 
         attack=list(Attack_DB.attack_dict)
@@ -95,11 +103,11 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-            """                     
+                               
             if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-            """    
+             
             if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait, mc)
             elif(attack_type=="SshAttack"):
@@ -125,6 +133,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     #print(f"OOBSession: {OOBSession}")
                     print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
                     compromised_machines.add(target_ip)
+                    uncompromised_machines.pop(target_ip)
                     
                     if(attack_name=="tomcat_server"):
                         print(f"{C.COL_YELLOW} Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
