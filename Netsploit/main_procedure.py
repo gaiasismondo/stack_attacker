@@ -138,7 +138,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     #print(f"OOBSession: {OOBSession}")
                     print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
                     compromised_machines.add(target_ip)
-                    uncompromised_machines.pop(target_ip)
+                    uncompromised_machines.remove(target_ip)
                     
                     if(attack_name=="tomcat_server"):
                         print(f"{C.COL_YELLOW} Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
