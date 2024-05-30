@@ -163,7 +163,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     print(f"{C.COL_YELLOW}[*] false positive occurred, ignoring... {C.COL_RESET}")
                     
             else:
-                uncompromised_machines.append(target_ip)
+                uncompromised_machines.add(target_ip)
                 print(f"{C.COL_RED}[-] xx Exploit failed {C.COL_RESET}")
 
             if stealth_sleep:
