@@ -113,7 +113,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             attack_instr=Attack_DB.attack_dict[ra].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
             attack_type=Attack_DB.attack_dict[ra].attack_type
             attack_wait=Attack_DB.attack_dict[ra].wait_time
-            
+
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
 
             if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
@@ -173,7 +173,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     print(f"{C.COL_YELLOW}[*] false positive occurred, ignoring... {C.COL_RESET}")
                     
             else:
-                uncompromised_machines.add(target_ip)
+                uncompromised_machines.append(target_ip)
                 print(f"{C.COL_RED}[-] xx Exploit failed {C.COL_RESET}")
 
             if stealth_sleep:
