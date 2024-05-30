@@ -39,7 +39,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         print(compromised_machines)
 
 
-        target_ip=machines.pop(0)
+        target_ip=machines.pop()
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
         print("machines")
         print(machines)
