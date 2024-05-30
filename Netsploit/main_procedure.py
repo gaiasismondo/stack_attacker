@@ -24,7 +24,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     router=None
     OOBSession=None
     atk_sess=None
-
     compromised_machines={attacker_ip}
     uncompromised_machines=machines
 
@@ -96,11 +95,11 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-                                       
+            """                     
             if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-            
+            """    
             if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait, mc)
             elif(attack_type=="SshAttack"):
