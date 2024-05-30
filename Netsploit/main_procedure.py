@@ -171,6 +171,13 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 sleep(stealth_sleep)
         
         print("---------------------------------------------------------")
+        print("machines")
+        print(machines)
+        print("uncompromised machines")
+        print(uncompromised_machines)
+        print("compromised machines")
+        print(compromised_machines)
+
     
     print(f"{C.COL_GREEN} Attack complete!! {C.COL_RESET}")
 
