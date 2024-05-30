@@ -25,7 +25,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     OOBSession=None
     atk_sess=None
     compromised_machines={attacker_ip}
-    uncompromised_machines=machines
+    uncompromised_machines=set(machines)
 
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
 
@@ -43,8 +43,9 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
         print("machines")
         print(machines)
+        print("uncompromised machines")
         print(uncompromised_machines)
-        print("compromised machines")
+        
 
         attack=list(Attack_DB.attack_dict)
         randomized_attack=random.sample(attack,len(attack))
