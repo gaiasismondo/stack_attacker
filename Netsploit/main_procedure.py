@@ -14,10 +14,10 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
     with open(config_file) as f:
         target_list=json.load(f)
-    machines=[]
+    machines=set()
     other_subnet= dict()
     for ip in target_list["targets"]:
-        machines.append(ip["target"])
+        machines.add(ip["target"])
         if "other_subnet" in ip:
             other_subnet.update({ip["target"]:ip["other_subnet"]})
 
@@ -41,6 +41,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
         target_ip=machines.pop(0)
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
+        print("machines")
+        print(machines)
 
         attack=list(Attack_DB.attack_dict)
         randomized_attack=random.sample(attack,len(attack))
