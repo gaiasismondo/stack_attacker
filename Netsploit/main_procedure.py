@@ -11,6 +11,7 @@ from time import sleep
 def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
     Logger.init_logger()
+    
 
     with open(config_file) as f:
         target_list=json.load(f)
@@ -26,6 +27,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     atk_sess=None
     compromised_machines={attacker_ip}
     uncompromised_machines=set(machines)
+    attackDB = AttackDB()
 
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
 
@@ -35,7 +37,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
 
         
-        attacks= list(AttackDB.attack_dict.values())
+        attacks= list(attackDB.attack_dict.values())
         randomized_attack=random.sample(attacks,len(attacks))
 
         if(atk_sess!=None):
@@ -62,7 +64,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             scans=list(Attack_DB.stealth_scans_dict)
         else:
             scans=list(Attack_DB.scans_dict)
-
+c
         s=random.choice(scans)
         
         if(s != "tcp_portscan"):
