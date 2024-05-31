@@ -350,4 +350,20 @@ class Attack_DB:
     infect_dict={}
     for i_k in infect_attack.keys():
         infect_dict[i_k]=Attack(i_k,infect_attack[i_k]["instructions"],int(infect_attack[i_k]["wait_time"]))
+
+
+class AttackDB:
+
+    def __init__(self, db_path="attack_db.json"):
+        with open(db_path) as db:
+            db_string = json.load(db)
+        
+        self.attack_dict = self.create_attacks(db_string["storage"]["attacks"])
+        self.scans_dict = self.create_attacks(db_string["storage"]["scans"])
+        self.stealth_scans_dict = self.create_attacks(db_string["storage"]["stealth_scans"])
+        self.stealth_attack_dict = self.create_attacks(db_string["storage"]["stealth_attacks"])
+        self.infect_dict = self.create_attacks(db_string["storage"]["infect"])
+
+
+        
     

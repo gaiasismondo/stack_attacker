@@ -112,14 +112,14 @@ class MetaClient:
 
     #Itera sugli attacchi infect presenti nell'attack_db.json e li esegue in un sottoprocesso
     def infect(self):
-        for atk in Attack_DB.infect_dict.keys():
-            print(f"{C.COL_GREEN} Attacking with {atk}{C.COL_RESET}")
-            p=subprocess.Popen(Attack_DB.infect_dict[atk].instruction,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT,shell=True)
-            delay(Attack_DB.infect_dict[atk].wait_time)
+        for atk_name, atk_obj in self.attack_db.infect_dict.items():
+            print(f"{C.COL_GREEN} Attacking with {atk_name}{C.COL_RESET}")
+            p = subprocess.Popen(atk_obj.instructions, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, shell=True)
+            delay(atk_obj.wait_time)
             p.wait()
-            #DEBUG
-            #print(stdout)
-    
+            # DEBUG
+            # print(stdout)
+
 
     #Gestisce il processo di aggiornamento di una shell a una shell Meterpreter 
     #restituisce l'ID della sessione Meterpreter se l'aggiornamento ha avuto successo
