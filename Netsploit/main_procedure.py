@@ -27,8 +27,9 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     compromised_machines={attacker_ip}
     uncompromised_machines=set(machines)
 
-    attack_db = Attack_DB(mc, attacker_ip, OOBSession)
+    
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
+    attack_db = Attack_DB(mc, attacker_ip, OOBSession)
     
 
     while machines:

@@ -357,7 +357,11 @@ class Attack_DB:
 
 class Attack_DB:
 
-    def __init__(self, db_path="attack_db.json"):
+    def __init__(self, metaClient, attacker_ip, OOBsession, db_path="attack_db.json"):
+
+        self.metaClient = metaClient
+        self.attacker_ip = attacker_ip
+        self.OOBsession = OOBsession
 
         with open(db_path) as db:
             db_string = json.load(db)
@@ -367,6 +371,7 @@ class Attack_DB:
         self.stealth_scans_dict = self.build_dict(db_string["storage"]["stealth_scans"])
         self.stealth_attack_dict = self.build_dict(db_string["storage"]["stealth_attacks"])
         self.infect_dict = self.build_dict(db_string["storage"]["infect"], True)
+        
 
     def build_dict(self, data, infect=False):
         dict = {}
