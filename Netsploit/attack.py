@@ -311,7 +311,7 @@ class SshAttack(VictimAttack):
             Logger.log(self, f"unable to create session", level=Logger.INFO)
             return session
 
-
+"""
 
 #Carica i dati da attack_db.json
 #Crea un dizionario degli attacchi e per ogni attacco crea un istanza della classe Attack 
@@ -351,7 +351,7 @@ class Attack_DB:
     for i_k in infect_attack.keys():
         infect_dict[i_k]=Attack(i_k,infect_attack[i_k]["instructions"],int(infect_attack[i_k]["wait_time"]))
 
-
+"""
 class AttackDB:
 
     def __init__(self, db_path="attack_db.json"):
@@ -364,6 +364,16 @@ class AttackDB:
         self.stealth_attack_dict = self.create_attacks(db_string["storage"]["stealth_attacks"])
         self.infect_dict = self.create_attacks(db_string["storage"]["infect"])
 
-
-        
-    
+    def create_attacks(self, attack_data):
+        attack_dict = {}
+        for name, data in attack_data.items():
+            attack_type = data.get("attack_type", None)
+            wait_time = int(data["wait_time"])
+            instructions = data["instructions"]
+            if attack_type in ["metasploit", "resource", "stealth"]:
+                attack_dict[name] = Metasploit_Attack(name, instructions, wait_time)
+            elif attack_type == "ssh":
+                attack_dict[name] = SshAttack(name, instructions, wait_time)
+            else:
+                attack_dict[name] = VictimAttack(name, instructions, wait_time)
+        return attack_dict
