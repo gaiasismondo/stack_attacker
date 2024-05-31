@@ -10,7 +10,6 @@ import copy
 
 class MetaClient:
 
-
     # Delay in seconds before checking for open sessions
     GET_SESSIONS_DELAY = 1
     READ_CONSOLE_DELAY = 1
