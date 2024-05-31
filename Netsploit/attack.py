@@ -371,7 +371,7 @@ class Attack_DB:
         self.stealth_scans_dict = self.build_dict(db_string["storage"]["stealth_scans"])
         self.stealth_attack_dict = self.build_dict(db_string["storage"]["stealth_attacks"])
         self.infect_dict = self.build_dict(db_string["storage"]["infect"], True)
-        
+
 
     def build_dict(self, data, infect=False):
         dict = {}
@@ -389,6 +389,9 @@ NUOVA VERSIONE CAPIRE SE FORMATO DELLE ISTRUZIONI È GESTIBILE
 IDEA: CREARE UN METODO CHE SI ADATTA ALLA CREAZIONE DI QUALSIASI TIPO DI ATTACCO FACENDO L'IF E TOGLIENDOLO DAL MAIN 
 ED ESEGUE ANCHE LA FORMATTAZIONE DELLE ISTRUZIONI
 NEL MAIN ABBIAMO SOLO I DIZIONARI POI ALL'OCCORRENZA SI CHIAMA QUESTO NUOVO METODO BUILD-ATTACK CHE PRENDE UN ATTACCO E RESTITUISCE L'ATTACCO SPECIFICO
+
+GESTIRE INFECT IN METACLIENT
+POI RIMUOVERE COMMENTI ATTACKD AL POSTO DI attackDB NEL MAIN
 
 class Attack_DB:
 

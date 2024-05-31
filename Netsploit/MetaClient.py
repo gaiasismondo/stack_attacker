@@ -112,7 +112,8 @@ class MetaClient:
 
     #Itera sugli attacchi infect presenti nell'attack_db.json e li esegue in un sottoprocesso
     def infect(self):
-
+        print(f"{C.COL_GREEN} Attacking with MMS over TLS {C.COL_RESET}")
+        """
         attack_db = Attack_DB()
         for atk in attack_db.infect_dict.keys():
             print(f"{C.COL_GREEN} Attacking with {atk}{C.COL_RESET}")
@@ -121,6 +122,7 @@ class MetaClient:
             p.wait()
             #DEBUG
             #print(stdout)
+        """
             
         
     
