@@ -377,4 +377,58 @@ class Attack_DB:
                 dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),data[i_k]["attack_type"])
             
         return dict
+    
+    
+"""
+NUOVA VERSIONE CAPIRE SE FORMATO DELLE ISTRUZIONI È GESTIBILE
+IDEA: CREARE UN METODO CHE SI ADATTA ALLA CREAZIONE DI QUALSIASI TIPO DI ATTACCO FACENDO L'IF E TOGLIENDOLO DAL MAIN 
+ED ESEGUE ANCHE LA FORMATTAZIONE DELLE ISTRUZIONI
+NEL MAIN ABBIAMO SOLO I DIZIONARI POI ALL'OCCORRENZA SI CHIAMA QUESTO NUOVO METODO BUILD-ATTACK CHE PRENDE UN ATTACCO E RESTITUISCE L'ATTACCO SPECIFICO
 
+class Attack_DB:
+
+    def __init__(self, metaClient, attacker_ip, OOBsession, db_path="attack_db.json"):
+
+        self.metaClient = metaClient
+        self.attacker_ip = attacker_ip
+        self.OOBsession = OOBsession
+
+        with open(db_path) as db:
+            db_string = json.load(db)
+        
+        self.attack_dict = self.build_dict(db_string["storage"]["attacks"])
+        self.scans_dict = self.build_dict(db_string["storage"]["scans"])
+        self.stealth_scans_dict = self.build_dict(db_string["storage"]["stealth_scans"])
+        self.stealth_attack_dict = self.build_dict(db_string["storage"]["stealth_attacks"])
+        self.infect_dict = self.build_dict(db_string["storage"]["infect"], True)
+
+
+    def build_dict(self, data, infect=False):
+        dict = {}
+        for i_k in data.keys():
+            if(infect == True):
+                dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]))
+
+            else:
+                if(data[i_k]["attack_type"]=="ResourceAttack"):
+                    dict[i_k] = self.build_resource_attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),self.metaClient)
+                elif(data[i_k]["attack_type"]=="SshAttack"):
+                    dict[i_k] = self.build_ssh_attack(i_k,data[i_k]["instructions"],self.attacker_ip, self.OOBsession, int(data[i_k]["wait_time"]),self.metaClient)
+                else:
+                    dict[i_k] = self.bulid_scan_and_metasploit_attack(i_k,data[i_k]["instructions"], int(data[i_k]["wait_time"]),self.metaClient)
+
+        return dict
+    
+
+    def bulid_scan_and_metasploit_attack(name, instr, wait, metaClient):
+        obj=Metasploit_Attack(name, instr, wait, metaClient)
+        return obj
+
+    def build_resource_attack(name, instr, wait, mc):
+        attack_obj=ResourceAttack(name, instr, wait, mc)
+        return attack_obj
+
+    def build_ssh_attack(name,instr, attacker_ip, OOBSession, attack_wait, mc):
+        attack_obj=SshAttack(name, instr, attacker_ip, OOBSession, attack_wait, mc)
+        return attack_obj
+"""

