@@ -3,7 +3,7 @@ from util import Logger
 from util import time_limit
 from time import sleep as delay
 from util import Constants as C
-from attack import Attack_DB
+from attack import AttackDB
 import subprocess
 import time
 import copy
@@ -112,7 +112,7 @@ class MetaClient:
 
     #Itera sugli attacchi infect presenti nell'attack_db.json e li esegue in un sottoprocesso
     def infect(self):
-        for atk_name, atk_obj in self.attack_db.infect_dict.items():
+        for atk_name, atk_obj in AttackDB.infect_dict.items():
             print(f"{C.COL_GREEN} Attacking with {atk_name}{C.COL_RESET}")
             p = subprocess.Popen(atk_obj.instructions, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, shell=True)
             delay(atk_obj.wait_time)

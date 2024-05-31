@@ -3,7 +3,7 @@ import random
 import ipaddress
 from MetaClient import MetaClient
 from util import Logger,Constants as C
-from attack import Attack,Metasploit_Attack,ResourceAttack,SshAttack,Attack_DB
+from attack import Attack,Metasploit_Attack,ResourceAttack,SshAttack,AttackDB
 from time import sleep
 
 
@@ -35,7 +35,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
 
         
-        attacks= list(Attack_DB.attack_dict.values())
+        attacks= list(AttackDB.attack_dict.values())
         randomized_attack=random.sample(attacks,len(attacks))
 
         if(atk_sess!=None):
