@@ -1,7 +1,6 @@
 from pymetasploit3.msfrpc import MsfRpcClient
 from util import Logger
 from util import time_limit
-from client import MetasploitWrapper
 from time import sleep as delay
 from util import Constants as C
 from attack import AttackDB
