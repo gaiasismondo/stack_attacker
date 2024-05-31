@@ -366,11 +366,15 @@ class Attack_DB:
         self.scans_dict = self.build_dict(db_string["storage"]["scans"])
         self.stealth_scans_dict = self.build_dict(db_string["storage"]["stealth_scans"])
         self.stealth_attack_dict = self.build_dict(db_string["storage"]["stealth_attacks"])
-        self.infect_dict = self.build_dict(db_string["storage"]["infect"])
+        self.infect_dict = self.build_dict(db_string["storage"]["infect"], True)
 
-    def build_dict(self, data):
+    def build_dict(self, data, infect=False):
         dict = {}
         for i_k in data.keys():
-            dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),data[i_k]["attack_type"])
+            if(infect == True):
+                dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]))
+            else:
+                dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),data[i_k]["attack_type"])
+            
         return dict
 
