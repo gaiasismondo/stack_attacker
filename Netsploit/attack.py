@@ -353,7 +353,7 @@ class Attack_DB:
     
 """
 
-
+"""
 
 class Attack_DB:
 
@@ -382,6 +382,8 @@ class Attack_DB:
                 dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),data[i_k]["attack_type"])
             
         return dict
+
+    """
     
     
 """
@@ -436,7 +438,7 @@ class Attack_DB:
 
         return scan_obj
     
-    
+
     def create_attack(self, attack, target_ip, attacker_ip, LPORT):
         attack_name=self.attack_dict[attack].attack
         attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
@@ -453,7 +455,7 @@ class Attack_DB:
         return attack_obj
 
 
-
+"""
     
 
     def bulid_scan_and_metasploit_attack(name, instr, wait, metaClient):
@@ -467,6 +469,6 @@ class Attack_DB:
     def build_ssh_attack(name,instr, attacker_ip, OOBSession, attack_wait, mc):
         attack_obj=SshAttack(name, instr, attacker_ip, OOBSession, attack_wait, mc)
         return attack_obj
-    
+    """
 
      
