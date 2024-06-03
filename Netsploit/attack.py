@@ -14,13 +14,15 @@ class Attack(ABC):
         self.wait_time = wait_time
         self.attack_type = attack_type
 
-    @abstractmethod
+
     def execute(self):
         raise NotImplementedError("Use specific attacks!")
 
-    @abstractmethod
+  
     def check(self):
         raise NotImplementedError("Use specific attacks!")
+
+
 
 class MetasploitAttack(Attack):
     LONG_SLEEP_TIME = 15
@@ -147,6 +149,9 @@ class MetasploitAttack(Attack):
         else:
             Logger.log(self, f"unable to create session", level=Logger.INFO)
             return session
+        
+
+
 
 class SshAttack(Attack):
     SLEEP_TIME = 5
