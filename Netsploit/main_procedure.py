@@ -38,8 +38,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
         
         attack=list(attack_db.attack_dict)
-        print("attack")
-        print(attack)
         randomized_attack=random.sample(attack,len(attack))
 
         if(atk_sess!=None):
