@@ -353,7 +353,7 @@ class Attack_DB:
     
 """
 
-
+"""
 
 class Attack_DB:
 
@@ -386,7 +386,7 @@ class Attack_DB:
     
     
     
-"""
+
 NUOVA VERSIONE CAPIRE SE FORMATO DELLE ISTRUZIONI È GESTIBILE
 IDEA: CREARE UN METODO CHE SI ADATTA ALLA CREAZIONE DI QUALSIASI TIPO DI ATTACCO FACENDO L'IF E TOGLIENDOLO DAL MAIN 
 ED ESEGUE ANCHE LA FORMATTAZIONE DELLE ISTRUZIONI
@@ -394,7 +394,7 @@ NEL MAIN ABBIAMO SOLO I DIZIONARI POI ALL'OCCORRENZA SI CHIAMA QUESTO NUOVO METO
 
 GESTIRE INFECT IN METACLIENT
 POI RIMUOVERE COMMENTI ATTACKD AL POSTO DI attackDB NEL MAIN
-
+"""
 
 class Attack_DB:
 
@@ -440,6 +440,7 @@ class Attack_DB:
     
 
     def create_attack(self, attack, target_ip, attacker_ip, LPORT):
+    
         attack_name=self.attack_dict[attack].attack
         attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
         attack_type=self.attack_dict[attack].attack_type
@@ -457,7 +458,7 @@ class Attack_DB:
 
 
     
-
+"""
     def bulid_scan_and_metasploit_attack(name, instr, wait, metaClient):
         obj=Metasploit_Attack(name, instr, wait, metaClient)
         return obj
