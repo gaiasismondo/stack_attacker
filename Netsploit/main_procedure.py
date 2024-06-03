@@ -3,7 +3,8 @@ import random
 import ipaddress
 from MetaClient import MetaClient
 from util import Logger,Constants as C
-from attack import Attack,Metasploit_Attack,ResourceAttack,SshAttack,Attack_DB
+#from attack import Attack,Metasploit_Attack,ResourceAttack,SshAttack,Attack_DB
+from attack import Attack,MetasploitAttack,SshAttack,Attack_DB
 from time import sleep
 
 
