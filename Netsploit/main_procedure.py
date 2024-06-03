@@ -56,13 +56,11 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 #mc.route_print()
                 router=met_sess
             
-        """
+        
         
         if(stealth):
-            #scans=list(Attack_DB.stealth_scans_dict)
             scans=list(attack_db.stealth_scans_dict)
         else:
-            #scans=list(Attack_DB.scans_dict)
             scans=list(attack_db.scans_dict)
 
         s=random.choice(scans)
@@ -72,13 +70,9 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         else:
             nmap_target=target_ip
 
-        #scan_name=Attack_DB.scans_dict[s].attack
         #scan_name=attack_db.scans_dict[s].attack
-        #scan_instr=Attack_DB.scans_dict[s].instruction.format(nmap_target,attacker_ip)
         #scan_instr=attack_db.scans_dict[s].instruction.format(nmap_target,attacker_ip)
-        #scan_type=Attack_DB.scans_dict[s].attack_type
         #scan_type=attack_db.scans_dict[s].attack_type
-        #scan_wait=Attack_DB.scans_dict[s].wait_time
         #scan_wait=attack_db.scans_dict[s].wait_time
 
         #scan_obj=Metasploit_Attack(scan_name,scan_instr,scan_wait,mc)
@@ -89,7 +83,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         
         mc.attempt_scan(scan_obj)
 
-        """
+        
 
 
         for ra in randomized_attack:
@@ -132,7 +126,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
             attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
            
-           
+
             if(type(attack_obj)==SshAttack and OOBSession==None):
                 print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
                 continue
