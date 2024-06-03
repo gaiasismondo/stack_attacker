@@ -26,51 +26,31 @@ class Attack(ABC):
         raise NotImplementedError("Use specific attacks!")
     
 
-#Estende la classe Attack e fornisce l'implementazione specifica per eseguire un attacco usando il framework Metasploit
 class Metasploit_Attack(Attack):
     def __init__(self, name, instructions, wait_time=10, client=None):
-        
         super().__init__(name, instructions, wait_time=wait_time)
-        self.client=client
-        self.output=""
+        self.client = client
+        self.output = ""
 
-    #instr_list è un array con le istruzioni recuperate da attacK_db.json (separate per \n)
-    #se l'istruzione contiene setg salva nome parametro e valore nel dizionario settings
-    #se l'istruzione contiene use salva chiave "exploit" e valore nel dizionario settings 
-    #viene restiruito settings
-    def getSettings(self,instr_list):
-        
-        settings={}
-        found=False        
+    def _parse_settings(self, instr_list, keyword):
+        settings = {}
+        found = False
         for i in instr_list:
-            val=i.partition("setg")[2].strip().partition(" ")
-            if(val[0]):
-                settings[val[0]]=val[2]
-            if(not found):
-                exploit_req=[m.start() for m in re.finditer('use', i)]
-                if(exploit_req): 
-                    found=True
-                    settings["exploit"]=i.partition("use")[2].strip().partition(" ")[0][8:]
+            val = i.partition("setg")[2].strip().partition(" ")
+            if val[0]:
+                settings[val[0]] = val[2]
+            if not found:
+                exploit_req = [m.start() for m in re.finditer(keyword, i)]
+                if exploit_req:
+                    found = True
+                    settings[keyword] = i.partition(keyword)[2].strip().partition(" ")[0][len(keyword) + 1:]
         return settings
 
-    #instr_list è un array con le istruzioni recuperate da attacK_db.json (separate per \n)
-    #se l'istruzione contiene setg salva nome parametro e valore nel dizionario settings
-    #se l'istruzione contiene use salva chiave "auxiliary" e valore nel dizionario settings 
-    #viene restiruito settings
-    def getSettingScan(self,instr_list):
-        
-        settings={}
-        found=False        
-        for i in instr_list:
-            val=i.partition("setg")[2].strip().partition(" ")
-            if(val[0]):
-                settings[val[0]]=val[2]
-            if(not found):
-                exploit_req=[m.start() for m in re.finditer('use', i)]
-                if(exploit_req): 
-                    found=True
-                    settings["auxiliary"]=i.partition("use")[2].strip().partition(" ")[0][10:]
-        return settings
+    def getSettings(self, instr_list):
+        return self._parse_settings(instr_list, "exploit")
+
+    def getSettingScan(self, instr_list):
+        return self._parse_settings(instr_list, "auxiliary")
 
     #Viene recuperato l'elenco delle sessioni attive prima di eseguire le istruzioni(old_sess)
     #Viene richiamato il metodo getSettings e viene recuperato il dizionario con le impostazioni(settings)
@@ -311,49 +291,8 @@ class SshAttack(VictimAttack):
             Logger.log(self, f"unable to create session", level=Logger.INFO)
             return session
 
-"""
 
-#Carica i dati da attack_db.json
-#Crea un dizionario degli attacchi e per ogni attacco crea un istanza della classe Attack 
-#Crea un dizionario delle scansioni e per ogni scansione crea un istanza della classe Attack 
-#Crea un dizionario delle scansioni stealth e per ogni scansione stealth crea un istanza della classe Attack 
-#Crea un dizionario delgli attacchi stealth e per ogni attacco stealth crea un istanza della classe Attack
-#Crea un dizionario degli infect e per ogni infect crea un istanza della classe Attack 
-class Attack_DB:
 
-    with open("attack_db.json") as db:
-        db_string=json.load(db)
-    attack=db_string["storage"]["attacks"]
-    scans=db_string["storage"]["scans"]
-    stealth_scans=db_string["storage"]["stealth_scans"]
-    stealth_attack=db_string["storage"]["stealth_attacks"]
-    infect_attack=db_string["storage"]["infect"]
-
-    attack_dict = {}
-    for i_k in attack.keys():
-        attack_dict[i_k] = Attack(i_k,attack[i_k]["instructions"],int(attack[i_k]["wait_time"]),attack[i_k]["attack_type"])
-
-    
-    scans_dict = {}
-    for i_k in scans.keys():
-        scans_dict[i_k] = Attack(i_k,scans[i_k]["instructions"],int(scans[i_k]["wait_time"]),scans[i_k]["attack_type"])
-
-    stealth_scans_dict = {}
-    for i_k in stealth_scans.keys():
-        stealth_scans_dict[i_k] = Attack(i_k,stealth_scans[i_k]["instructions"],int(stealth_scans[i_k]["wait_time"]),stealth_scans[i_k]["attack_type"])
-
-    # not used at the moment
-    stealth_attack_dict = {}
-    for i_k in stealth_attack.keys():
-        stealth_attack_dict[i_k] = Attack(i_k,stealth_attack[i_k]["instructions"],int(stealth_attack[i_k]["wait_time"]),stealth_attack[i_k]["attack_type"])
-
-    infect_dict={}
-    for i_k in infect_attack.keys():
-        infect_dict[i_k]=Attack(i_k,infect_attack[i_k]["instructions"],int(infect_attack[i_k]["wait_time"]))
-    
-"""
-
-"""
 
 class Attack_DB:
 
@@ -371,46 +310,6 @@ class Attack_DB:
         self.stealth_scans_dict = self.build_dict(db_string["storage"]["stealth_scans"])
         self.stealth_attack_dict = self.build_dict(db_string["storage"]["stealth_attacks"])
         self.infect_dict = self.build_dict(db_string["storage"]["infect"], True)
-
-
-    def build_dict(self, data, infect=False):
-        dict = {}
-        for i_k in data.keys():
-            if(infect == True):
-                dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]))
-            else:
-                dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),data[i_k]["attack_type"])
-            
-        return dict
-
-    
-    
-    
-
-NUOVA VERSIONE CAPIRE SE FORMATO DELLE ISTRUZIONI È GESTIBILE
-
-
-GESTIRE INFECT IN METACLIENT
-POI RIMUOVERE COMMENTI ATTACKDB AL POSTO DI attackDB NEL MAIN
-"""
-
-class Attack_DB:
-
-    def __init__(self, metaClient, attacker_ip, OOBsession, db_path="attack_db.json"):
-
-        self.metaClient = metaClient
-        self.attacker_ip = attacker_ip
-        self.OOBsession = OOBsession
-
-        with open(db_path) as db:
-            db_string = json.load(db)
-        
-        self.attack_dict = self.build_dict(db_string["storage"]["attacks"])
-        self.scans_dict = self.build_dict(db_string["storage"]["scans"])
-        self.stealth_scans_dict = self.build_dict(db_string["storage"]["stealth_scans"])
-        self.stealth_attack_dict = self.build_dict(db_string["storage"]["stealth_attacks"])
-        self.infect_dict = self.build_dict(db_string["storage"]["infect"], True)
-
 
 
     def build_dict(self, data, infect=False):
