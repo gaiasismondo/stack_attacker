@@ -447,27 +447,13 @@ class Attack_DB:
         attack_wait=self.attack_dict[attack].wait_time
 
         if(attack_type=="ResourceAttack"):
-                attack_obj=self.ResourceAttack(attack_name, attack_instr, attack_wait, self.metaClient)
+                attack_obj=ResourceAttack(attack_name, attack_instr, attack_wait, self.metaClient)
         elif(attack_type=="SshAttack"): 
-            attack_obj=self.SshAttack(attack_name, attack_instr, attacker_ip, self.OOBSession, attack_wait, self.metaClient)
+            attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBSession, attack_wait, self.metaClient)
         else:
-            attack_obj=self.Metasploit_Attack(attack_name,attack_instr,attack_wait, self.metaClient)
+            attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, self.metaClient)
         
         return attack_obj
 
 
 
-    
-"""
-    def bulid_scan_and_metasploit_attack(name, instr, wait, metaClient):
-        obj=Metasploit_Attack(name, instr, wait, metaClient)
-        return obj
-
-    def build_resource_attack(name, instr, wait, mc):
-        attack_obj=ResourceAttack(name, instr, wait, mc)
-        return attack_obj
-
-    def build_ssh_attack(name,instr, attacker_ip, OOBSession, attack_wait, mc):
-        attack_obj=SshAttack(name, instr, attacker_ip, OOBSession, attack_wait, mc)
-        return attack_obj
-    """
