@@ -139,8 +139,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 
             
             attack_obj2 = attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
-            print(attack_obj2.attack)
-            print(attack_obj)
+            print(type(attack_obj2))
+            print(type(attack_obj))
            
 
             if(type(attack_obj)==SshAttack and OOBSession==None):
