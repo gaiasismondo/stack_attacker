@@ -450,7 +450,7 @@ class Attack_DB:
         if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name, attack_instr, attack_wait, self.metaClient)
         elif(attack_type=="SshAttack"): 
-            attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBSession, attack_wait, self.metaClient)
+            attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBsession, attack_wait, self.metaClient)
         else:
             attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, self.metaClient)
 
