@@ -133,11 +133,12 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, mc)
                 """
             
+            print("ra")
             print(ra)
-            print(type(ra))
+            print(type(attack_db.attack_dict[ra]))
             attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
-
             
+            print("attack_obj created")
             print(type(attack_obj))
            
 
