@@ -439,13 +439,13 @@ class Attack_DB:
         return scan_obj
     
 
-    def create_attack(self, attack, target_ip, attacker_ip, LPORT):
+    def create_attack(self, dict, attack, target_ip, attacker_ip, LPORT):
     
-        attack_name=self.attack_dict[attack].attack
-        attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
-        attack_type=self.attack_dict[attack].attack_type
+        attack_name=dict[attack].attack
+        attack_instr=dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
+        attack_type=dict[attack].attack_type
         print(attack_type)
-        attack_wait=self.attack_dict[attack].wait_time
+        attack_wait=dict[attack].wait_time
 
         if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name, attack_instr, attack_wait, self.metaClient)
