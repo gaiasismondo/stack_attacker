@@ -434,7 +434,7 @@ class Attack_DB:
         scan_type=self.scans_dict[scan].attack_type
         scan_wait=self.scans_dict[scan].wait_time
 
-        scan_obj=Metasploit_Attack(scan_name,scan_instr,scan_wait,self.metaClient)
+        scan_obj=self.Metasploit_Attack(scan_name,scan_instr,scan_wait,self.metaClient)
 
         return scan_obj
     
@@ -447,11 +447,11 @@ class Attack_DB:
         attack_wait=self.attack_dict[attack].wait_time
 
         if(attack_type=="ResourceAttack"):
-                attack_obj=ResourceAttack(attack_name, attack_instr, attack_wait, self.metaClient)
+                attack_obj=self.ResourceAttack(attack_name, attack_instr, attack_wait, self.metaClient)
         elif(attack_type=="SshAttack"): 
-            attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBSession, attack_wait, self.metaClient)
+            attack_obj=self.SshAttack(attack_name, attack_instr, attacker_ip, self.OOBSession, attack_wait, self.metaClient)
         else:
-            attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, self.metaClient)
+            attack_obj=self.Metasploit_Attack(attack_name,attack_instr,attack_wait, self.metaClient)
         
         return attack_obj
 
