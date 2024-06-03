@@ -353,7 +353,7 @@ class Attack_DB:
     
 """
 
-"""
+
 
 class Attack_DB:
 
@@ -383,7 +383,7 @@ class Attack_DB:
             
         return dict
 
-    """
+    
     
     
 """
@@ -394,7 +394,7 @@ NEL MAIN ABBIAMO SOLO I DIZIONARI POI ALL'OCCORRENZA SI CHIAMA QUESTO NUOVO METO
 
 GESTIRE INFECT IN METACLIENT
 POI RIMUOVERE COMMENTI ATTACKD AL POSTO DI attackDB NEL MAIN
-"""
+
 
 class Attack_DB:
 
@@ -455,7 +455,7 @@ class Attack_DB:
         return attack_obj
 
 
-"""
+
     
 
     def bulid_scan_and_metasploit_attack(name, instr, wait, metaClient):
@@ -470,5 +470,3 @@ class Attack_DB:
         attack_obj=SshAttack(name, instr, attacker_ip, OOBSession, attack_wait, mc)
         return attack_obj
     """
-
-     
