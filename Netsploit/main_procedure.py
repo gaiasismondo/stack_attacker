@@ -99,9 +99,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             LPORT = C.DEFAULT_LPORT  #PENTESTER LISTENING PORT
             
             attack_name=attack_db.attack_dict[ra].attack
-            print("attack_name")
-            print(attack_name)
-            print(type(attack_db.attack_dict[ra]))
 
             for p in C.TARGETS_DOCKERS[target_ip]:
                 if(attack_name in p["attack_list"]):
@@ -138,6 +135,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             print(attack_db.attack_dict)
             print(attack_db.attack_dict[ra])
             print(type(attack_db.attack_dict[ra]))
+
             attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
             
             print("attack_obj created")
