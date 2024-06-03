@@ -26,7 +26,57 @@ class Attack(ABC):
         raise NotImplementedError("Use specific attacks!")
     
 
+"""
+
+#Estende la classe Attack e fornisce l'implementazione specifica per eseguire un attacco usando il framework Metasploit
 class Metasploit_Attack(Attack):
+    def __init__(self, name, instructions, wait_time=10, client=None):
+        
+        super().__init__(name, instructions, wait_time=wait_time)
+        self.client=client
+        self.output=""
+
+    #instr_list è un array con le istruzioni recuperate da attacK_db.json (separate per \n)
+    #se l'istruzione contiene setg salva nome parametro e valore nel dizionario settings
+    #se l'istruzione contiene use salva chiave "exploit" e valore nel dizionario settings 
+    #viene restiruito settings
+    def getSettings(self,instr_list):
+        
+        settings={}
+        found=False        
+        for i in instr_list:
+            val=i.partition("setg")[2].strip().partition(" ")
+            if(val[0]):
+                settings[val[0]]=val[2]
+            if(not found):
+                exploit_req=[m.start() for m in re.finditer('use', i)]
+                if(exploit_req): 
+                    found=True
+                    settings["exploit"]=i.partition("use")[2].strip().partition(" ")[0][8:]
+        return settings
+
+    #instr_list è un array con le istruzioni recuperate da attacK_db.json (separate per \n)
+    #se l'istruzione contiene setg salva nome parametro e valore nel dizionario settings
+    #se l'istruzione contiene use salva chiave "auxiliary" e valore nel dizionario settings 
+    #viene restiruito settings
+    def getSettingScan(self,instr_list):
+        
+        settings={}
+        found=False        
+        for i in instr_list:
+            val=i.partition("setg")[2].strip().partition(" ")
+            if(val[0]):
+                settings[val[0]]=val[2]
+            if(not found):
+                exploit_req=[m.start() for m in re.finditer('use', i)]
+                if(exploit_req): 
+                    found=True
+                    settings["auxiliary"]=i.partition("use")[2].strip().partition(" ")[0][10:]
+        return settings
+    """
+
+class Metasploit_Attack(Attack):
+    
     def __init__(self, name, instructions, wait_time=10, client=None):
         super().__init__(name, instructions, wait_time=wait_time)
         self.client = client
