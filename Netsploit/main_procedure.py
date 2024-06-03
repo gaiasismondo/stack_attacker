@@ -135,6 +135,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             
             print("ra")
             print(ra)
+            print(attack_db.attack_dict)
             print(type(attack_db.attack_dict[ra]))
             attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
             
