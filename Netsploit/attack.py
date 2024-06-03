@@ -156,9 +156,9 @@ class MetasploitAttack(Attack):
 class SshAttack(Attack):
     SLEEP_TIME = 5
 
-    def __init__(self, name, instructions, ip, session, time_wait=None, client=None):
+    def __init__(self, name, instructions, ip, session, time_waitwait=None, client=None):
         time_wait = (len(instructions) * SshAttack.SLEEP_TIME) + 10
-        super().__init__(name, instructions, time_wait=time_wait)
+        super().__init__(name, instructions, wait_time=time_wait)
         self.client = client
         self.instructions = instructions
         self.session = session
