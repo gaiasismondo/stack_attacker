@@ -421,6 +421,7 @@ class Attack_DB:
 
             if(infect == True):
                 dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]))
+
             else:
                 dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),self.metaClient)
                 
@@ -439,13 +440,14 @@ class Attack_DB:
         return scan_obj
     
 
-    def create_attack(self, dict, attack, target_ip, attacker_ip, LPORT):
+    def create_attack(self, attack, target_ip, attacker_ip, LPORT):
     
-        attack_name=dict[attack].attack
-        attack_instr=dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
-        attack_type=dict[attack].attack_type
+        attack_name=self.attack_dict[attack].attack
+        print(self.attack_dict[attack].attack)
+        attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
+        attack_type=self.attack_dict[attack].attack_type
         print(attack_type)
-        attack_wait=dict[attack].wait_time
+        attack_wait=self.attack_dict[attack].wait_time
 
         if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name, attack_instr, attack_wait, self.metaClient)
