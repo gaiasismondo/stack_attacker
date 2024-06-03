@@ -132,8 +132,9 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             else:
                 attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, mc)
                 """
-                
             
+            print(ra)
+            print(type(ra))
             attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
 
             
