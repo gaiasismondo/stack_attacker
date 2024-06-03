@@ -7,6 +7,8 @@ import json
 from util import time_limit
 from util import Logger
 
+
+# Classe astratta che rappresenta un attacco
 class Attack(ABC):
     def __init__(self, name, instructions, wait_time, attack_type=None):
         self.attack = name
@@ -14,16 +16,16 @@ class Attack(ABC):
         self.wait_time = wait_time
         self.attack_type = attack_type
 
-
+    # Metodo astratto per eseguire l'attacco
     def execute(self):
         raise NotImplementedError("Use specific attacks!")
 
-  
+    # Metodo astratto per verificare l'esito dell'attacco
     def check(self):
         raise NotImplementedError("Use specific attacks!")
 
 
-
+# Classe che estende Attack e implementa attacchi Metasploit e ResourceAttack (is_resource=True)
 class MetasploitAttack(Attack):
     LONG_SLEEP_TIME = 15
     SHORT_SLEEP_TIME = 5
@@ -34,14 +36,15 @@ class MetasploitAttack(Attack):
         self.output = []
         self.is_resource = is_resource
 
+    # Esegue l'attacco
     def execute(self):
         old_sess = self.client.get_active_sessions()
         instr_list = self.instruction.split("\n")
 
         if self.is_resource:
-            self._execute_resource(instr_list)
+            self.execute_resource(instr_list)
         else:
-            settings = self._parse_settings(instr_list)
+            settings = self.parse_settings(instr_list)
             if "resource" in instr_list:
                 return
             payload = self._prepare_payload(settings)
@@ -50,7 +53,8 @@ class MetasploitAttack(Attack):
         
         return self.check(old_sess)
 
-    def _execute_resource(self, instr_list):
+    # Esegue l'attacco usando un resource script
+    def execute_resource(self, instr_list):
         _ = self.client.client.consoles.console(self.client.cid).read()
         for i in instr_list:
             self.client.client.consoles.console(self.client.cid).write(i)
@@ -65,7 +69,8 @@ class MetasploitAttack(Attack):
         out = self.client.client.consoles.console(self.client.cid).read()
         self.output.append(out["data"])
 
-    def _parse_settings(self, instr_list):
+    
+    def _parse_settings(self, instr_list, keyword):
         settings = {}
         found = False
         for i in instr_list:
@@ -73,11 +78,20 @@ class MetasploitAttack(Attack):
             if val[0]:
                 settings[val[0]] = val[2]
             if not found:
-                exploit_req = [m.start() for m in re.finditer('use', i)]
+                exploit_req = [m.start() for m in re.finditer(keyword, i)]
                 if exploit_req:
                     found = True
-                    settings["exploit"] = i.partition("use")[2].strip().partition(" ")[0][8:]
+                    settings[keyword] = i.partition("use")[2].strip().partition(" ")[0][len(keyword) + 1:]
         return settings
+
+
+    def getSettings(self, instr_list):
+        return self._parse_settings(instr_list, "exploit")
+
+
+    def getSettingScan(self, instr_list):
+        return self._parse_settings(instr_list, "auxiliary")
+
 
     def _prepare_payload(self, settings):
         if "payload" in settings:
@@ -109,19 +123,7 @@ class MetasploitAttack(Attack):
         exploit.execute()
         sleep(2)
 
-    def _parse_scan_settings(self, instr_list):
-        settings = {}
-        found = False
-        for i in instr_list:
-            val = i.partition("setg")[2].strip().partition(" ")
-            if val[0]:
-                settings[val[0]] = val[2]
-            if not found:
-                exploit_req = [m.start() for m in re.finditer('use', i)]
-                if exploit_req:
-                    found = True
-                    settings["auxiliary"] = i.partition("use")[2].strip().partition(" ")[0][10:]
-        return settings
+    
 
     def _prepare_auxiliary(self, settings):
         if "auxiliary" in settings:
@@ -245,7 +247,7 @@ class Attack_DB:
         attack_wait=self.attack_dict[attack].wait_time
 
         if(attack_type=="ResourceAttack"):
-                attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient, True)
+                attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient, is_resource=True)
         elif(attack_type=="SshAttack"): 
             attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBsession, attack_wait, self.metaClient)
         else:
