@@ -433,7 +433,7 @@ class Attack_DB:
         scan_type=self.scans_dict[scan].attack_type
         scan_wait=self.scans_dict[scan].wait_time
 
-        scan_obj=self.Metasploit_Attack(scan_name,scan_instr,scan_wait,self.metaClient)
+        scan_obj=Metasploit_Attack(scan_name,scan_instr,scan_wait,self.metaClient)
 
         return scan_obj
     
