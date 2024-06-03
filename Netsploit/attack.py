@@ -116,7 +116,7 @@ class MetasploitAttack(Attack):
 
     def scan(self):
         instr_list = self.instruction.split("\n")
-        settings = self._parse_scan_settings(instr_list)
+        settings = self.getSettingScan(instr_list)
         payload = self._prepare_payload(settings)
         exploit = self._prepare_auxiliary(settings)
         # Execute the scan without reading the output to avoid blocking
