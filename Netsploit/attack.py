@@ -392,6 +392,7 @@ NEL MAIN ABBIAMO SOLO I DIZIONARI POI ALL'OCCORRENZA SI CHIAMA QUESTO NUOVO METO
 
 GESTIRE INFECT IN METACLIENT
 POI RIMUOVERE COMMENTI ATTACKD AL POSTO DI attackDB NEL MAIN
+"""
 
 class Attack_DB:
 
@@ -411,21 +412,48 @@ class Attack_DB:
         self.infect_dict = self.build_dict(db_string["storage"]["infect"], True)
 
 
+
     def build_dict(self, data, infect=False):
         dict = {}
         for i_k in data.keys():
+
             if(infect == True):
                 dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]))
-
             else:
-                if(data[i_k]["attack_type"]=="ResourceAttack"):
-                    dict[i_k] = self.build_resource_attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),self.metaClient)
-                elif(data[i_k]["attack_type"]=="SshAttack"):
-                    dict[i_k] = self.build_ssh_attack(i_k,data[i_k]["instructions"],self.attacker_ip, self.OOBsession, int(data[i_k]["wait_time"]),self.metaClient)
-                else:
-                    dict[i_k] = self.bulid_scan_and_metasploit_attack(i_k,data[i_k]["instructions"], int(data[i_k]["wait_time"]),self.metaClient)
-
+                dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),self.metaClient)
+                
         return dict
+
+
+    def create_scan(self, scan, nmap_target, attacker_ip):
+        
+        scan_name= self.scans_dict[scan].attack
+        scan_instr=self.scans_dict[scan].instruction.format(nmap_target, attacker_ip)
+        scan_type=self.scans_dict[scan].attack_type
+        scan_wait=self.scans_dict[scan].wait_time
+
+        scan_obj=Metasploit_Attack(scan_name,scan_instr,scan_wait,self.metaClient)
+
+        return scan_obj
+    
+    
+    def create_attack(self, attack, target_ip, attacker_ip, LPORT):
+        attack_name=self.attack_dict[attack].attack
+        attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
+        attack_type=self.attack_dict[attack].attack_type
+        attack_wait=self.attack_dict[attack].wait_time
+
+        if(attack_type=="ResourceAttack"):
+                attack_obj=ResourceAttack(attack_name, attack_instr, attack_wait, self.metaClient)
+        elif(attack_type=="SshAttack"): 
+            attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBSession, attack_wait, self.metaClient)
+        else:
+            attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, self.metaClient)
+        
+        return attack_obj
+
+
+
     
 
     def bulid_scan_and_metasploit_attack(name, instr, wait, metaClient):
@@ -439,4 +467,6 @@ class Attack_DB:
     def build_ssh_attack(name,instr, attacker_ip, OOBSession, attack_wait, mc):
         attack_obj=SshAttack(name, instr, attacker_ip, OOBSession, attack_wait, mc)
         return attack_obj
-"""
+    
+
+     
