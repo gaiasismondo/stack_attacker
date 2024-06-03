@@ -38,12 +38,12 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
         
         attack=list(attack_db.attack_dict)
+        print("attack")
+        print(attack)
         randomized_attack=random.sample(attack,len(attack))
 
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
-        
-    
         
 
 
@@ -92,18 +92,16 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         mc.attempt_scan(scan_obj)
 
         """
-        
-
-
 
 
         for ra in randomized_attack:
 
             LPORT = C.DEFAULT_LPORT  #PENTESTER LISTENING PORT
-
-            #attack_name=Attack_DB.attack_dict[ra].attack
             
             attack_name=attack_db.attack_dict[ra].attack
+            print("attack_name")
+            print(attack_name)
+            print(type(attack_db.attack_dict[ra]))
 
             for p in C.TARGETS_DOCKERS[target_ip]:
                 if(attack_name in p["attack_list"]):
@@ -111,11 +109,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     break
         
             #format the string with the ip that need to be used
-            #attack_instr=Attack_DB.attack_dict[ra].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
             #attack_instr=attack_db.attack_dict[ra].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
-            #attack_type=Attack_DB.attack_dict[ra].attack_type
             #attack_type=attack_db.attack_dict[ra].attack_type
-            #attack_wait=Attack_DB.attack_dict[ra].wait_time
             #attack_wait=attack_db.attack_dict[ra].wait_time
 
 

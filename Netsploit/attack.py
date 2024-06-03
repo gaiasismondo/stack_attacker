@@ -421,8 +421,6 @@ class Attack_DB:
 
             if(infect == True):
                 dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]))
-                print("Build dict")
-                print(type(dict[i_k]))
             else:
                 dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),self.metaClient)
                 
