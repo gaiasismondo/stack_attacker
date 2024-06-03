@@ -443,13 +443,9 @@ class Attack_DB:
     def create_attack(self, attack, target_ip, attacker_ip, LPORT):
     
         attack_name=self.attack_dict[attack].attack
-        print(self.attack_dict[attack].attack)
         attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
-        print(attack_instr)
         attack_type=self.attack_dict[attack].attack_type
-        print(attack_type)
         attack_wait=self.attack_dict[attack].wait_time
-        print(attack_wait)
 
         if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name, attack_instr, attack_wait, self.metaClient)
@@ -457,8 +453,7 @@ class Attack_DB:
             attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBSession, attack_wait, self.metaClient)
         else:
             attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, self.metaClient)
-        
-        print(type(attack_obj))
+
         return attack_obj
 
 
