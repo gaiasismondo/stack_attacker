@@ -44,7 +44,7 @@ class MetasploitAttack(Attack):
         if self.is_resource:
             self.execute_resource(instr_list)
         else:
-            settings = self.parse_settings(instr_list)
+            settings = self.getSettings(instr_list)
             if "resource" in instr_list:
                 return
             payload = self._prepare_payload(settings)
