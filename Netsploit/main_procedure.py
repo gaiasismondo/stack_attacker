@@ -139,7 +139,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 """
             
             attack_obj = attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
-            print(attack_obj)
+            print(attack_obj.name)
+            print(attack_obj.instructions)
 
             if(type(attack_obj)==SshAttack and OOBSession==None):
                 print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
