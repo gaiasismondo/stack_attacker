@@ -93,7 +93,7 @@ class Metasploit_Attack(Attack):
                 exploit_req = [m.start() for m in re.finditer(keyword, i)]
                 if exploit_req:
                     found = True
-                    settings[keyword] = i.partition(keyword)[2].strip().partition(" ")[0][len(keyword) + 1:]
+                    settings[keyword] = i.partition("use")[2].strip().partition(" ")[0][len(keyword) + 1:]
         return settings
 
     def getSettings(self, instr_list):
