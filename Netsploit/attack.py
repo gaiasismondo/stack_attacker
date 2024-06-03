@@ -36,6 +36,29 @@ class MetasploitAttack(Attack):
         self.output = []
         self.is_resource = is_resource
 
+    #parsing delle istruzioni cercando la keyword (exploit o auxiliary)
+    def parse_settings(self, instr_list, keyword):
+        settings = {}
+        found = False
+        for i in instr_list:
+            val = i.partition("setg")[2].strip().partition(" ")
+            if val[0]:
+                settings[val[0]] = val[2]
+            if not found:
+                exploit_req = [m.start() for m in re.finditer(keyword, i)]
+                if exploit_req:
+                    found = True
+                    settings[keyword] = i.partition("use")[2].strip().partition(" ")[0][len(keyword) + 1:]
+        return settings
+
+    #richiama getsetti
+    def getSettings(self, instr_list):
+        return self.parse_settings(instr_list, "exploit")
+
+
+    def getSettingScan(self, instr_list):
+        return self.parse_settings(instr_list, "auxiliary")
+
     # Esegue l'attacco
     def execute(self):
         old_sess = self.client.get_active_sessions()
@@ -45,8 +68,8 @@ class MetasploitAttack(Attack):
             self.execute_resource(instr_list)
         else:
             settings = self.getSettings(instr_list)
-            if "resource" in instr_list:
-                return
+            #if "resource" in instr_list:
+               # return
             payload = self._prepare_payload(settings)
             exploit = self._prepare_exploit(settings)
             self.output = self.client.client.consoles.console(self.client.cid).run_module_with_output(exploit, payload=payload)
@@ -70,27 +93,7 @@ class MetasploitAttack(Attack):
         self.output.append(out["data"])
 
     
-    def _parse_settings(self, instr_list, keyword):
-        settings = {}
-        found = False
-        for i in instr_list:
-            val = i.partition("setg")[2].strip().partition(" ")
-            if val[0]:
-                settings[val[0]] = val[2]
-            if not found:
-                exploit_req = [m.start() for m in re.finditer(keyword, i)]
-                if exploit_req:
-                    found = True
-                    settings[keyword] = i.partition("use")[2].strip().partition(" ")[0][len(keyword) + 1:]
-        return settings
-
-
-    def getSettings(self, instr_list):
-        return self._parse_settings(instr_list, "exploit")
-
-
-    def getSettingScan(self, instr_list):
-        return self._parse_settings(instr_list, "auxiliary")
+    
 
 
     def _prepare_payload(self, settings):
