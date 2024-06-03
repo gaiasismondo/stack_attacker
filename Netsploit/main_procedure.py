@@ -112,11 +112,11 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         
             #format the string with the ip that need to be used
             #attack_instr=Attack_DB.attack_dict[ra].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
-            attack_instr=attack_db.attack_dict[ra].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
+            #attack_instr=attack_db.attack_dict[ra].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
             #attack_type=Attack_DB.attack_dict[ra].attack_type
-            attack_type=attack_db.attack_dict[ra].attack_type
+            #attack_type=attack_db.attack_dict[ra].attack_type
             #attack_wait=Attack_DB.attack_dict[ra].wait_time
-            attack_wait=attack_db.attack_dict[ra].wait_time
+            #attack_wait=attack_db.attack_dict[ra].wait_time
 
 
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
@@ -129,17 +129,19 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
                 
-            
+            """
             if(attack_type=="ResourceAttack"):
                 attack_obj=ResourceAttack(attack_name,attack_instr,attack_wait, mc)
             elif(attack_type=="SshAttack"):
                 attack_obj=SshAttack(attack_name,attack_instr,attacker_ip,OOBSession,attack_wait, mc)
             else:
                 attack_obj=Metasploit_Attack(attack_name,attack_instr,attack_wait, mc)
+                """
                 
             
-            attack_obj2 = attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
-            print(type(attack_obj2))
+            attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
+
+            
             print(type(attack_obj))
            
 
