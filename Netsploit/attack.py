@@ -51,13 +51,49 @@ class MetasploitAttack(Attack):
                     settings[keyword] = i.partition("use")[2].strip().partition(" ")[0][len(keyword) + 1:]
         return settings
 
-    #richiama getsetti
+    #richiama getsetting passando la parola chiave exploit
     def getSettings(self, instr_list):
         return self.parse_settings(instr_list, "exploit")
 
-
+    #richiama getsetting passando la parola chiave auxiliray
     def getSettingScan(self, instr_list):
         return self.parse_settings(instr_list, "auxiliary")
+    
+    # Viene preparato il payload
+    def prepare_payload(self, settings):
+        if "payload" in settings:
+            payload = self.client.client.modules.use('payload', settings["payload"])
+            Logger.log(self, f"using payload - {settings['payload']}", level=Logger.INFO)
+            if "LPORT" in settings:
+                payload.runoptions["LPORT"] = settings["LPORT"]
+            return payload
+        return None
+    
+    # Viene preparato l'exploit
+    def prepare_exploit(self, settings):
+        exploit = {}
+        if "exploit" in settings:
+            exploit = self.client.client.modules.use("exploit", settings["exploit"])
+            Logger.log(self, f"using exploit - {settings['exploit']}", level=Logger.INFO)
+
+        for key in settings.keys():
+            if key in ["payload", "exploit", "LPORT"]:
+                continue
+            exploit[key] = settings[key]
+        return exploit
+    
+
+    # Viene preparato l'auxiliary (equivalente di exploit ma per le scansioni)
+    def prepare_auxiliary(self, settings):
+        if "auxiliary" in settings:
+            auxiliary = self.client.client.modules.use("auxiliary", settings["auxiliary"])
+            Logger.log(self, f"using scan - {settings['auxiliary']}", level=Logger.INFO)
+            for key in settings.keys():
+                if key in ["payload", "auxiliary", "LPORT"]:
+                    continue
+                auxiliary[key] = settings[key]
+            return auxiliary
+        return None
 
     # Esegue l'attacco
     def execute(self):
@@ -68,10 +104,8 @@ class MetasploitAttack(Attack):
             self.execute_resource(instr_list)
         else:
             settings = self.getSettings(instr_list)
-            #if "resource" in instr_list:
-               # return
-            payload = self._prepare_payload(settings)
-            exploit = self._prepare_exploit(settings)
+            payload = self.prepare_payload(settings)
+            exploit = self.prepare_exploit(settings)
             self.output = self.client.client.consoles.console(self.client.cid).run_module_with_output(exploit, payload=payload)
         
         return self.check(old_sess)
@@ -93,52 +127,17 @@ class MetasploitAttack(Attack):
         self.output.append(out["data"])
 
     
-    
-
-
-    def _prepare_payload(self, settings):
-        if "payload" in settings:
-            payload = self.client.client.modules.use('payload', settings["payload"])
-            Logger.log(self, f"using payload - {settings['payload']}", level=Logger.INFO)
-            if "LPORT" in settings:
-                payload.runoptions["LPORT"] = settings["LPORT"]
-            return payload
-        return None
-
-    def _prepare_exploit(self, settings):
-        exploit = {}
-        if "exploit" in settings:
-            exploit = self.client.client.modules.use("exploit", settings["exploit"])
-            Logger.log(self, f"using exploit - {settings['exploit']}", level=Logger.INFO)
-
-        for key in settings.keys():
-            if key in ["payload", "exploit", "LPORT"]:
-                continue
-            exploit[key] = settings[key]
-        return exploit
-
+    # Viene eseguita la scansione ma l'output non viene utilizzato
     def scan(self):
         instr_list = self.instruction.split("\n")
         settings = self.getSettingScan(instr_list)
-        payload = self._prepare_payload(settings)
-        exploit = self._prepare_auxiliary(settings)
-        # Execute the scan without reading the output to avoid blocking
+        payload = self.prepare_payload(settings)
+        exploit = self.prepare_auxiliary(settings)
         exploit.execute()
         sleep(2)
-
     
 
-    def _prepare_auxiliary(self, settings):
-        if "auxiliary" in settings:
-            auxiliary = self.client.client.modules.use("auxiliary", settings["auxiliary"])
-            Logger.log(self, f"using scan - {settings['auxiliary']}", level=Logger.INFO)
-            for key in settings.keys():
-                if key in ["payload", "auxiliary", "LPORT"]:
-                    continue
-                auxiliary[key] = settings[key]
-            return auxiliary
-        return None
-
+    # Verifica l'esito dell'attacco (se è andato a buon fine è stata creata una nuova sessione)
     def check(self, old_sess):
         session = {}
         new_sess = self.client.get_active_sessions()
@@ -157,7 +156,7 @@ class MetasploitAttack(Attack):
         
 
 
-
+# Classe che estende Attack e implementa attacchi SSH Out Of Band
 class SshAttack(Attack):
     SLEEP_TIME = 5
 
@@ -172,6 +171,7 @@ class SshAttack(Attack):
         if type(self.session) == str:
             raise TypeError
 
+    # Esegue l'attacco ssh OOB (Itera sulle istruzione e le esegue sulla sessione Meterpreter)
     def execute(self):
         for c in self.instructions:
             self.client.client.sessions.session.write(c)
@@ -180,6 +180,8 @@ class SshAttack(Attack):
             self.out.append(y)
         return self.check(self.client.get_active_sessions())
 
+
+    # Verifica l'esito dell'attacco (se è andato a buon fine è stata creata una nuova sessione)
     def check(self, old_sess):
         session = {}
         new_sess = self.client.get_active_sessions()
@@ -197,8 +199,7 @@ class SshAttack(Attack):
 
 
 
-
-
+# Classe per gestire il database degli attacchi 
 class Attack_DB:
 
     def __init__(self, metaClient, attacker_ip, OOBsession, db_path="attack_db.json"):
@@ -216,7 +217,7 @@ class Attack_DB:
         self.stealth_attack_dict = self.build_dict(db_string["storage"]["stealth_attacks"])
         self.infect_dict = self.build_dict(db_string["storage"]["infect"], True)
 
-
+    # Costruisce un dizionario degli attacchi/scansioni (prende una lista di attacchi/scansioni e restitituisce un dizionario con chiave nome dell'attacco/scansione e valore oggetto di tipo Attack)
     def build_dict(self, data, infect=False):
         dict = {}
         for i_k in data.keys():
@@ -229,7 +230,7 @@ class Attack_DB:
                 
         return dict
 
-
+    # Prende un oggetto di tipo attack, formatta le istruzioni e restituisce un oggetto di tipo MetasploitAttack (scansione)
     def create_scan(self, scan, nmap_target, attacker_ip):
         
         scan_name= self.scans_dict[scan].attack
@@ -241,7 +242,7 @@ class Attack_DB:
 
         return scan_obj
     
-
+    # Prende un oggetto di tipo attack, formatta le istruzioni e restituisce un oggetto di tipo MetasploitAttack oppure SshAttack a seconda del tipo
     def create_attack(self, attack, target_ip, attacker_ip, LPORT):
     
         attack_name=self.attack_dict[attack].attack
