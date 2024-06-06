@@ -80,7 +80,7 @@ def execute_attack(workspace, targetIPs, listeningIP)
     # controlli se gli indirizzi ip targetIPs hanno la porta 25 aperta
     run_single("set PORTS 25")
     run_single("set THREADS 10")
-    run_single("set RHOSTS #{targetIPs}")
+    run_single("set LHOSTS #{targetIPs}")
     # esegue scanner porte tcp
     run_single("run")
     
