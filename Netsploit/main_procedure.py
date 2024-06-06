@@ -43,6 +43,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
+            print(met_sess)
         
 
 
@@ -128,7 +129,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     compromised_machines.add(target_ip)
                     uncompromised_machines.remove(target_ip)
 
-                 
                     
                     if(attack_name=="tomcat_server"):
                         print(f"{C.COL_YELLOW} Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
