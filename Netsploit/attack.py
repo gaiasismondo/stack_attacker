@@ -202,7 +202,7 @@ class SshAttack(Attack):
 # Classe per gestire il database degli attacchi 
 class Attack_DB:
 
-    def __init__(self, metaClient, attacker_ip, OOBsession, db_path="attack_db.json"):
+    def __init__(self, metaClient=None, attacker_ip=None, OOBsession=None, db_path="attack_db.json"):
 
         self.metaClient = metaClient
         self.attacker_ip = attacker_ip
