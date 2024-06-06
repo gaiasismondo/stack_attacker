@@ -1,0 +1,3 @@
+INFO:root:RPC client connected - server_port=1234, server_ip='192.168.40.23', ssl=True
+INFO:root:Console created - self.cid='1'
+INFO:root:unable to create session
