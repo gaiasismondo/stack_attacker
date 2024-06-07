@@ -220,7 +220,7 @@ class MetaClient:
         self.route_flush()
         self.client.sessions.session(sess).write(cmd)
         portfwd=self.client.sessions.session(sess).read()
-        #print(portfwd)
+        print(portfwd)
 
 
 
