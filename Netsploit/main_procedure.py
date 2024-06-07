@@ -55,7 +55,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             else:
                 print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
                 mc.route_add(met_sess["id_sess"], target_ip)
-                #mc.route_print()
+                mc.route_print()
                 router=met_sess
             
         
