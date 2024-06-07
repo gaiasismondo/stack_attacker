@@ -87,7 +87,6 @@ class MetaClient:
         handler_p['LPORT'] = C.NETCAT_PORT   # port defined in config file to connect to the netcat port used by docker_escape
 
         handler = aus_client.modules.use('exploit', 'multi/handler')
-        print(handler)
         #print(self.get_active_sessions(sleep=sleep))
         handler.execute(payload=handler_p)
 
