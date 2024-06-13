@@ -16,7 +16,7 @@
         [
             {
                 "docker_name": "smtp_server",
-                "exposed_port": "55555",
+                "exposed_port": "55551",
                 "VM_Port": "55555",
                 "attack_list": ["smtp_server"]
             }
