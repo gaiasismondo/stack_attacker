@@ -118,6 +118,10 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     print(content)
                 with open(config_tomcat_file,'w') as x:
                     json.dump(content, x, indent=4)
+                with open(config_tomcat_file, 'r') as x:
+                    content = json.load(x)
+                    print(content)
+
                     
 
             session=mc.attempt_attack(attack_obj)
