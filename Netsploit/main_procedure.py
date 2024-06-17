@@ -43,7 +43,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
             print(met_sess)
-        
 
 
         if(target_ip in other_subnet):
@@ -79,7 +78,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         mc.attempt_scan(scan_obj)
 
         
-
         for ra in randomized_attack:
 
             LPORT = C.DEFAULT_LPORT  #PENTESTER LISTENING PORT
@@ -109,6 +107,11 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             if(type(attack_obj)==SshAttack and OOBSession==None):
                 print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
                 continue
+
+            if(attack_name=="tomcat_server"):
+                config_tomcat_file = "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
+                with open(config_tomcat_file) as c:
+                    content = json.load(c)
             
             session=mc.attempt_attack(attack_obj)
             #print(attack_obj.output)
