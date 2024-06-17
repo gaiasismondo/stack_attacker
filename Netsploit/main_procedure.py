@@ -115,7 +115,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     print(content)
                     content["TOMCATHOST_201914271"]=target_ip
                     content["LPORT"]=LPORT
-                    print(content)
                 with open(config_tomcat_file,'w') as x:
                     json.dump(content, x, indent=4)
                 with open(config_tomcat_file, 'r') as x:
