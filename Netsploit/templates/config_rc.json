@@ -1,6 +1,7 @@
 {
     "WORKSPACE_201914271": "CVE201914271",
-    "TOMCATHOST_201914271": "IPtomcat_vuln",
     "TOMCATPORT_201914271": 8080,
-    "LHOST_VM": "IPexploits-repo"
+    "TOMCATHOST_201914271": "IPtomcat_vuln",
+    "LHOST_VM": "IPexploits-repo",
+    "LPORT" : "55555"
 }
