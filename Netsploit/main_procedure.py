@@ -112,6 +112,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 config_tomcat_file = "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
                 with open(config_tomcat_file) as c:
                     content = json.load(c)
+                    print(content)
             
             session=mc.attempt_attack(attack_obj)
             #print(attack_obj.output)
