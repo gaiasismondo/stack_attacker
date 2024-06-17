@@ -90,8 +90,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 if(attack_name in p["attack_list"]):
                     LPORT=p["exposed_port"]
                     break
-                
-            print(LPORT)
 
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
             
