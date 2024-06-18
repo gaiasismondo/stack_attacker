@@ -2,10 +2,9 @@ from abc import ABC, abstractmethod
 import re
 from time import sleep
 from contextlib import contextmanager
-import signal
 import json
 from util import time_limit
-from util import Logger
+from util import Logger, Constants as C
 
 
 # Classe astratta che rappresenta un attacco
@@ -250,18 +249,15 @@ class Attack_DB:
         attack_type=self.attack_dict[attack].attack_type
         attack_wait=self.attack_dict[attack].wait_time
 
-
         if(attack_type=="ResourceAttack"):
-                if(attack_name=="tomcat_server"):
-                    config_tomcat_file = "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
-                    with open(config_tomcat_file, 'r') as x:
-                        content = json.load(x)
-                        print(content)
-                        content["TOMCATHOST_201914271"]=target_ip
-                        content["LPORT"]=LPORT
-                    with open(config_tomcat_file,'w') as x:
-                        json.dump(content, x, indent=4)
-                attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient, is_resource=True)
+            if(attack_name=="tomcat_server"):
+                with open(C.TOMCAT_CONFIG_FILE, 'r') as f:
+                    content = json.load(f)
+                    content["TOMCATHOST_201914271"]=target_ip
+                    content["LPORT"]=LPORT
+                with open(C.TOMCAT_CONFIG_FILE,'w') as f:
+                    json.dump(content, f, indent=4)
+            attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient, is_resource=True)
         elif(attack_type=="SshAttack"): 
             attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBsession, attack_wait, self.metaClient)
         else:
