@@ -99,7 +99,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-            
             """
 
             attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
@@ -109,7 +108,7 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
                 continue
                     
-
+                    
             session=mc.attempt_attack(attack_obj)
             #print(attack_obj.output)
             print(session)
