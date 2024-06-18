@@ -250,7 +250,17 @@ class Attack_DB:
         attack_type=self.attack_dict[attack].attack_type
         attack_wait=self.attack_dict[attack].wait_time
 
+
         if(attack_type=="ResourceAttack"):
+                if(attack_name=="tomcat_server"):
+                    config_tomcat_file = "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
+                    with open(config_tomcat_file, 'r') as x:
+                        content = json.load(x)
+                        print(content)
+                        content["TOMCATHOST_201914271"]=target_ip
+                        content["LPORT"]=LPORT
+                    with open(config_tomcat_file,'w') as x:
+                        json.dump(content, x, indent=4)
                 attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient, is_resource=True)
         elif(attack_type=="SshAttack"): 
             attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBsession, attack_wait, self.metaClient)

