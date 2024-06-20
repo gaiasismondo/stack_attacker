@@ -40,8 +40,6 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         randomized_attack=random.sample(attack,len(attack))
 
         if(atk_sess!=None):
-            print("sessione da upgradare")
-            print(atk_sess)
             met_sess=mc.upgrade_shell(atk_sess)
             print(met_sess)
 
@@ -91,11 +89,11 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     break
 
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
-            
+            """
             if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-            
+            """
             if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue

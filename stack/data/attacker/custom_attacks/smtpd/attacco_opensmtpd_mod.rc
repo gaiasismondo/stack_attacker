@@ -70,7 +70,6 @@ end
 # Esegue processo di attacco
 #
 def execute_attack(workspace, targetIPs, listeningIP)
-    puts "workspace #{workspace} target #{targetIPs} listener #{listeningIP}"
     # si sposta nel workspace specificato come parametro,
     # se non esiste lo crea in automatico
     run_single("workspace -a #{workspace}")
