@@ -62,6 +62,7 @@ end
 # Ritorna le shell che sono state aperte dal modulo attivo al momento della chiamata
 #
 def mySessions()
+
     return framework.sessions.select{ |sid, session| session.exploit_uuid == active_module.uuid }
 end
 
