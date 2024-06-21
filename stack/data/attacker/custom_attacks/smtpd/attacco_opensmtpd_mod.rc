@@ -73,7 +73,13 @@ def execute_attack(workspace, targetIPs, listeningIP)
     # si sposta nel workspace specificato come parametro,
     # se non esiste lo crea in automatico
     run_single("workspace -a #{workspace}")
+<<<<<<< HEAD
     
+=======
+    run_single("workspace -d #{workspace}")
+    run_single("workspace -a #{workspace}")
+    run_single("hosts -d 192.168.40.22")
+>>>>>>> 0d58cad9f2b4d8cc6e42927629652b492988adb6
     # PRE-EXPLOIT
     # seleziona come modulo attivo lo scanner di porte tcp
     run_single("use auxiliary/scanner/portscan/tcp")
