@@ -84,7 +84,7 @@
 
         workspace = framework.datastore["WORKSPACE"]
         targetIPs = framework.datastore["TARGET_IPS"]
-\       listeningIP = framework.datastore["LISTENING_IP"]
+        listeningIP = framework.datastore["LISTENING_IP"]
 
         # si sposta nel workspace specificato come parametro,
         # se non esiste lo crea in automatico
