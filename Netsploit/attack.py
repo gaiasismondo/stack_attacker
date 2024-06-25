@@ -250,6 +250,7 @@ class Attack_DB:
         attack_wait=self.attack_dict[attack].wait_time
 
         if(attack_type=="ResourceAttack"):
+
             if(attack_name=="tomcat_server"):
                 with open(C.TOMCAT_CONFIG_FILE, 'r') as f:
                     content = json.load(f)
@@ -263,11 +264,9 @@ class Attack_DB:
                     content["TARGET_IP"]=target_ip
                 with open(C.SMTP_CONFIG_FILE,'w') as f:
                     json.dump(content, f, indent=4)
-                with open(C.SMTP_CONFIG_FILE,'r') as f:
-                    content = json.load(f)
-                    print(content)
-            
+               
             attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient, is_resource=True)
+            
         elif(attack_type=="SshAttack"): 
             attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBsession, attack_wait, self.metaClient)
         else:
