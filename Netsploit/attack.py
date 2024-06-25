@@ -257,9 +257,16 @@ class Attack_DB:
                     content["LPORT"]=LPORT
                 with open(C.TOMCAT_CONFIG_FILE,'w') as f:
                     json.dump(content, f, indent=4)
-                with open(C.TOMCAT_CONFIG_FILE, 'r') as f:
+            if(attack_name=="smtp_server"):
+                with open(C.SMTP_CONFIG_FILE, 'r') as f:
+                    content = json.load(f)
+                    content["TARGET_IP"]=target_ip
+                with open(C.SMTP_CONFIG_FILE,'w') as f:
+                    json.dump(content, f, indent=4)
+                with open(C.SMTP_CONFIG_FILE,'R') as f:
                     content = json.load(f)
                     print(content)
+            
             attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient, is_resource=True)
         elif(attack_type=="SshAttack"): 
             attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBsession, attack_wait, self.metaClient)

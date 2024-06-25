@@ -85,7 +85,7 @@ class Constants:
     ADD_PORTFWD="portfwd add -R -L {} -l {} -p {}"
 
     TOMCAT_CONFIG_FILE = "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
-    
+    SMTP_CONFIG_FILE = "../stack/data/attacker/custom_attacks/smtpd/config_rc.json"
 
 
 #LOGGING MANAGEMENT
