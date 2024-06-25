@@ -263,7 +263,7 @@ class Attack_DB:
                     content["TARGET_IP"]=target_ip
                 with open(C.SMTP_CONFIG_FILE,'w') as f:
                     json.dump(content, f, indent=4)
-                with open(C.SMTP_CONFIG_FILE,'R') as f:
+                with open(C.SMTP_CONFIG_FILE,'r') as f:
                     content = json.load(f)
                     print(content)
             
