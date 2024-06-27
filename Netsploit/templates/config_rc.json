@@ -1,7 +1,7 @@
 {
     "WORKSPACE": ".",
     "TOMCATPORT_201914271": 8080,
-    "TOMCATHOST_201914271": "IPtomcat_vuln",
+    "TARGET_IP": "IPtomcat_vuln",
     "LHOST_VM": "IPexploits-repo",
     "LPORT" : "55555"
 }
