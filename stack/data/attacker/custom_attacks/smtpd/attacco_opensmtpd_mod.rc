@@ -88,7 +88,7 @@
 
         # si sposta nel workspace specificato come parametro,
         # se non esiste lo crea in automatico
-        #run_single("workspace -a #{workspace}")
+        run_single("workspace -a #{workspace}")
         #run_single("workspace -d #{workspace}") 
         #run_single("workspace -a #{workspace}") 
 
