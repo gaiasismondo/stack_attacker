@@ -91,21 +91,7 @@
         run_single("workspace -a #{workspace}")
         run_single("workspace -d #{workspace}") 
         run_single("workspace -a #{workspace}") 
-
-        # Condizione specifica per targetIPs 
-        # if targetIP == "192.168.40.21" 
-            # run_single("workspace -d #{workspace}") 
-            # run_single("workspace -a #{workspace}") 
-            # run_single("hosts -d 192.168.40.22") 
-        # end
-
-
-        #run_single("workspace -d #{workspace}") 
-        #run_single("workspace -a #{workspace}") 
-        #run_single("hosts -d 192.168.40.22") 
-
-        
-
+    
         # PRE-EXPLOIT
         # seleziona come modulo attivo lo scanner di porte tcp
         run_single("use auxiliary/scanner/portscan/tcp")
