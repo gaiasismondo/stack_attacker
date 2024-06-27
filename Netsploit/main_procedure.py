@@ -82,7 +82,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
             #LPORT = C.DEFAULT_LPORT  #PENTESTER LISTENING PORT
             
             attack_name=attack_db.attack_dict[ra].attack
-            LPORT = C.TARGETS_DOCKERS[target_ip]["exposed_port"]
+            p = C.TARGETS_DOCKERS[target_ip]
+            LPORT = p["exposed_port"]
             """
             for p in C.TARGETS_DOCKERS[target_ip]:
                 if(attack_name in p["attack_list"]):
