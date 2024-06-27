@@ -88,9 +88,18 @@
 
         # si sposta nel workspace specificato come parametro,
         # se non esiste lo crea in automatico
-        run_single("workspace -a #{workspace}")
-        run_single("workspace -d #{workspace}") 
-        run_single("workspace -a #{workspace}") 
+        #run_single("workspace -a #{workspace}")
+        #run_single("workspace -d #{workspace}") 
+        #run_single("workspace -a #{workspace}") 
+
+
+        if targetIP == "192.168.40.21"
+            run_single("workspace -d #{workspace}")
+            run_single("workspace -a #{workspace}")
+            run_single("hosts -d 192.168.40.22")
+        end
+
+
     
         # PRE-EXPLOIT
         # seleziona come modulo attivo lo scanner di porte tcp
