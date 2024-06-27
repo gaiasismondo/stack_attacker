@@ -79,17 +79,15 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
         
         for ra in randomized_attack:
 
-            #LPORT = C.DEFAULT_LPORT  #PENTESTER LISTENING PORT
+            LPORT = C.DEFAULT_LPORT  #PENTESTER LISTENING PORT
             
             attack_name=attack_db.attack_dict[ra].attack
-            p = C.TARGETS_DOCKERS[target_ip][0]
-            LPORT = p["exposed_port"]
-            """
+
             for p in C.TARGETS_DOCKERS[target_ip]:
                 if(attack_name in p["attack_list"]):
                     LPORT=p["exposed_port"]
                     break
-            """
+
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
             
             """
