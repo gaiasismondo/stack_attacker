@@ -1,6 +1,6 @@
 {
     "WORKSPACE": ".",
-    "TOMCATPORT_201914271": 8080,
+    "TARGET_PORT": 8080,
     "TARGET_IP": "192.168.40.21",
     "LHOST_VM": "192.168.40.23",
     "LPORT": "55555"
