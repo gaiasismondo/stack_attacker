@@ -241,7 +241,7 @@ class Attack_DB:
 
         return scan_obj
     
-    # Prende un oggetto di tipo attack, formatta le istruzioni e restituisce un oggetto di tipo MetasploitAttack oppure SshAttack a seconda del tipo
+    # Prende un oggetto di tipo attack, formatta le istruzioni e restituisce un oggetto di tipo MetasploitAttack oppure SshAttack a seconda del tipo.
     def create_attack(self, attack, target_ip, attacker_ip, LPORT):
     
         attack_name=self.attack_dict[attack].attack
@@ -254,7 +254,7 @@ class Attack_DB:
             if(attack_name=="tomcat_server"):
                 with open(C.TOMCAT_CONFIG_FILE, 'r') as f:
                     content = json.load(f)
-                    content["TOMCATHOST_201914271"]=target_ip
+                    content["TARGET_IP"]=target_ip
                     content["LPORT"]=LPORT
                 with open(C.TOMCAT_CONFIG_FILE,'w') as f:
                     json.dump(content, f, indent=4)
