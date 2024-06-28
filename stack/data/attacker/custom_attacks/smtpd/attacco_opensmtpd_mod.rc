@@ -89,11 +89,15 @@
         # si sposta nel workspace specificato come parametro,
         # se non esiste lo crea in automatico
         run_single("hosts -d")
-        run_single("workspace -d #{workspace}") 
-        run_single("workspace -a #{workspace}") 
+        #run_single("workspace -d #{workspace}") 
+        #run_single("workspace -a #{workspace}") 
         run_single("hosts -a #{target_ip}")
 
-
+        # if targetIP == "192.168.40.21"
+           #run_single("workspace -d #{workspace}")
+           #run_single("workspace -a #{workspace}")
+           #run_single("hosts -d 192.168.40.22")
+       # end
      
 
     
