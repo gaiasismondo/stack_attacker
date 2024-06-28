@@ -98,27 +98,20 @@
     #
     def execute_attack()
 
-
         workspace = framework.datastore["WORKSPACE"]
         targetIP = framework.datastore["TARGET_IP"]
         listeningIP = framework.datastore["LISTENING_IP"]
 
-
-        # si sposta nel workspace specificato come parametro,
-        # se non esiste lo crea in automatico
-        #run_single("workspace -a #{workspace}")
-        #run_single("workspace -d #{workspace}") 
-        #run_single("workspace -a #{workspace}") 
+        
+        run_single("workspace -d #{workspace}") 
+        run_single("workspace -a #{workspace}") 
 
 
         if targetIP == "192.168.40.21"
-            run_single("workspace -d #{workspace}")
-            run_single("workspace -a #{workspace}")
+            #run_single("workspace -d #{workspace}")
+            #run_single("workspace -a #{workspace}")
             run_single("hosts -d 192.168.40.22")
         end
-
-
-
 
     
         # PRE-EXPLOIT
