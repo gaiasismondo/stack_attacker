@@ -112,7 +112,7 @@
         #Itera sugli indirizzi IP e elimina quelli diversi da target_ip
         host_ips.each do |ip|
             next if ip == target_ip  
-                run_single("hosts -d #{ip}")
+            run_single("hosts -d #{ip}")
         end
     end
 
