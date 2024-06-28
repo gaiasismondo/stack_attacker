@@ -127,11 +127,11 @@
         targetIP = framework.datastore["TARGET_IP"]
         listeningIP = framework.datastore["LISTENING_IP"]
 
-        
+        run_single("workspace -a #{workspace}") 
         run_single("workspace -d #{workspace}") 
         run_single("workspace -a #{workspace}") 
 
-        delete_other_hosts(target_ip)
+        #delete_other_hosts(target_ip)
 
         #if targetIP == "192.168.40.21"
         
