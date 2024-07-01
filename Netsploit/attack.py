@@ -211,14 +211,14 @@ class Attack_DB:
         with open(db_path) as db:
             db_string = json.load(db)
         
-        self.attack_dict = self.build_dict(db_string["storage"]["attacks"])
+        self.attack_dict = self.build_dict(db_string["storage"]["attacks"], False, True)
         self.scans_dict = self.build_dict(db_string["storage"]["scans"])
         self.stealth_scans_dict = self.build_dict(db_string["storage"]["stealth_scans"])
         self.stealth_attack_dict = self.build_dict(db_string["storage"]["stealth_attacks"])
-        self.infect_dict = self.build_dict(db_string["storage"]["infect"], True)
+        self.infect_dict = self.build_dict(db_string["storage"]["infect"], True, False)
 
     # Costruisce un dizionario degli attacchi/scansioni (prende una lista di attacchi/scansioni e restitituisce un dizionario con chiave nome dell'attacco/scansione e valore oggetto di tipo Attack)
-    def build_dict(self, data, infect=False):
+    def build_dict(self, data, infect=False, attack=False):
         dict = {}
         for i_k in data.keys():
 

