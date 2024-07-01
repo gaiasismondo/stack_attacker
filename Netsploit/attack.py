@@ -11,11 +11,12 @@ from util import Logger, Constants as C
 
 # Classe astratta che rappresenta un attacco
 class Attack(ABC):
-    def __init__(self, name, instructions, wait_time, attack_type=None):
+    def __init__(self, name, instructions, wait_time, attack_type=None, config_rc=None):
         self.attack = name
         self.instruction = instructions
         self.wait_time = wait_time
         self.attack_type = attack_type
+        self.config_rc = config_rc
 
 
     # Metodo astratto per eseguire l'attacco
@@ -36,12 +37,11 @@ class MetasploitAttack(Attack):
     SHORT_SLEEP_TIME = 5
 
 
-    def __init__(self, name, instructions, wait_time=10, client=None, is_resource=False, config_file=None):
-        super().__init__(name, instructions, wait_time=wait_time)
+    def __init__(self, name, instructions, wait_time=10, client=None, is_resource=False, config_rc=None):
+        super().__init__(name, instructions, wait_time=wait_time, config_rc=config_rc)
         self.client = client
         self.output = []
         self.is_resource = is_resource
-        self.config_file = config_file
 
 
     #parsing delle istruzioni cercando la keyword (exploit o auxiliary)
