@@ -9,11 +9,12 @@ from util import Logger, Constants as C
 
 # Classe astratta che rappresenta un attacco
 class Attack(ABC):
-    def __init__(self, name, instructions, wait_time, attack_type=None):
+    def __init__(self, name, instructions, wait_time, attack_type=None, config_file=None):
         self.attack = name
         self.instruction = instructions
         self.wait_time = wait_time
         self.attack_type = attack_type
+        self.config_file = config_file
 
     # Metodo astratto per eseguire l'attacco
     def execute(self):
@@ -29,12 +30,11 @@ class MetasploitAttack(Attack):
     LONG_SLEEP_TIME = 15
     SHORT_SLEEP_TIME = 5
 
-    def __init__(self, name, instructions, wait_time=10, client=None, is_resource=False, config_file=None):
+    def __init__(self, name, instructions, wait_time=10, client=None, is_resource=False):
         super().__init__(name, instructions, wait_time=wait_time)
         self.client = client
         self.output = []
         self.is_resource = is_resource
-        self.config_file = config_file
 
     #parsing delle istruzioni cercando la keyword (exploit o auxiliary)
     def parse_settings(self, instr_list, keyword):
@@ -224,7 +224,8 @@ class Attack_DB:
 
             if(infect == True):
                 dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]))
-
+            elif(attack == True):
+                Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),data[i_k]["attack_type"], data[i_k]["config"])
             else:
                 dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),data[i_k]["attack_type"])
                 
