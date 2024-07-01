@@ -288,25 +288,16 @@ class Attack_DB:
         attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
         attack_type=self.attack_dict[attack].attack_type
         attack_wait=self.attack_dict[attack].wait_time
-        attack_config=self.attack_dict[attack].config_rc
-
+        attack_config_file=self.attack_dict[attack].config_rc
 
         if(attack_type=="ResourceAttack"):
 
-
-            if(attack_name=="tomcat_server"):
-                with open(C.TOMCAT_CONFIG_FILE, 'r') as f:
-                    content = json.load(f)
-                    content["TARGET_IP"]=target_ip
-                    content["LPORT"]=LPORT
-                with open(C.TOMCAT_CONFIG_FILE,'w') as f:
-                    json.dump(content, f, indent=4)
-            if(attack_name=="smtp_server"):
-                with open(C.SMTP_CONFIG_FILE, 'r') as f:
-                    content = json.load(f)
-                    content["TARGET_IP"]=target_ip
-                with open(C.SMTP_CONFIG_FILE,'w') as f:
-                    json.dump(content, f, indent=4)
+            with open(attack_config_file, 'r') as f:
+                content = json.load(f)
+                content["TARGET_IP"]=target_ip
+                content["LPORT"]=LPORT
+            with open(attack_config_file,'w') as f:
+                json.dump(content, f, indent=4)
                
             attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient, is_resource=True)
             
