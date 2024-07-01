@@ -276,7 +276,6 @@ class Attack_DB:
         scan_type=self.scans_dict[scan].attack_type
         scan_wait=self.scans_dict[scan].wait_time
 
-
         scan_obj=MetasploitAttack(scan_name,scan_instr,scan_wait,self.metaClient)
 
 
@@ -289,6 +288,7 @@ class Attack_DB:
         attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
         attack_type=self.attack_dict[attack].attack_type
         attack_wait=self.attack_dict[attack].wait_time
+        attack_config=self.attack_dict[attack].config_rc
 
 
         if(attack_type=="ResourceAttack"):
