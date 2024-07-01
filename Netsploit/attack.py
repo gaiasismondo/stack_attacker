@@ -29,11 +29,12 @@ class MetasploitAttack(Attack):
     LONG_SLEEP_TIME = 15
     SHORT_SLEEP_TIME = 5
 
-    def __init__(self, name, instructions, wait_time=10, client=None, is_resource=False):
+    def __init__(self, name, instructions, wait_time=10, client=None, is_resource=False, config_file=None):
         super().__init__(name, instructions, wait_time=wait_time)
         self.client = client
         self.output = []
         self.is_resource = is_resource
+        self.config_file = config_file
 
     #parsing delle istruzioni cercando la keyword (exploit o auxiliary)
     def parse_settings(self, instr_list, keyword):
