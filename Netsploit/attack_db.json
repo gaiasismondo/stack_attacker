@@ -25,12 +25,6 @@
         "attack_type": "ResourceAttack",
         "wait_time": "30",
         "config": "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
-      },
-      "compromise": {
-        "instructions": "echo compromise {}{}",
-        "attack_type": "False",
-        "wait_time": "10",
-        "config": ""
       }
     },
         "infect":{
