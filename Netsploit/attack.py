@@ -31,7 +31,7 @@ class Attack(ABC):
 
 # classe per la gestione degli attacchi finti, non ancora presenti nel database
 class FakeAttack(Attack):
-    
+
     def execute(self):
         self.client.client.sessions.session.write(self.instructions)
         print(f"Executing fake attack: {self.attack}")
@@ -324,6 +324,8 @@ class Attack_DB:
             
         elif(attack_type=="SshAttack"): 
             attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBsession, attack_wait, self.metaClient)
+        elif(attack_type=="FakeAttack"): 
+            attack_obj=FakeAttack(attack_name, attack_instr, attack_wait, attack_type)
         else:
             attack_obj=MetasploitAttack(attack_name,attack_instr,attack_wait, self.metaClient)
 
