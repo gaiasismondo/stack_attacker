@@ -29,6 +29,20 @@ class Attack(ABC):
         raise NotImplementedError("Use specific attacks!")
 
 
+# classe per la gestione degli attacchi finti, non ancora presenti nel database
+class FakeAttack(Attack):
+    def execute(self):
+        # Implementazione di un attacco finto
+        print(f"Executing fake attack: {self.attack}")
+        print(f"Instructions: {self.instructions}")
+        print(f"Waiting for {self.wait_time} seconds...")
+
+
+    def check(self):
+        # Implementazione del controllo di un attacco finto
+        print(f"Checking result of fake attack: {self.attack}")
+        # Restituisce sempre True per indicare che l'attacco è stato "verificato"
+        return True
 
 
 # Classe che estende Attack e implementa attacchi Metasploit e ResourceAttack (is_resource=True)
@@ -231,14 +245,11 @@ class SshAttack(Attack):
 # Classe per gestire il database degli attacchi 
 class Attack_DB:
 
-
     def __init__(self, metaClient=None, attacker_ip=None, OOBsession=None, db_path="attack_db.json"):
-
 
         self.metaClient = metaClient
         self.attacker_ip = attacker_ip
         self.OOBsession = OOBsession
-
 
         with open(db_path) as db:
             db_string = json.load(db)
