@@ -34,6 +34,7 @@ class FakeAttack(Attack):
 
     def __init__(self, name, instructions, wait_time, attack_type, client=None):
         super().__init__(name, instructions, 10, attack_type)
+        self.instructions = instructions
         self.client = client
       
     def execute(self):
