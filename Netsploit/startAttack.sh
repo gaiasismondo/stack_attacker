@@ -24,5 +24,4 @@ sudo docker exec -i $METASPLOIT_CONT /bin/bash -c 'msfrpcd -p 1234 -P password ;
 echo 'Metasploit container initialized'
 
 python3 main_procedure.py
-python3 main_procedure.py
 
