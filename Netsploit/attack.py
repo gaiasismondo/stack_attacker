@@ -37,7 +37,7 @@ class FakeAttack(Attack):
         self.client = client
       
     def execute(self):
-        self.client.client.sessions.session.write(self.instructions)
+        #self.client.client.sessions.session.write(self.instructions)
         print(f"Executing fake attack: {self.attack}")
         print(f"Instructions: {self.instructions}")
         print(f"Waiting for {self.wait_time} seconds...")
