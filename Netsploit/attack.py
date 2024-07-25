@@ -31,18 +31,31 @@ class Attack(ABC):
 
 # classe per la gestione degli attacchi finti, non ancora presenti nel database
 class FakeAttack(Attack):
+    
     def execute(self):
-        # Implementazione di un attacco finto
+        self.client.client.sessions.session.write(self.instructions)
         print(f"Executing fake attack: {self.attack}")
         print(f"Instructions: {self.instructions}")
         print(f"Waiting for {self.wait_time} seconds...")
+        return self.check(self.client.get_active_sessions())
 
 
-    def check(self):
+    def check(self, old_sess):
         # Implementazione del controllo di un attacco finto
         print(f"Checking result of fake attack: {self.attack}")
-        # Restituisce sempre True per indicare che l'attacco è stato "verificato"
-        return True
+        session = {}
+        new_sess = self.client.get_active_sessions()
+        diff = set(new_sess) - set(old_sess)
+        if diff:
+            session["id_sess"] = diff.pop()
+            Logger.log(self, f"session created - {session['id_sess']}", level=Logger.INFO)
+            obtained_session = new_sess[session["id_sess"]]
+            session["obtained_session"] = obtained_session
+            session["session_host"] = obtained_session["session_host"]
+            return session
+        else:
+            Logger.log(self, f"unable to create session", level=Logger.INFO)
+            return session
 
 
 # Classe che estende Attack e implementa attacchi Metasploit e ResourceAttack (is_resource=True)
@@ -127,7 +140,6 @@ class MetasploitAttack(Attack):
         old_sess = self.client.get_active_sessions()
         instr_list = self.instruction.split("\n")
 
-
         if self.is_resource:
             self.execute_resource(instr_list)
         else:
@@ -195,7 +207,6 @@ class MetasploitAttack(Attack):
 class SshAttack(Attack):
     SLEEP_TIME = 5
 
-
     def __init__(self, name, instructions, ip, session, time_waitwait=None, client=None):
         time_wait = (len(instructions) * SshAttack.SLEEP_TIME) + 10
         super().__init__(name, instructions, wait_time=time_wait)
@@ -203,7 +214,6 @@ class SshAttack(Attack):
         self.instructions = instructions
         self.session = session
         self.ip = ip
-
 
         if type(self.session) == str:
             raise TypeError
