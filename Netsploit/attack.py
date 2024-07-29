@@ -317,7 +317,7 @@ class Attack_DB:
                 json.dump(content, f, indent=4)
             with open(attack_config_file, 'r') as f:
                 content = json.load(f)
-                print(content)
+                print("ATTACK PARAMETERS:   "+content)
                
             attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient, is_resource=True)
             
