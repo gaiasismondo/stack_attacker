@@ -110,7 +110,8 @@ def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
                     
 
             session=mc.attempt_attack(attack_obj)
-            print("\nSESSION:   "+session)
+            print("\nSESSION:   ")
+            print(session)
             
             if(session):
                 
