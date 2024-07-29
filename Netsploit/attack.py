@@ -28,8 +28,8 @@ class Attack(ABC):
         raise NotImplementedError("Use specific attacks!")
 
 
-# classe per la gestione degli attacchi finti, non ancora presenti nel database
-class FakeAttack(Attack):
+# classe per la gestione degli attacchi che non sono ancora stati implementati
+class NotImplementedAttack(Attack):
 
     def __init__(self, name, instructions, wait_time, attack_type, client=None):
         super().__init__(name, instructions, 10, attack_type)
@@ -324,8 +324,8 @@ class Attack_DB:
             
         elif(attack_type=="SshAttack"): 
             attack_obj=SshAttack(attack_name, attack_instr, attacker_ip, self.OOBsession, attack_wait, self.metaClient)
-        elif(attack_type=="FakeAttack"): 
-            attack_obj=FakeAttack(attack_name, attack_instr, attack_wait, attack_type, self.metaClient)
+        elif(attack_type=="NotImplementedAttack"): 
+            attack_obj=NotImplementedAttack(attack_name, attack_instr, attack_wait, attack_type, self.metaClient)
         else:
             attack_obj=MetasploitAttack(attack_name,attack_instr,attack_wait, self.metaClient)
 

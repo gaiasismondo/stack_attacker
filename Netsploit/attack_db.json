@@ -28,7 +28,7 @@
       },
       "compromise": {
         "instructions": "echo no compromise attack",
-        "attack_type": "FakeAttack",
+        "attack_type": "NotImplementedAttack",
         "wait_time": "10",
         "config": ""
       }
