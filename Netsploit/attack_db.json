@@ -31,7 +31,14 @@
         "attack_type": "NotImplementedAttack",
         "wait_time": "10",
         "config": ""
-      }
+      },
+     "scanIP": {
+       "instructions": "echo no scanIP attack",
+       "attack_type": "NotImplementedAttack",
+       "wait_time": "10",
+       "config": ""
+     }
+
     },
 
         "infect":{
