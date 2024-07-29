@@ -37,16 +37,9 @@ class FakeAttack(Attack):
         self.client = client
       
     def execute(self):
-        #self.client.client.sessions.session.write(self.instructions)
-        print(f"Executing fake attack: {self.attack}")
-        print(f"Instructions: {self.instructions}")
-        print(f"Waiting for {self.wait_time} seconds...")
         return self.check(self.client.get_active_sessions())
 
-
     def check(self, old_sess):
-        # Implementazione del controllo di un attacco finto
-        print(f"Checking result of fake attack: {self.attack}")
         session = {}
         new_sess = self.client.get_active_sessions()
         diff = set(new_sess) - set(old_sess)

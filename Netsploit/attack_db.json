@@ -27,7 +27,7 @@
         "config": "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
       },
       "compromise": {
-        "instructions": "echo compromise",
+        "instructions": "echo no compromise attack",
         "attack_type": "FakeAttack",
         "wait_time": "10",
         "config": ""
