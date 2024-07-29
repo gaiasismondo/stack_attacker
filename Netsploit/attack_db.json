@@ -37,9 +37,92 @@
        "attack_type": "NotImplementedAttack",
        "wait_time": "10",
        "config": ""
-     }
-
+     },
+     "scanVuln": {
+       "instructions": "echo no scanVuln attack",
+       "attack_type": "NotImplementedAttack",
+       "wait_time": "10",
+       "config": ""
+     },
+     "remoteSrvc": {
+      "instructions": "echo no remoteSrvc attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "10",
+      "config": ""
     },
+    "shell": {
+      "instructions": "echo no shell attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "10",
+      "config": ""
+    },
+    "addSSHkey": {
+      "instructions": "echo no addSSHkey attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "remoteShell": {
+      "instructions": "echo no remoteShell attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "bruteForce": {
+      "instructions": "echo no bruteForce attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "escapeHost": {
+      "instructions": "echo no escapeHost attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "modAuthProc": {
+      "instructions": "echo no modAuthProc attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "unsecCred": {
+      "instructions": "echo no unsecCred attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "credAcc": {
+      "instructions": "echo no credAcc attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "AITM": {
+      "instructions": "echo no AITM attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "spoofRepMsg": {
+      "instructions": "echo no spoofRepMsg attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "unauthCmdMsg": {
+      "instructions": "echo no unauthCmdMsg attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "DERfailure": {
+      "instructions": "echo no DERfailure attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    }
+   },
 
         "infect":{
       "MMS_over_TLS":{
