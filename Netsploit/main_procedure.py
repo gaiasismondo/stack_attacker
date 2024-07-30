@@ -7,7 +7,7 @@ from attack import Attack,MetasploitAttack,SshAttack,Attack_DB
 from time import sleep
 
 
-def main_procedure (attacker_ip, config_file, stealth=False, stealth_sleep=0):
+def main_procedure (attacker_ip, config_file, attack_sequence_file = None, stealth=False, stealth_sleep=0):
 
     Logger.init_logger()
 
