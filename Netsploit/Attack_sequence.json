@@ -1,0 +1,21 @@
+{
+  "attack_sequence": [
+    "compromise",
+    "scanIP",
+    "scanVuln",
+    "remoteSrvc",
+    "shell",
+    "addSSHkey",
+    "remoteShell",
+    "bruteForce",
+    "escapeHost",
+    "shell",
+    "modAuthProc",
+    "unsecCred",
+    "credAcc",
+    "AITM",
+    "spoofRepMsg",
+    "unauthCmdMsg",
+    "DERfailure"
+  ]
+}

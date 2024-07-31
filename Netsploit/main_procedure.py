@@ -30,6 +30,10 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
     attack_db = Attack_DB(mc, attacker_ip, OOBSession)
     
+    if attack_sequence_file:
+        with open(attack_sequence_file) as f:
+            sequence = json.load(f)["attack_sequence"]
+            print(sequence)
 
     while machines:
 
@@ -94,12 +98,12 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
             
-            
+            """
             if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
             
-            """
+            
             attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
 
 
@@ -165,4 +169,4 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 
 #Da config.json viene recuperato l'ip dell'attaccante e lo si passa al main insieme a config.json
 if(__name__=='__main__'):
-    main_procedure(C.ATTACKER_VM,"config.json")
+    main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
