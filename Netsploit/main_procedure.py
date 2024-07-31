@@ -32,8 +32,10 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
     
     if attack_sequence_file:
         with open(attack_sequence_file) as f:
-            sequence = json.load(f)["attack_sequence"]
-            print(sequence)
+            attack_sequence = json.load(f)["attack_sequence"]
+    else:
+        attack_sequence = list(attack_db.attack_dict)
+
 
     while machines:
 
