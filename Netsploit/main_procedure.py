@@ -169,4 +169,5 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 
 #Da config.json viene recuperato l'ip dell'attaccante e lo si passa al main insieme a config.json
 if(__name__=='__main__'):
-    main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
+    #main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
+    main_procedure(C.ATTACKER_VM,"config.json")
