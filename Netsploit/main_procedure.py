@@ -33,17 +33,15 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
     if attack_sequence_file:
         with open(attack_sequence_file) as f:
             attack_sequence = json.load(f)["attack_sequence"]
-    else:
-        attack_sequence = list(attack_db.attack_dict)
-
 
     while machines:
 
         target_ip=machines.pop(0)
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
         
-        attack=list(attack_db.attack_dict)
-        randomized_attack=random.sample(attack,len(attack))
+        if(attack_sequence_file==None):
+            attack_sequence=list(attack_db.attack_dict)
+        attacK_sequence=random.sample(attack_sequence,len(attack_sequence))
 
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
@@ -82,7 +80,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
         mc.attempt_scan(scan_obj)
 
         
-        for ra in randomized_attack:
+        for ra in attack_sequence:
 
             LPORT = C.DEFAULT_LPORT  #PENTESTER LISTENING PORT
             
