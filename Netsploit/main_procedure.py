@@ -100,11 +100,11 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                 print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
             
-            """
+            
             if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
                 print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
                 continue
-            
+            """
             
             attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
 
