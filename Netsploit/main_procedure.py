@@ -34,6 +34,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
         with open(attack_sequence_file) as f:
             attack_sequence = json.load(f)["attack_sequence"]
             attack_sequence[6]= "smtp_server"
+            attack_sequence[16]= "tomcat_server"
 
     while machines:
 
