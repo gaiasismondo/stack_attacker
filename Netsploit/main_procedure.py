@@ -61,7 +61,6 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                 router=met_sess
             
         
-        
         if(stealth):
             scans=list(attack_db.stealth_scans_dict)
         else:
@@ -170,6 +169,8 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 
 
 #Da config.json viene recuperato l'ip dell'attaccante e lo si passa al main insieme a config.json
+#Come terzo parametro si può passare un file json contenente la sequenza degli attacchi da eseguire 
+#Se non viene passato gli attacchi vengono effettuati in ordine casuale fino a quando uno non va a buon fine
 if(__name__=='__main__'):
     main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
     #main_procedure(C.ATTACKER_VM,"config.json")

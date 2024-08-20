@@ -8,7 +8,7 @@ from util import Logger, Constants as C
 
 
 
-# Classe astratta che rappresenta un attacco
+# Classe astratta che rappresenta un attacco.
 class Attack(ABC):
     def __init__(self, name, instructions, wait_time, attack_type=None, config_rc=None):
         self.attack = name
