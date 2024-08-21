@@ -29,6 +29,8 @@ class Attack(ABC):
 
 
 # classe per la gestione degli attacchi che non sono ancora stati implementati
+# i metodi execute e chech sono stati scritti in modo coerente con le altre classi per evitare conflitti 
+# tuttavia è impossibile che venga creata una nuova sessione attraverso un attacco di questa classe
 class NotImplementedAttack(Attack):
 
     def __init__(self, name, instructions, wait_time, attack_type, client=None):
@@ -225,8 +227,6 @@ class SshAttack(Attack):
         return self.check(self.client.get_active_sessions())
 
 
-
-
     # Verifica l'esito dell'attacco (se è andato a buon fine è stata creata una nuova sessione)
     def check(self, old_sess):
         session = {}
@@ -315,11 +315,7 @@ class Attack_DB:
                 content["LPORT"]=LPORT
             with open(attack_config_file,'w') as f:
                 json.dump(content, f, indent=4)
-            with open(attack_config_file, 'r') as f:
-                content = json.load(f)
-                print("ATTACK PARAMETERS:   ")
-                print(content)
-               
+    
             attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient, is_resource=True)
             
         elif(attack_type=="SshAttack"): 
