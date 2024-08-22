@@ -74,6 +74,12 @@
       "wait_time": "1",
       "config": ""
     },
+    "smtp_server": {
+      "instructions": "echo no smtp_server attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
     "modAuthProc": {
       "instructions": "echo no modAuthProc attack",
       "attack_type": "NotImplementedAttack",
