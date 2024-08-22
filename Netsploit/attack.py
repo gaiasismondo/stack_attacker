@@ -303,6 +303,7 @@ class Attack_DB:
     
         attack_name=self.attack_dict[attack].attack
         attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
+        print(attack_instr)
         attack_type=self.attack_dict[attack].attack_type
         attack_wait=self.attack_dict[attack].wait_time
         attack_config_file=self.attack_dict[attack].config_rc
