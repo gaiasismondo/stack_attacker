@@ -146,7 +146,8 @@ class MetasploitAttack(Attack):
             payload = self.prepare_payload(settings)
             exploit = self.prepare_exploit(settings)
             self.output = self.client.client.consoles.console(self.client.cid).run_module_with_output(exploit, payload=payload)
-        
+            print(self.output)
+            sleep(10)
         return self.check(old_sess)
 
 
@@ -303,7 +304,6 @@ class Attack_DB:
     
         attack_name=self.attack_dict[attack].attack
         attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
-        print(attack_instr)
         attack_type=self.attack_dict[attack].attack_type
         attack_wait=self.attack_dict[attack].wait_time
         attack_config_file=self.attack_dict[attack].config_rc
