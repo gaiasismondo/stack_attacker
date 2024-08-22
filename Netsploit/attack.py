@@ -303,7 +303,6 @@ class Attack_DB:
     
         attack_name=self.attack_dict[attack].attack
         attack_instr=self.attack_dict[attack].instruction.format(target_ip,attacker_ip,LPORT=LPORT)
-        print(attack_instr)
         attack_type=self.attack_dict[attack].attack_type
         attack_wait=self.attack_dict[attack].wait_time
         attack_config_file=self.attack_dict[attack].config_rc
@@ -324,11 +323,10 @@ class Attack_DB:
         elif(attack_type=="NotImplementedAttack"): 
             attack_obj=NotImplementedAttack(attack_name, attack_instr, attack_wait, attack_type, self.metaClient)
         else:
-            attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient)
+            attack_obj=MetasploitAttack(attack_name,attack_instr,attack_wait, self.metaClient)
 
 
         return attack_obj
-
 
 
 
