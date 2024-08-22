@@ -147,6 +147,8 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         for i in range (0,5):
                             #success = mc.grab_docker_escape_conn()
                             success = mc.attempt_attack(docker_escape_attack_object)
+                            print("RISULTATO DOCKER ESCAPE")
+                            print(success)
                             if success:
                                 Logger.log(mc, f"connection from netcat established, docker_escape successful", level=Logger.INFO)
                                 sess["escape_sess"]=success
