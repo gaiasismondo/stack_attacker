@@ -26,6 +26,12 @@
         "wait_time": "30",
         "config": "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
       },
+      "docker_escape": {
+        "instructions": "back\n use exploit/multi/handler\nset LHOST {}\nset LPORT{}\nexploit",
+        "attack_type": "NotImplementedAttack",
+        "wait_time": "10",
+        "config": ""
+      },
       "compromise": {
         "instructions": "echo no compromise attack",
         "attack_type": "NotImplementedAttack",

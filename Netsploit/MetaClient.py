@@ -215,6 +215,7 @@ class MetaClient:
         routes=self.client.consoles.console(self.cid).read()
         #print(routes)
 
+
     #crea un port forwarding sulla shell della sessione passata come parametro
     def add_portfwd(self, sess, cmd):
         self.route_flush()
