@@ -30,6 +30,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
     mc=MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
     attack_db = Attack_DB(mc, attacker_ip, OOBSession)
     
+    attack_sequence_index = 0
     if attack_sequence_file:
         with open(attack_sequence_file) as f:
             attack_sequence = json.load(f)["attack_sequence"]
@@ -79,7 +80,10 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
         mc.attempt_scan(scan_obj)
 
         
-        for ra in attack_sequence:
+        while attack_sequence_index < len(attack_sequence):
+
+            ra = attack_sequence[attack_sequence_index]
+            attack_sequence_index+=1
 
             LPORT = C.DEFAULT_LPORT  #PENTESTER LISTENING PORT
             
