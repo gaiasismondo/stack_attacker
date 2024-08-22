@@ -26,8 +26,8 @@
         "wait_time": "30",
         "config": "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
       },
-      "docker_escape": {
-        "instructions": "back\n use exploit/multi/handler\nset LHOST {}\nset LPORT{}\nexploit",
+      "escapeHost": {
+        "instructions": "back\n use exploit/multi/handler\nset LHOST {}\nset LPORT{LPORT}\nexploit",
         "attack_type": "NotImplementedAttack",
         "wait_time": "10",
         "config": ""
@@ -76,12 +76,6 @@
     },
     "bruteForce": {
       "instructions": "echo no bruteForce attack",
-      "attack_type": "NotImplementedAttack",
-      "wait_time": "1",
-      "config": ""
-    },
-    "escapeHost": {
-      "instructions": "echo no escapeHost attack",
       "attack_type": "NotImplementedAttack",
       "wait_time": "1",
       "config": ""
