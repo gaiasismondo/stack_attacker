@@ -33,8 +33,6 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
     if attack_sequence_file:
         with open(attack_sequence_file) as f:
             attack_sequence = json.load(f)["attack_sequence"]
-            attack_sequence[6]= "smtp_server"
-            attack_sequence[16]= "tomcat_server"
 
     while machines:
 
@@ -43,7 +41,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
         
         if(attack_sequence_file==None):
             attack_sequence=list(attack_db.attack_dict)
-        attack_sequence=random.sample(attack_sequence,len(attack_sequence))
+            attack_sequence=random.sample(attack_sequence,len(attack_sequence))
 
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
