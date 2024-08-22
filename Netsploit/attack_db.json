@@ -127,7 +127,7 @@
       "attack_type": "NotImplementedAttack",
       "wait_time": "1",
       "config": ""
-    },
+    }
    },
 
         "infect":{
