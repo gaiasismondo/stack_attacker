@@ -323,7 +323,7 @@ class Attack_DB:
         elif(attack_type=="NotImplementedAttack"): 
             attack_obj=NotImplementedAttack(attack_name, attack_instr, attack_wait, attack_type, self.metaClient)
         else:
-            attack_obj=MetasploitAttack(attack_name,attack_instr,attack_wait, self.metaClient)
+            attack_obj=MetasploitAttack(attack_name, attack_instr, attack_wait, self.metaClient)
 
 
         return attack_obj
