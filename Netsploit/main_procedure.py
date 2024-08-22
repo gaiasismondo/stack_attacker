@@ -146,7 +146,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         sess={}
                         for i in range (0,5):
                             #success = mc.grab_docker_escape_conn()
-                            sleep(20)
+                            sleep(10)
                             success = mc.attempt_attack(docker_escape_attack_object)
                             print("RISULTATO DOCKER ESCAPE")
                             print(success)
