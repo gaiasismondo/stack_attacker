@@ -43,7 +43,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
         
         if(attack_sequence_file==None):
             attack_sequence=list(attack_db.attack_dict)
-        attacK_sequence=random.sample(attack_sequence,len(attack_sequence))
+        attack_sequence=random.sample(attack_sequence,len(attack_sequence))
 
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
