@@ -128,7 +128,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                     compromised_machines.add(target_ip)
                     uncompromised_machines.remove(target_ip)
                     
-                    if(attack_name=="tomcat_server"):
+                    if(attack_name=="bruteForce"):
                         print(f"{C.COL_YELLOW} Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
                         print(f"{C.COL_YELLOW} For this attack to be successful copy of a file from the container to the host must be attempted on the host {C.COL_RESET}")
                         #prepariamo le regole di port forwarding usando la macchina intermedia su cui l'attacco docker escape si connette

