@@ -56,7 +56,7 @@ class MetaClient:
     #Vengono eseguiti massimo 5 tentativi di docker escape e se uno dei tentativi ha successo viene restituito un dizionario con la sessione creata
     def docker_escape(self, atk_sess):
         sess={}
-        for i in range (0,5):
+        for i in range (0,1):
             success =self.grab_docker_escape_conn()
             if success:
                 Logger.log(self, f"connection from netcat established, docker_escape successful", level=Logger.INFO)
@@ -124,8 +124,6 @@ class MetaClient:
             #print(stdout)
     
             
-        
-    
 
     #Gestisce il processo di aggiornamento di una shell a una shell Meterpreter 
     #restituisce l'ID della sessione Meterpreter se l'aggiornamento ha avuto successo
