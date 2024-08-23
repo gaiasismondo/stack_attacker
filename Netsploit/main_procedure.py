@@ -117,7 +117,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 
             session=mc.attempt_attack(attack_obj)
 
-            print(session)
+            #print(session)
             
             if(session):
                 
