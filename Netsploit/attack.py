@@ -62,7 +62,6 @@ class MetasploitAttack(Attack):
     LONG_SLEEP_TIME = 15
     SHORT_SLEEP_TIME = 5
 
-
     def __init__(self, name, instructions, wait_time=10, client=None, is_resource=False, config_rc=None):
         super().__init__(name, instructions, wait_time=wait_time, config_rc=config_rc)
         self.client = client

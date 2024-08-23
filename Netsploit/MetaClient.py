@@ -54,12 +54,13 @@ class MetaClient:
     
     
     #Vengono eseguiti massimo 5 tentativi di docker escape e se uno dei tentativi ha successo viene restituito un dizionario con la sessione creata
-    def docker_escape(self, atk_sess):
-
-        #success = mc.attempt_attack(docker_escape_attack_object)
+    def docker_escape(self, docker_escape_attack_object):
+        
         sess={}
         for i in range (0,1):
-            success =self.grab_docker_escape_conn()
+            #success =self.grab_docker_escape_conn()
+            #per richiamare docker escape dal database
+            success = self.attempt_attack(docker_escape_attack_object)
             if success:
                 Logger.log(self, f"connection from netcat established, docker_escape successful", level=Logger.INFO)
                 sess["escape_sess"]=success
