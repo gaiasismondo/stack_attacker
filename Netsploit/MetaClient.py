@@ -57,10 +57,10 @@ class MetaClient:
     def docker_escape(self, docker_escape_attack_object):
         
         sess={}
-        for i in range (0,1):
-            #success =self.grab_docker_escape_conn()
+        for i in range (0,5):
+            success =self.grab_docker_escape_conn()
             #per richiamare docker escape dal database
-            success = self.attempt_attack(docker_escape_attack_object)
+            #success = self.attempt_attack(docker_escape_attack_object)
             if success:
                 Logger.log(self, f"connection from netcat established, docker_escape successful", level=Logger.INFO)
                 sess["escape_sess"]=success
