@@ -16,23 +16,23 @@
         [
             {
                 "docker_name": "smtp_server",
-                "exposed_port": "55559",
-                "VM_Port": "55559",
+                "exposed_port": "55555",
+                "VM_Port": "55555",
                 "attack_list": ["smtp_server"]
             }
         ],
         "IPtomcat_vuln":[     
             {
                 "docker_name": "tomcat_server",
-                "exposed_port": "55559",
-                "VM_Port": "55559",
+                "exposed_port": "55555",
+                "VM_Port": "55555",
                 "attack_list": ["tomcat_server"]
                 
             }
         ]
     },
 
-    "DEFAULT_LPORT": "55559",   
+    "DEFAULT_LPORT": "55555",   
     "ATTACKER_SERVER_RPC_PORT": 1234,
     "NETCAT_PORT": 2345,
     "METERPRETER_PORT":"55557"
