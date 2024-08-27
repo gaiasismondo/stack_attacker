@@ -90,29 +90,11 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
             attack_name=attack_db.attack_dict[ra].attack
 
             for p in C.TARGETS_DOCKERS[target_ip]:
-                
                 LPORT=p["exposed_port"]
                 break
-            
-            """
-            for p in C.TARGETS_DOCKERS[target_ip]:
-                if(attack_name in p["attack_list"]):
-                    LPORT=p["exposed_port"]
-                    break
-            """
-
+    
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
-            
-            """
-            if(attack_name=="tomcat_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="tomcat_server"):
-                print(f"{C.COL_YELLOW}[*] Special attack tomcat_server cannot be done on this machine, skipping... {C.COL_RESET}")
-                continue
-            
-            
-            if(attack_name=="smtp_server" and C.TARGETS_DOCKERS[target_ip][0]["docker_name"]!="smtp_server"):
-                print(f"{C.COL_RED}[-] Special attack smtp_server cannot be done on this machine, skipping... {C.COL_RESET}")
-                continue
-            """
+        
             
             attack_obj= attack_db.create_attack(ra, target_ip, attacker_ip, LPORT)
 
