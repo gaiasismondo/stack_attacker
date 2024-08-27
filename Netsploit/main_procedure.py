@@ -46,7 +46,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 
         if(atk_sess!=None):
             met_sess=mc.upgrade_shell(atk_sess)
-            #print(met_sess)
+            print(met_sess)
 
 
         if(target_ip in other_subnet):
