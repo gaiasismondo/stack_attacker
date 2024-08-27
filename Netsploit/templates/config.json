@@ -17,16 +17,14 @@
             {
                 "docker_name": "smtp_server",
                 "exposed_port": "55555",
-                "VM_Port": "55555",
-                "attack_list": ["smtp_server"]
+                "VM_Port": "55555"
             }
         ],
         "IPtomcat_vuln":[     
             {
                 "docker_name": "tomcat_server",
                 "exposed_port": "55555",
-                "VM_Port": "55555",
-                "attack_list": ["tomcat_server"]
+                "VM_Port": "55555"
                 
             }
         ]

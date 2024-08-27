@@ -90,9 +90,16 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
             attack_name=attack_db.attack_dict[ra].attack
 
             for p in C.TARGETS_DOCKERS[target_ip]:
+                
+                LPORT=p["exposed_port"]
+                break
+            
+            """
+            for p in C.TARGETS_DOCKERS[target_ip]:
                 if(attack_name in p["attack_list"]):
                     LPORT=p["exposed_port"]
                     break
+            """
 
             print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
             

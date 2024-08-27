@@ -17,16 +17,14 @@
             {
                 "docker_name": "smtp_server",
                 "exposed_port": "55555",
-                "VM_Port": "55555",
-                "attack_list": ["smtp_server"]
+                "VM_Port": "55555"
             }
         ],
         "192.168.40.21":[     
             {
-                "docker_name": "tomcat_server",
+                "docker_name": "tomcat_server", 
                 "exposed_port": "55555",
-                "VM_Port": "55555",
-                "attack_list": ["tomcat_server"]
+                "VM_Port": "55555"
                 
             }
         ]
