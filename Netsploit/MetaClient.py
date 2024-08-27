@@ -145,7 +145,7 @@ class MetaClient:
             else:
                 delay(1)
             out=self.client.consoles.console(self.cid).read()
-            #print(out)
+            print(out)
             output.append(out["data"])
         
         with time_limit(300):
