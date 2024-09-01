@@ -9,6 +9,7 @@ from util import Logger, Constants as C
 
 
 # Classe astratta che rappresenta un attacco
+# Serve come modello per i vari tipi di attacchi specifici
 class Attack(ABC):
     def __init__(self, name, instructions, wait_time, attack_type=None, config_rc=None):
         self.attack = name
@@ -28,8 +29,8 @@ class Attack(ABC):
         raise NotImplementedError("Use specific attacks!")
 
 
-# classe per la gestione degli attacchi che non sono ancora stati implementati
-# i metodi execute e chech sono stati scritti in modo coerente con le altre classi per evitare conflitti 
+# Classe per la gestione degli attacchi che non sono ancora stati implementati
+# i metodi execute e check sono stati scritti in modo coerente con le altre classi per evitare conflitti 
 # tuttavia è impossibile che venga creata una nuova sessione attraverso un attacco di questa classe
 class NotImplementedAttack(Attack):
 
@@ -57,7 +58,7 @@ class NotImplementedAttack(Attack):
             return session
 
 
-# Classe che estende Attack e implementa attacchi Metasploit e ResourceAttack (is_resource=True)
+# Classe che estende Attack e implementa attacchi Metasploit e ResourceAttack (is_resource=True e config_rc=path)
 class MetasploitAttack(Attack):
     LONG_SLEEP_TIME = 15
     SHORT_SLEEP_TIME = 5
@@ -69,7 +70,7 @@ class MetasploitAttack(Attack):
         self.is_resource = is_resource
 
 
-    #parsing delle istruzioni cercando la keyword (exploit o auxiliary)
+    # Parsing delle istruzioni cercando la keyword (exploit o auxiliary)
     def parse_settings(self, instr_list, keyword):
         settings = {}
         found = False
@@ -85,15 +86,16 @@ class MetasploitAttack(Attack):
         return settings
 
 
-    #richiama getsetting passando la parola chiave exploit
+    # Richiama getsetting passando la parola chiave exploit
     def getSettings(self, instr_list):
         return self.parse_settings(instr_list, "exploit")
 
 
-    #richiama getsetting passando la parola chiave auxiliray
+    # Richiama getsetting passando la parola chiave auxiliray
     def getSettingScan(self, instr_list):
         return self.parse_settings(instr_list, "auxiliary")
     
+
     # Viene preparato il payload
     def prepare_payload(self, settings):
         if "payload" in settings:
@@ -104,6 +106,7 @@ class MetasploitAttack(Attack):
             return payload
         return None
     
+
     # Viene preparato l'exploit
     def prepare_exploit(self, settings):
         exploit = {}
@@ -111,13 +114,11 @@ class MetasploitAttack(Attack):
             exploit = self.client.client.modules.use("exploit", settings["exploit"])
             Logger.log(self, f"using exploit - {settings['exploit']}", level=Logger.INFO)
 
-
         for key in settings.keys():
             if key in ["payload", "exploit", "LPORT"]:
                 continue
             exploit[key] = settings[key]
         return exploit
-    
 
 
     # Viene preparato l'auxiliary (equivalente di exploit ma per le scansioni)
@@ -160,13 +161,11 @@ class MetasploitAttack(Attack):
             out = self.client.client.consoles.console(self.client.cid).read()
             self.output.append(out["data"])
 
-
         with time_limit(300):
             while self.client.client.consoles.console(self.client.cid).is_busy():
                 sleep(1)
         out = self.client.client.consoles.console(self.client.cid).read()
         self.output.append(out["data"])
-
 
     
     # Viene eseguita la scansione ma l'output non viene utilizzato
@@ -179,13 +178,11 @@ class MetasploitAttack(Attack):
         sleep(2)
     
 
-
     # Verifica l'esito dell'attacco (se è andato a buon fine è stata creata una nuova sessione)
     def check(self, old_sess):
         session = {}
         new_sess = self.client.get_active_sessions()
         diff = set(new_sess) - set(old_sess)
-
 
         if diff:
             session["id_sess"] = diff.pop()
@@ -247,7 +244,6 @@ class SshAttack(Attack):
 
 
 
-
 # Classe per gestire il database degli attacchi 
 class Attack_DB:
 
@@ -298,7 +294,7 @@ class Attack_DB:
 
         return scan_obj
     
-    # Prende un oggetto di tipo attack, formatta le istruzioni e restituisce un oggetto di tipo MetasploitAttack oppure SshAttack a seconda del tipo.
+    # Prende un oggetto di tipo attack, formatta le istruzioni e restituisce un oggetto di tipo MetasploitAttack oppure SshAttack a seconda del tipo
     def create_attack(self, attack, target_ip, attacker_ip, LPORT):
     
         attack_name=self.attack_dict[attack].attack

