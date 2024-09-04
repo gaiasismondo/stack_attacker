@@ -146,7 +146,6 @@ class MetasploitAttack(Attack):
             payload = self.prepare_payload(settings)
             exploit = self.prepare_exploit(settings)
             self.output = self.client.client.consoles.console(self.client.cid).run_module_with_output(exploit, payload=payload)
-            print(self.output)
             sleep(10)
         return self.check(old_sess)
 
