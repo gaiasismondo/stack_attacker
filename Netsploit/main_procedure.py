@@ -170,6 +170,10 @@ if(__name__=='__main__'):
         print(mode)
         if(mode!=0 and mode!=1):
             print("Invalid choice, press 0 or 1")
+    if(mode==0):
+        print("Attacking with random attack sequence")
+        main_procedure(C.ATTACKER_VM,"config.json")
+    else:
+        print("Reading attack sequence from Attack_sequence.json and attacking with that")
+        main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
     
-    #main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
-    main_procedure(C.ATTACKER_VM,"config.json")
