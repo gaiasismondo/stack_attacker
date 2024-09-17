@@ -81,6 +81,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 
         
         while attack_sequence_index < len(attack_sequence):
+            print("\n"+attack_sequence_index)
 
             ra = attack_sequence[attack_sequence_index]
             attack_sequence_index+=1
