@@ -165,10 +165,10 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 #Se non viene passato gli attacchi vengono effettuati in ordine casuale fino a quando uno non va a buon fine
 if(__name__=='__main__'):
     mode = -1
-    while (mode!=0 & mode!=1):
+    while (mode!=0 and mode!=1):
         mode = int(input("\nHow do you want to execute the synthetic attacker?\n0 : with random attack sequence\n1 : with attack sequence read from json file\nPress 0 or 1 :   "))
         print(mode)
-        if(mode!=0 & mode!=1):
+        if(mode!=0 and mode!=1):
             print("Invalid choice, press 0 or 1")
     
     #main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
