@@ -166,7 +166,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 if(__name__=='__main__'):
     mode = -1
     while (mode!=0 & mode!=1):
-        mode = input("\nHow do you want to execute the synthetic attacker?\n0 : with random attack sequence\n1 : with attack sequence read from json file\nPress 0 or 1 :   ")
+        mode = int(input("\nHow do you want to execute the synthetic attacker?\n0 : with random attack sequence\n1 : with attack sequence read from json file\nPress 0 or 1 :   "))
         if(mode!=0 & mode!=1):
             print("Invalid choice, press 0 or 1")
     
