@@ -41,6 +41,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
         print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
         
         if(attack_sequence_file==None):
+            #attack_sequence_index=0
             attack_sequence=list(attack_db.attack_dict)
             attack_sequence=random.sample(attack_sequence,len(attack_sequence))
 
@@ -81,7 +82,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 
         
         while attack_sequence_index < len(attack_sequence):
-            print("\n"+attack_sequence_index)
+            print("\n"+int(attack_sequence_index))
 
             ra = attack_sequence[attack_sequence_index]
             attack_sequence_index+=1
