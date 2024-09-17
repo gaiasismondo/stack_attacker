@@ -164,7 +164,11 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
 #Come terzo parametro si può passare un file json contenente la sequenza degli attacchi da eseguire 
 #Se non viene passato gli attacchi vengono effettuati in ordine casuale fino a quando uno non va a buon fine
 if(__name__=='__main__'):
-    mode = input("\nHow do you want to execute the synthetic attacker?\n0 : with random attack sequence\n1 : with attack sequence read from json file\n Press 0 or 1 :   ")
-    print(mode)
+    mode = -1
+    while (mode!=0 & mode!=1):
+        mode = input("\nHow do you want to execute the synthetic attacker?\n0 : with random attack sequence\n1 : with attack sequence read from json file\n Press 0 or 1 :   ")
+        if(mode !=0 & mode!=1):
+            print("Invalid choice, press 0 or 1")
+    
     #main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
     main_procedure(C.ATTACKER_VM,"config.json")
