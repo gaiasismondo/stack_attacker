@@ -112,20 +112,6 @@ class MetaClient:
         else:
             Logger.log(self, f"unable to create netcat session", level=Logger.ERROR)
             return None
-        
-
-    # Itera sugli attacchi infect presenti nell'attack_db.json e li esegue in un sottoprocesso
-    def infect(self):
-
-        
-        attack_db = Attack_DB()
-        for atk in attack_db.infect_dict.keys():
-            print(f"{C.COL_GREEN} Attacking with {atk}{C.COL_RESET}")
-            p=subprocess.Popen(attack_db.infect_dict[atk].instruction,stdout=subprocess.DEVNULL,stderr=subprocess.STDOUT,shell=True)
-            delay(attack_db.infect_dict[atk].wait_time)
-            p.wait()
-            #DEBUG
-            #print(stdout)
     
             
 

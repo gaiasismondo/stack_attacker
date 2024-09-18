@@ -118,13 +118,6 @@
     }
    },
 
-        "infect":{
-      "MMS_over_TLS":{
-        "instructions": "echo no MMS attack",
-        "wait_time": "15"
-      }
-    },
-
     "scans": {
       "arp_sweep": {
         "instructions": "use auxiliary/scanner/discovery/arp_sweep\nset RHOSTS {}\nset THREADS 256\nset TIMEOUT 1\nexploit",

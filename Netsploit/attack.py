@@ -255,23 +255,18 @@ class Attack_DB:
         with open(db_path) as db:
             db_string = json.load(db)
         
-        self.attack_dict = self.build_dict(db_string["storage"]["attacks"], False, True)
+        self.attack_dict = self.build_dict(db_string["storage"]["attacks"], True)
         self.scans_dict = self.build_dict(db_string["storage"]["scans"])
         self.stealth_scans_dict = self.build_dict(db_string["storage"]["stealth_scans"])
         self.stealth_attack_dict = self.build_dict(db_string["storage"]["stealth_attacks"])
-        self.infect_dict = self.build_dict(db_string["storage"]["infect"], True, False)
 
 
     # Costruisce un dizionario degli attacchi/scansioni (prende una lista di attacchi/scansioni e restitituisce un dizionario con chiave nome dell'attacco/scansione e valore oggetto di tipo Attack)
-    def build_dict(self, data, infect=False, attack=False):
+    def build_dict(self, data, attack=False):
         dict = {}
         for i_k in data.keys():
 
-
-            if(infect == True):
-                dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]))
-            
-            elif(attack == True):
+            if(attack == True):
                  dict[i_k] = Attack(i_k,data[i_k]["instructions"],int(data[i_k]["wait_time"]),data[i_k]["attack_type"], data[i_k]["config"])
 
             else:

