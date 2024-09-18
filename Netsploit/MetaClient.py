@@ -8,6 +8,7 @@ import subprocess
 import time
 import copy
 
+
 class MetaClient:
 
     # Delay in seconds before checking for open sessions
