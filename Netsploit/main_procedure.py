@@ -133,7 +133,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
             if target_ip in other_subnet:
                 if atk_sess is None:
                     print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}")
-                    print("---------------------------------------------------------")
                     return
                 else:
                     print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
@@ -182,6 +181,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     if session[0] == target_ip:
                         atk_sess = session[1:2][0]["id_sess"]
                         print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
+                        print(f"{C.COL_GREEN}[+] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
                         compromised_machines.add(target_ip)
                         uncompromised_machines.remove(target_ip)
                         break
