@@ -154,7 +154,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
             if atk_sess is not None:
                 met_sess = mc.upgrade_shell(atk_sess)
 
-             if stealth:
+            if stealth:
                 scans = list(attack_db.stealth_scans_dict)
             else:
                 scans = list(attack_db.scans_dict)
