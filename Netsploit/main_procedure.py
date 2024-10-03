@@ -37,7 +37,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file=None, attack_
             attack_sequence = json.load(f)["attack_sequence"]
 
         with open(attack_sequence2) as f2:
-            data2 = json.load(f2)
+            data2 = json.load(f2)["attack_sequence"]
         attack_sequence2=[]
         for ip, attacks in data2.items():
             for attack in attacks:
