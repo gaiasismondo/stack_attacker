@@ -133,7 +133,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         # Caso con attack_sequence_file
     else:
         with open(attack_sequence_file) as f:
-            attack_data = json.load(f)
+            attack_data = json.load(f)['attack_sequence']
 
         attack_sequence = []
         for ip, attacks in attack_data.items():
