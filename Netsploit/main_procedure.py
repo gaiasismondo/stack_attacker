@@ -212,4 +212,4 @@ if(__name__=='__main__'):
        main_procedure(C.ATTACKER_VM,"config.json")
    else:
        print("Reading attack sequence from Attack_sequence.json and attacking with that")
-       main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
+       main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence2.json")
