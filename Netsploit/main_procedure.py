@@ -7,14 +7,14 @@ from attack import Attack,MetasploitAttack,SshAttack,Attack_DB
 from time import sleep
 
 
-def main_procedure (attacker_ip, config_file, attack_sequence_file = None, stealth=False, stealth_sleep=0):
+def main_procedure (attacker_ip, config_file, attack_sequence_file=None, attack_sequence2=None, stealth=False, stealth_sleep=0):
 
     Logger.init_logger()
 
     with open(config_file) as f:
         target_list=json.load(f)
     machines=[]
-    other_subnet= dict()
+    other_subnet = dict()
     for ip in target_list["targets"]:
         machines.append(ip["target"])
         if "other_subnet" in ip:
@@ -31,9 +31,20 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file = None, steal
     attack_db = Attack_DB(mc, attacker_ip, OOBSession)
     
     attack_sequence_index = 0
+
     if attack_sequence_file:
         with open(attack_sequence_file) as f:
             attack_sequence = json.load(f)["attack_sequence"]
+
+        with open(attack_sequence2) as f2:
+            data2 = json.load(f2)
+        attack_sequence2=[]
+        for ip, attacks in data2.items():
+            for attack in attacks:
+                attack_sequence2.append((ip,attack))
+
+    system.out.println(attack_sequence2)
+    
 
     while machines:
 
@@ -166,7 +177,6 @@ if(__name__=='__main__'):
     mode = -1
     while (mode!=0 and mode!=1):
         mode = int(input("\nHow do you want to execute the synthetic attacker?\n0 : with random attack sequence\n1 : with attack sequence read from json file\nPress 0 or 1 :   "))
-        print(mode)
         if(mode!=0 and mode!=1):
             print("Invalid choice, press 0 or 1")
     if(mode==0):
@@ -174,5 +184,5 @@ if(__name__=='__main__'):
         main_procedure(C.ATTACKER_VM,"config.json")
     else:
         print("Reading attack sequence from Attack_sequence.json and attacking with that")
-        main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
+        main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json", "Attack_sequence2.json")
     
