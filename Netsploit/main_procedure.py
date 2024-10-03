@@ -43,7 +43,7 @@ def main_procedure (attacker_ip, config_file, attack_sequence_file=None, attack_
             for attack in attacks:
                 attack_sequence2.append((ip,attack))
 
-    System.out.println(attack_sequence2)
+    print(attack_sequence2)
     
 
     while machines:
