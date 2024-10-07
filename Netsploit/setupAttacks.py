@@ -33,7 +33,7 @@ def serviceIP(config):
 #outfilenames contiene gli exploit veri e propri
 pwd=parse_args().pwd
 home =pwd.split("Netsploit")[0]
-path_escape=home+"stack/data/attacker/custom_attacks/docker_escape/"
+path_escape=home+"stack/data/attacker/custom_attacks/brute_force/"
 path_tar=home+"stack/lab/ExploitsCVEs/CVEs/"
 path_breakout=path_tar+"CVE201914271/exploit/"
 infilenames = ["templates/CVE-2019-14271_PostExploitScript.sh","templates/config_rc.json","templates/breakout","templates/config.json","templates/MMSproxyAttack.sh"]
