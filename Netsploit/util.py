@@ -73,7 +73,6 @@ class Constants:
     #Vengono estratte la costanti da config
     TARGETS_DOCKERS=config["docker"]
     ATTACKER_VM = config["Attacker_VM"]
-    DEFAULT_LPORT=config["DEFAULT_LPORT"]   #PENTESTER DEFAULT LISTENING PORT
     ATTACKER_SERVER_RPC_PORT=config["ATTACKER_SERVER_RPC_PORT"]
     NETCAT_PORT=config["NETCAT_PORT"]
 

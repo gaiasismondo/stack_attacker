@@ -29,7 +29,6 @@
         ]
     },
 
-    "DEFAULT_LPORT": "55554",   
     "ATTACKER_SERVER_RPC_PORT": 1234,
     "NETCAT_PORT": 2345,
     "METERPRETER_PORT":"55557"
