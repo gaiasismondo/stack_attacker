@@ -132,9 +132,14 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
             for attack in attacks:
                 attack_sequence.append((ip, attack))
 
+        visited_ips=set()
+
         #Vengono iterati tutti gli ip presenti nel file di input e li si prova ad attaccare con tutti gli attacchi ad essi destinati
         for target_ip, attack_name in attack_sequence:
+            if target_ip in visited_ips:
+                continue
             print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
+            visited_ips.add(target_ip)
 
             if atk_sess is not None:
                 met_sess = mc.upgrade_shell(atk_sess)
