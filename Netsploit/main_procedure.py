@@ -58,13 +58,13 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     mc.route_add(met_sess["id_sess"], target_ip)
                     router = met_sess
             
+            #Vengono iterati gli attacchi della sequenza casuale e vengono sferrati fino a quando uno non ha successo
             attack_sequence_index = 0
             while attack_sequence_index < len(attack_sequence_list):
                 attack_name = attack_sequence_list[attack_sequence_index]
                 attack_sequence_index += 1
 
-                LPORT = C.DEFAULT_LPORT #Pentester listening port
-
+                LPORT = None
                 for p in C.TARGETS_DOCKERS[target_ip]:
                     LPORT = p["exposed_port"]
                     break
