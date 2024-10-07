@@ -27,10 +27,10 @@
         
       },
       "bruteForce": {
-        "instructions": "back\nset RHOSTS {}\nset target 0\nset LPORT {LPORT}\nresource /data/attacker/custom_attacks/brute_force/CVE-2019-14271.rc",
+        "instructions": "back\nset RHOSTS {}\nset target 0\nset LPORT {LPORT}\nresource /data/attacker/custom_attacks/docker_escape/CVE-2019-14271.rc",
         "attack_type": "ResourceAttack",
         "wait_time": "30",
-        "config": "../stack/data/attacker/custom_attacks/brute_force/config_rc.json"
+        "config": "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"
       },
       "compromise": {
         "instructions": "echo no compromise attack",
