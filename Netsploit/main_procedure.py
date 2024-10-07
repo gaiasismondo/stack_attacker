@@ -34,7 +34,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
     #CASO 0: PROCEDURA IN ORDINE CASUALE
     if not attack_sequence_file:
-        print("\n")
         print(f"{C.COL_GREEN}[+] No attack sequence file provided, proceeding with random attack sequence{C.COL_RESET}")
         
         #Vengono estratte ed attaccate, una ad una, tutte le macchine target
@@ -58,24 +57,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
                     mc.route_add(met_sess["id_sess"], target_ip)
                     router = met_sess
-
-            """
-            if stealth:
-                scans = list(attack_db.stealth_scans_dict)
-            else:
-                scans = list(attack_db.scans_dict)
-
-            s = random.choice(scans)
-
-            if s != "tcp_portscan":
-                nmap_target = str(ipaddress.IPv4Network(target_ip + "/255.255.0.0", False)).replace("/16", "/24")
-            else:
-                nmap_target = target_ip
-
-            scan_obj = attack_db.create_scan(s, nmap_target, attacker_ip)
-            mc.attempt_scan(scan_obj)
-
-            """
             
             attack_sequence_index = 0
             while attack_sequence_index < len(attack_sequence_list):
@@ -242,8 +223,8 @@ if(__name__=='__main__'):
        if(mode!=0 and mode!=1):
            print("Invalid choice, press 0 or 1")
    if(mode==0):
-       print("Attacking with random attack sequence")
+       print("\nAttacking with random attack sequence")
        main_procedure(C.ATTACKER_VM,"config.json")
    else:
-       print("Reading attack sequence from Attack_sequence.json and attacking with that")
+       print("\nReading attack sequence from Attack_sequence.json and attacking with that")
        main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence2.json")
