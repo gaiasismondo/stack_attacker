@@ -139,7 +139,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
             if target_ip in visited_ips:
                 continue
             print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
-            visited_ips.add(target_ip)<
+            visited_ips.add(target_ip)
 
             if atk_sess:
                 met_sess = mc.upgrade_shell(atk_sess)
