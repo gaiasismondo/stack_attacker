@@ -8,7 +8,7 @@
         "config": ""
       },
       "docker_escape": {
-        "instructions": "back \nset target 0\n set RHOSTS{}\n set LPORT{LPORT}\n resource /data/attacker/custom_attacks/docker_escape/docker_escape.rc",
+        "instructions": "back \nset RHOSTS{}\nset target 0\n set LPORT{LPORT}\n resource /data/attacker/custom_attacks/docker_escape/docker_escape.rc",
         "attack_type": "ResourceAttack",
         "wait_time": "50",
         "config": "../stack/data/attacker/custom_attacks/docker_escape/config_rc.json"

