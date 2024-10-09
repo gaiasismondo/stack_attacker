@@ -1,7 +1,7 @@
 {
     "WORKSPACE": ".",
     "TARGET_PORT": "",
-    "TARGET_IP": "",
-    "LISTENING_IP": "",
-    "LPORT": ""
+    "TARGET_IP": "0",
+    "LISTENING_IP": "192.168.40.23",
+    "LPORT": "2345"
 }
