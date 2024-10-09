@@ -303,6 +303,7 @@ class Attack_DB:
                 content = json.load(f)
                 content["TARGET_IP"]=target_ip
                 content["LPORT"]=LPORT
+                content["LISTENING_IP"]=attacker_ip
             with open(attack_config_file,'w') as f:
                 json.dump(content, f, indent=4)
     
