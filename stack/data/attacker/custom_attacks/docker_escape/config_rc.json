@@ -2,6 +2,6 @@
     "WORKSPACE": ".",
     "TARGET_PORT": "",
     "TARGET_IP": "",
-    "LHOST_VM": "",
+    "LISTENING_IP": "",
     "LPORT": ""
 }
