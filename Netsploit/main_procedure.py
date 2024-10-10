@@ -51,7 +51,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
             if target_ip in other_subnet:
                 if atk_sess is None:
                     print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}")
-                    print("---------------------------------------------------------")
                     return
                 else:
                     print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
@@ -116,6 +115,8 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
                     sleep(stealth_sleep)
 
+            print(f"{C.COL_GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
+
 
     #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
     else:
@@ -146,7 +147,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
             if target_ip in other_subnet:
                 if atk_sess is None:
                     print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}")
-                    print("---------------------------------------------------------")
                     return
                 else:
                     print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
