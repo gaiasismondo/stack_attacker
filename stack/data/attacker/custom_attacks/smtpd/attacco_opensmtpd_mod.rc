@@ -72,11 +72,9 @@
         print_line(help)
     end
 
-
+    #Viene letto il file json e vengono settati i parametri nel datastore
     def initialize_from_json(json_file)
-        # Legge il file JSON
         json_data = JSON.parse(File.read(json_file))
-        # Imposta i parametri nel datastore
         framework.datastore["WORKSPACE"] = json_data["workspace"]
         framework.datastore["TARGET_IP"] = json_data["targetIP"]
         framework.datastore["LISTENING_IP"] = json_data["listeningIP"]
