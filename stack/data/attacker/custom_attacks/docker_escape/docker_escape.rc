@@ -1,9 +1,10 @@
 <ruby>
     require 'json'
 
-    config_file = 'data/attacker/custom_attacks/docker_escape/config_rc.json'
+    config_rc = 'data/attacker/custom_attacks/docker_escape/config_rc.json'
+    config = '../Netsploit/config.json'
 
-    json_data = JSON.parse(File.read(config_file))
+    json_data = JSON.parse(File.read(config_rc))
 
     #Vengono estratti i parametri dal json
     rhosts = json_data['TARGET_IP']
