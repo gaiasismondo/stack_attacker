@@ -11,6 +11,7 @@
     lport = json_data['LPORT']
 
     #Vengono configurati i parametri di attacco in Metasploit
+    run_single("route_flush")
     run_single("set RHOSTS #{rhosts}")
     run_single("set LHOST #{lhost}")
     run_single("set LPORT #{lport}")
