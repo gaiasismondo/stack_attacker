@@ -129,10 +129,10 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         for ip, attacks in attack_data.items():
             if ip == '':
                 continue  
-            print(f "{C.COL_YELLOW}\n IP: {ip}")
+            print(f"{C.COL_YELLOW}\n IP: {ip}")
             for attack in attacks:
                 attack_sequence.append((ip, attack))
-                print(f "{C.COL_YELLOW}\n   {attack}")
+                print(f"{C.COL_YELLOW}\n   {attack}")
 
         visited_ips=set()
 
