@@ -1,15 +1,15 @@
 <ruby>
     require 'json'
 
-    puts "CURRENT DIR #{Dir.pwd}"
+   
 
     config_rc = 'data/attacker/custom_attacks/docker_escape/config_rc.json'
     json_data = JSON.parse(File.read(config_rc))
 
-    #global_config_path = '../../Netsploit/config.json'
-    #global_config_file = File.read(global_config_path)
-    #global_config_data = JSON.parse(config_file)
-    #necat_port = global_config_data["NETCAT_PORT"]
+    global_config_path = '/home/ubuntu/stack_attacker/Netsploit/config.json'
+    global_config_file = File.read(global_config_path)
+    global_config_data = JSON.parse(config_file)
+    necat_port = global_config_data["NETCAT_PORT"]
 
     #Vengono estratti i parametri dal json
     rhosts = json_data['TARGET_IP']
