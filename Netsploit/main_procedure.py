@@ -121,7 +121,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
     #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
     else:
         print(f"{C.COL_YELLOW}\n[*] Reading attack sequence from Attack_sequence.json and attacking with that")
-
+        print(f"{C.COL_YELLOW}\n[*] Attack sequence:")
         #Viene estratta dal file la sequenza di attacchi da utilizzare durante la procedura
         with open(attack_sequence_file) as f:
             attack_data = json.load(f)['attack_sequence']
@@ -129,8 +129,10 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         for ip, attacks in attack_data.items():
             if ip == '':
                 continue  
+            print(f "{C.COL_YELLOW}\n IP: {ip}")
             for attack in attacks:
                 attack_sequence.append((ip, attack))
+                print(f "{C.COL_YELLOW}\n   {attack}")
 
         visited_ips=set()
 
