@@ -5,7 +5,7 @@
     config = 'home/ubuntu/stack_attacker/Netsploit/config.json'
 
     json_data = JSON.parse(File.read(config_rc))
-    #config_data = JSON.parse(File.read(config))
+    config_data = JSON.parse(File.read(config))
 
     #Vengono estratti i parametri dal json
     rhosts = json_data['TARGET_IP']
