@@ -8,7 +8,7 @@
     rhosts = json_data['TARGET_IP']
     lhost = json_data['LISTENING_IP']
     lport = json_data['LPORT']
-    necat_port = json_data["NETCAT_PORT"]
+    netcat_port = json_data['NETCAT_PORT']
 
     #Vengono configurati i parametri di attacco in Metasploit
     run_single("route flush")
