@@ -12,7 +12,7 @@
 
     #Vengono configurati i parametri di attacco in Metasploit
     run_single("route flush")
-    run_single("set RHOSTS #{rhosts}")
+    run_single("set RHOSTS 0")
     run_single("set LHOST #{lhost}")
     run_single("set LPORT #{netcat_port}")
 
