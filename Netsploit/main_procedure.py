@@ -228,4 +228,4 @@ if(__name__=='__main__'):
    if(mode==0):
        main_procedure(C.ATTACKER_VM,"config.json")
    else:
-       main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence2.json")
+       main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
