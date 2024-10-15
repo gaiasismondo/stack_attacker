@@ -197,7 +197,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                                 print(f"{C.COL_RED}docker_escape failed!{C.COL_RESET}")
                                 break  
 
-                        break
+                        #break
                     else:
                         print(f"{C.COL_YELLOW}[*]false positive occurred, ignoring... {C.COL_RESET}")
 
