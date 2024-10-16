@@ -21,7 +21,8 @@
       "remoteShell"
     ],
     "192.168.40.21": [
-      "bruteForce"
+      "bruteForce",
+      "docker_escape"
     ]
   }
 }
