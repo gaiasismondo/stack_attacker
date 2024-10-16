@@ -157,7 +157,8 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     atk_sess = session[1:2][0]["id_sess"]
                     print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
                     compromised_machines.add(target_ip)
-                    uncompromised_machines.remove(target_ip)
+                    if target_ip in uncompromised_machine:
+                        uncompromised_machines.remove(target_ip)
 
 
                 else:
