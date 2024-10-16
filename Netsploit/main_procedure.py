@@ -99,7 +99,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                             #docker_escape_attack_object = attack_db.create_attack("docker_escape", "0", attacker_ip, C.NETCAT_PORT)
                             #docker_escape_success = mc.attempt_attack(docker_escape_attack_object)
                             #if(docker_escape_success):
-                                p#rint(f"{C.COL_GREEN}docker_escape successful!{C.COL_RESET}")
+                                #print(f"{C.COL_GREEN}docker_escape successful!{C.COL_RESET}")
                             #else:
                                 #print(f"{C.COL_RED}docker_escape failed!{C.COL_RESET}")
                                 #break 
