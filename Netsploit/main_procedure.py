@@ -79,7 +79,6 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 session = mc.attempt_attack(attack_obj)
 
                 if session:
-                    print(session)
                     #si controlla che il successo dell'attacco non sia un falso positivo
                     if session[0] == target_ip:
                         atk_sess = session[1:2][0]["id_sess"]
@@ -155,15 +154,11 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 session = mc.attempt_attack(attack_obj)
 
                 if session:
-                    #si controlla che il successo dell'attacco non sia un falso positivo
-                    if session[0] == target_ip:
-                        atk_sess = session[1:2][0]["id_sess"]
-                        print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
-                        compromised_machines.add(target_ip)
-                        uncompromised_machines.remove(target_ip)
-                       
-                    else:
-                        print(f"{C.COL_YELLOW}[*]false positive occurred, ignoring... {C.COL_RESET}")
+                    atk_sess = session[1:2][0]["id_sess"]
+                    print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
+                    compromised_machines.add(target_ip)
+                    uncompromised_machines.remove(target_ip)
+
 
                 else:
                     uncompromised_machines.add(target_ip)
