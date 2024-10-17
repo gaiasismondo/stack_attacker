@@ -153,7 +153,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
                 session = mc.attempt_attack(attack_obj)
 
-                if isistance(attack_obj, NotImplementedAttack):
+                if isinstance(attack_obj, NotImplementedAttack):
                     print(f"{C.COL_RED}[-] Attack not implemented")
 
                 elif session:
