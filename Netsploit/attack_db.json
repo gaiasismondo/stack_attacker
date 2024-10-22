@@ -7,7 +7,7 @@
         "wait_time": "10",
         "config": ""
       },
-      "docker_escape": {
+      "escapeHost": {
         "instructions": "back \nset RHOSTS{}\nset target 0\n set LPORT{LPORT}\n resource /data/attacker/custom_attacks/docker_escape/docker_escape.rc",
         "attack_type": "ResourceAttack",
         "wait_time": "50",
@@ -64,12 +64,6 @@
     },
     "remoteShell": {
       "instructions": "echo no remoteShell attack",
-      "attack_type": "NotImplementedAttack",
-      "wait_time": "1",
-      "config": ""
-    },
-    "escapeHost": {
-      "instructions": "echo no escapeHost attack",
       "attack_type": "NotImplementedAttack",
       "wait_time": "1",
       "config": ""
