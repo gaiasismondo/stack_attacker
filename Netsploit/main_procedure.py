@@ -113,7 +113,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
             attack_data = json.load(f)['attack_sequence']
         attack_sequence = []
         for ip, attacks in attack_data.items():
-            if ip == '':
+            if ip == '' or ip not in uncompromised_machines:
                 continue  
             print(f"{C.COL_YELLOW}{ip}: {attacks}")
             for attack in attacks:
