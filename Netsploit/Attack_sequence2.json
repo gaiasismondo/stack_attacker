@@ -1,0 +1,28 @@
+{
+  "attack_sequence": {
+    "": [
+      "compromise",
+      "scanIP",
+      "scanVuln",
+      "remoteSrvc",
+      "escapeHost",
+      "shell",
+      "modAuthProc",
+      "unsecCred",
+      "credAcc",
+      "AITM",
+      "spoofRepMsg",
+      "unauthCmdMsg",
+      "DERfailure"
+    ],
+    "192.168.40.22": [
+      "shell",
+      "addSSHkey",
+      "remoteShell"
+    ],
+    "192.168.40.21": [
+      "bruteForce",
+      "docker_escape"
+    ]
+  }
+}
