@@ -1,0 +1,19 @@
+{
+    "attack_sequence": [
+        {
+            "attack_name": "attack_1",
+            "ip": "192.168.1.10",
+            "other_attribute": ""
+        },
+        {
+            "attack_name": "attack_2",
+            "ip": "192.168.1.11",
+            "other_attribute": ""
+        },
+        {
+            "attack_name": "attack_3",
+            "ip": "192.168.1.11",
+            "other_attribute": ""
+        }
+    ]
+}

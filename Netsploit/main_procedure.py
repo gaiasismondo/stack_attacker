@@ -4,6 +4,7 @@ import ipaddress
 from MetaClient import MetaClient
 from util import Logger,Constants as C
 from attack import Attack,MetasploitAttack,SshAttack,NotImplementedAttack,Attack_DB
+from sequence_loader import load_attack_sequence
 from time import sleep
 
 
@@ -106,6 +107,10 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
     #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
     else:
+
+        sequenza_prova = sequence_loader.load_attack_sequence("new_attack_sequence.json")
+        print(sequenza prova)
+
         print(f"{C.COL_YELLOW}\nReading attack sequence from Attack_sequence.json and attacking with that")
         print(f"{C.COL_YELLOW}ATTACK SEQUENCE:")
         #Viene estratta dal file la sequenza di attacchi da utilizzare durante la procedura
