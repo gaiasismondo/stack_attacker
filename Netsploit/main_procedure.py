@@ -4,7 +4,7 @@ import ipaddress
 from MetaClient import MetaClient
 from util import Logger,Constants as C
 from attack import Attack,MetasploitAttack,SshAttack,NotImplementedAttack,Attack_DB
-from sequence_loader import load_attack_sequence
+import sequence_loader 
 from time import sleep
 
 
