@@ -109,7 +109,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
     else:
 
         sequenza_prova = sequence_loader.load_attack_sequence("new_attack_sequence.json")
-        print(sequenza prova)
+        print(sequenza_prova)
 
         print(f"{C.COL_YELLOW}\nReading attack sequence from Attack_sequence.json and attacking with that")
         print(f"{C.COL_YELLOW}ATTACK SEQUENCE:")
