@@ -104,10 +104,10 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
             print(f"{C.COL_GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
 
-    elif(attack_sequence_file == "new_attack_sequence.json"){
+    elif(attack_sequence_file == "new_attack_sequence.json")
         sequenza_prova = sequence_loader.load_attack_sequence("new_attack_sequence.json")
         print(sequenza_prova)
-    }
+    
 
     #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
     else:
@@ -192,7 +192,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 #Se non viene passato gli attacchi vengono effettuati in ordine casuale fino a quando uno non va a buon fine
 if(__name__=='__main__'):
    mode = -1
-   while (mode!=0 and mode!=1):
+   while (mode!=0 and mode!=1 and mode!=2):
        mode = int(input("\nHow do you want to execute the synthetic attacker?\n[0] : with random attack sequence\n[1] : with attack sequence read from json file\nPress 0 or 1 :   "))
        if(mode!=0 and mode!=1):
            print("Invalid choice, press 0 or 1")
