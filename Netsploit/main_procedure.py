@@ -121,14 +121,21 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         # Itera su ogni step della sequenza di attacco
         for i, (attack_name, target_ip, additional_attribute) in enumerate(attack_sequence, start=1):
 
+            #Nel caso in cui l'elemento non abbia l'attributo ip o che abbia un ip non presente in config.json si passa direttamente al successivo
+            if not target_ip or target_ip not in set(machines):
+                continue
+            #Nel caso in cui l'elemento abbia l'attributo "Attacker" non si tratta di una tecnica di attacco ma indica la macchina da cui lavora l'attaccante
             if additional_attribute == "Attacker":
                 print(f"{C.COL_YELLOW}[STEP {i}] It is not an attack technique but it expresses what machine the attacker works from{C.COL_RESET}")
                 print(f"{C.COL_GREEN}-{C.COL_RESET}"*70)
                 continue  
+            #Nel caso in cui l'elemento abbia l'attributo "Target" non si tratta di una tecnica di attacco ma indica il completamento della procedura di attacco
             elif additional_attribute == "Target":
                 print(f"{C.COL_YELLOW}[STEP {i}] It is not an attack technique but it expresses the end of the attack procedure{C.COL_RESET}")
                 print(f"{C.COL_GREEN}-{C.COL_RESET}"*70)
-                continue  
+                continue 
+            
+
 
             print(f"{C.COL_GREEN}[STEP {i}] Attacking IP: {target_ip} with {attack_name}{C.COL_RESET}")
             
