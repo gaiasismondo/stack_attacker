@@ -109,7 +109,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         print(f"{C.COL_YELLOW}ATTACK SEQUENCE:")
           
         # Viene estratta la sequenza di attacchi dalla funzione del modulo sequence_loader
-        attack_seuence = sequence_loader.load_attack_sequence(attack_sequence_file)
+        attack_sequence = sequence_loader.load_attack_sequence(attack_sequence_file)
         sequence_loader.print_attack_sequence(attack_sequence_file)
 
         # Itera direttamente su ogni step della sequenza di attacco
