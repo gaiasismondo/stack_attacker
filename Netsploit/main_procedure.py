@@ -167,7 +167,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 sleep(stealth_sleep)
 
             # Separatore per chiarezza nel log degli attacchi
-            print(f"{C.COL_GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
+            print(f"{C.COL_GREEN}-{C.COL_RESET}"*40)
 
 
         
