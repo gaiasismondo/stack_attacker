@@ -119,6 +119,11 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
         # Itera su ogni step della sequenza di attacco
         for i, (attack_name, target_ip, other_attribute) in enumerate(attack_sequence, start=1):
+
+            if other_attribute == "attacker":
+                print(f"{C.COL_YELLOW}[*] Attacking from already compromised machine: {target_ip}. Attack {attack_name} skipped.{C.COL_RESET}")
+                continue  
+
             print(f"{C.COL_GREEN}[STEP {i}] Attacking IP: {target_ip} with {attack_name}{C.COL_RESET}")
             
             if target_ip != previous_ip and atk_sess:
