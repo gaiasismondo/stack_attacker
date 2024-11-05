@@ -31,12 +31,6 @@
         "wait_time": "30",
         "config": "../stack/data/attacker/custom_attacks/brute_force/config_rc.json"
       },
-      "compromise": {
-        "instructions": "echo no compromise attack",
-        "attack_type": "NotImplementedAttack",
-        "wait_time": "10",
-        "config": ""
-      },
      "scanIP": {
        "instructions": "echo no scanIP attack",
        "attack_type": "NotImplementedAttack",
@@ -99,12 +93,6 @@
     },
     "unauthCmdMsg": {
       "instructions": "echo no unauthCmdMsg attack",
-      "attack_type": "NotImplementedAttack",
-      "wait_time": "1",
-      "config": ""
-    },
-    "DERfailure": {
-      "instructions": "echo no DERfailure attack",
       "attack_type": "NotImplementedAttack",
       "wait_time": "1",
       "config": ""
