@@ -3,37 +3,37 @@
         {
             "attack_name": "compromise",
             "ip": "1.1.1.1",
-            "other_attribute": "Attacker"
+            "additional_attribute": "Attacker"
         },
         {
             "attack_name": "shell",
             "ip": "192.168.40.22",
-            "other_attribute": ""
+            "additional_attribute": ""
         },
         {
             "attack_name": "addSSHkey",
             "ip": "192.168.40.22",
-            "other_attribute": ""
+            "additional_attribute": ""
         },
         {
             "attack_name": "bruteForce",
             "ip": "192.168.40.21",
-            "other_attribute": ""
+            "additional_attribute": ""
         },
         {
             "attack_name": "escapeHost",
             "ip": "192.168.40.21",
-            "other_attribute": ""
+            "additional_attribute": ""
         },
         {
             "attack_name": "spoofRepMsg",
             "ip": "192.168.40.21",
-            "other_attribute": ""
+            "additional_attribute": ""
         },
         {
             "attack_name": "DERfailure",
             "ip": "4.4.4.4",
-            "other_attribute": "Target"
+            "additional_attribute": "Target"
         }
     ]
 }
