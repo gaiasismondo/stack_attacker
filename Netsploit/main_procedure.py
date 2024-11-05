@@ -122,11 +122,11 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         for i, (attack_name, target_ip, other_attribute) in enumerate(attack_sequence, start=1):
 
             if other_attribute == "Attacker":
-                print(f"{C.COL_YELLOW}\n[STEP {i}] It is not an attack technique but it expresses what machine the attacker works from{C.COL_RESET}")
+                print(f"{C.COL_YELLOW}[STEP {i}] It is not an attack technique but it expresses what machine the attacker works from{C.COL_RESET}")
                 print(f"{C.COL_GREEN}-{C.COL_RESET}"*70)
                 continue  
             elif other_attribute == "Target":
-                print(f"{C.COL_YELLOW}\n[STEP {i}] It is not an attack technique but it expresses the end of the attack procedure{C.COL_RESET}")
+                print(f"{C.COL_YELLOW}[STEP {i}] It is not an attack technique but it expresses the end of the attack procedure{C.COL_RESET}")
                 print(f"{C.COL_GREEN}-{C.COL_RESET}"*70)
                 continue  
 
