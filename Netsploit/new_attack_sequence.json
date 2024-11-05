@@ -1,39 +1,89 @@
 {
-    "attack_sequence": [
-        {
-            "attack_name": "compromise",
-            "ip": "1.1.1.1",
-            "additional_attribute": "Attacker"
-        },
-        {
-            "attack_name": "shell",
-            "ip": "192.168.40.22",
-            "additional_attribute": ""
-        },
-        {
-            "attack_name": "addSSHkey",
-            "ip": "192.168.40.22",
-            "additional_attribute": ""
-        },
-        {
-            "attack_name": "bruteForce",
-            "ip": "192.168.40.21",
-            "additional_attribute": ""
-        },
-        {
-            "attack_name": "escapeHost",
-            "ip": "192.168.40.21",
-            "additional_attribute": ""
-        },
-        {
-            "attack_name": "spoofRepMsg",
-            "ip": "192.168.40.21",
-            "additional_attribute": ""
-        },
-        {
-            "attack_name": "DERfailure",
-            "ip": "4.4.4.4",
-            "additional_attribute": "Target"
-        }
-    ]
+  "attack_sequence": [
+    {
+      "attack_name": "compromise",
+      "IP": "1.1.1.1",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "scanIP",
+      "IP": "",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "scanVuln",
+      "IP": "192.168.40.22",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "remoteSrvc",
+      "IP": "192.168.40.22",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "shell",
+      "IP": "192.168.40.22",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "addSSHkey",
+      "IP": "192.168.40.22",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "remoteShell",
+      "IP": "192.168.40.22",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "bruteForce",
+      "IP": "192.168.40.21",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "escapeHost",
+      "IP": "192.168.40.21",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "shell",
+      "IP": "192.168.40.21",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "modAuthProc",
+      "IP": "192.168.40.21",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "unsecCred",
+      "IP": "192.168.40.21",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "credAcc",
+      "IP": "192.168.40.21",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "AITM",
+      "IP": "",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "spoofRepMsg",
+      "IP": "192.168.40.21",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "unauthCmdMsg",
+      "IP": "",
+      "additional_attribute": ""
+    },
+    {
+      "attack_name": "DERfailure",
+      "IP": "4.4.4.4",
+      "additional_attribute": ""
+    }
+  ]
 }
