@@ -4,7 +4,7 @@ import json
 def load_attack_sequence(file_path):
     with open(file_path, 'r') as f:
         data = json.load(f)
-    return [(attack["attack_name"], attack["ip"], attack["additional_attribute"]) for attack in data["attack_sequence"]]
+    return [(attack["attack_name"], attack["IP"], attack["additional_attribute"]) for attack in data["attack_sequence"]]
 
 
 
