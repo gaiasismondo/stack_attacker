@@ -16,7 +16,7 @@ def print_attack_sequence(file_path):
             print(f"STEP {i}:   attack_name: {attack_name}  IP: {ip}  other_attribute: {other_attribute}")
         
     except FileNotFoundError:
-        print(f"Errore: il file '{file_path}' non è stato trovato.")
+        print(f"Error: file '{file_path}' not found.")
 
 
 

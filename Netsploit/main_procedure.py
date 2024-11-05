@@ -102,13 +102,16 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
                     sleep(stealth_sleep)
 
-            print(f"{C.COL_GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
+            print(f"{C.COL_GREEN}-{C.COL_RESET}"*70)
 
-    elif(attack_sequence_file == "new_attack_sequence.json"):
+
+    #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
+    else:
+
         print(f"{C.COL_YELLOW}\nReading attack sequence from Attack_sequence.json and attacking with that")
         print(f"{C.COL_YELLOW}ATTACK SEQUENCE:")
           
-        # Viene estratta la sequenza di attacchi dalla funzione del modulo sequence_loader
+        # Viene estratta la sequenza di attacchi dalla funzione del modulo sequence_loader e viene stampata
         attack_sequence = sequence_loader.load_attack_sequence(attack_sequence_file)
         sequence_loader.print_attack_sequence(attack_sequence_file)
 
@@ -123,7 +126,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
             previous_ip = target_ip
 
-            # Gestione di una subnet diversa
+            # Gestione di una sottorete diversa (aggiunta route)
             if target_ip in other_subnet:
                 if atk_sess is None:
                     print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}")
@@ -149,9 +152,9 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
             session = mc.attempt_attack(attack_obj)
 
-            # Gestione dei risultati dell'attacco
             if isinstance(attack_obj, NotImplementedAttack):
                 print(f"{C.COL_RED}[-] attack not implemented")
+            # Controllo dell'output
             elif session:
                 atk_sess = session[1:2][0]["id_sess"]
                 print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
@@ -161,93 +164,12 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
             else:
                 print(f"{C.COL_RED}[-] Exploit failed {C.COL_RESET}")
 
-            # Pausa stealth opzionale tra gli attacchi
             if stealth_sleep:
                 print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
                 sleep(stealth_sleep)
 
-            # Separatore per chiarezza nel log degli attacchi
-            print(f"{C.COL_GREEN}-{C.COL_RESET}"*40)
+            print(f"{C.COL_GREEN}-{C.COL_RESET}"*70)
 
-
-        
-    
-
-    #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
-    else:
-
-        print(f"{C.COL_YELLOW}\nReading attack sequence from Attack_sequence.json and attacking with that")
-        print(f"{C.COL_YELLOW}ATTACK SEQUENCE:")
-        #Viene estratta dal file la sequenza di attacchi da utilizzare durante la procedura
-        with open(attack_sequence_file) as f:
-            attack_data = json.load(f)['attack_sequence']
-        attack_sequence = []
-
-        for ip, attacks in attack_data.items():
-            if ip == '' or ip not in uncompromised_machines:
-                continue  
-            print(f"{C.COL_YELLOW}{ip}: {attacks}")
-            for attack in attacks:
-                attack_sequence.append((ip, attack))
-
-        visited_ips=set()
-
-        #Vengono iterati tutti gli ip presenti nel file di input e li si prova ad attaccare con tutti gli attacchi ad essi destinati
-        for target_ip, attack_name in attack_sequence:
-            if target_ip in visited_ips:
-                continue
-            print(f"{C.COL_GREEN}[+] target for this step: {target_ip} {C.COL_RESET}")
-            visited_ips.add(target_ip)
-
-            if atk_sess:
-                met_sess = mc.upgrade_shell(atk_sess)
-
-            if target_ip in other_subnet:
-                if atk_sess is None:
-                    print(f"{C.COL_RED}[-] subnet not reachable, no intermediate session available{C.COL_RESET}")
-                    return
-                else:
-                    print(f"{C.COL_YELLOW}[*] other subnet found, adding new routes{C.COL_RESET}")
-                    mc.route_add(met_sess["id_sess"], target_ip)
-                    router = met_sess
-
-            LPORT = None
-            for p in C.TARGETS_DOCKERS[target_ip]:
-                LPORT = p["exposed_port"]
-                break
-
-            #Vengono eseguiti tutti gli attacchi sull'ip corrente prima di passare al successivo
-            for attack in [a for ip, a in attack_sequence if ip == target_ip]:
-                print(f"{C.COL_GREEN}[+] attacking ({target_ip}) with {attack}{C.COL_RESET}")
-                attack_obj = attack_db.create_attack(attack, target_ip, attacker_ip, LPORT)
-
-                if isinstance(attack_obj, SshAttack) and OOBSession is None:
-                    print(f"{C.COL_RED}[-] can't use OOB attacks without an established session!{C.COL_RESET}")
-                    continue
-
-                session = mc.attempt_attack(attack_obj)
-
-                if isinstance(attack_obj, NotImplementedAttack):
-                    print(f"{C.COL_RED}[-] attack not implemented")
-
-                elif session:
-                    atk_sess = session[1:2][0]["id_sess"]
-                    print(f"{C.COL_GREEN}[+] {target_ip} compromised {C.COL_RESET}")
-                    compromised_machines.add(target_ip)
-                    if target_ip in uncompromised_machines:
-                        uncompromised_machines.remove(target_ip)
-
-                else:
-                    uncompromised_machines.add(target_ip)
-                    print(f"{C.COL_RED}[-] xx Exploit failed {C.COL_RESET}")
-
-                if stealth_sleep:
-                    print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
-                    sleep(stealth_sleep)
-
-            print(f"{C.COL_GREEN}-{C.COL_RESET}"*40)
-
-         
 
     print(f"{C.COL_GREEN}Attack complete!! {C.COL_RESET}")
 
@@ -257,13 +179,12 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 #Se non viene passato gli attacchi vengono effettuati in ordine casuale fino a quando uno non va a buon fine
 if(__name__=='__main__'):
     mode = -1
-    while (mode!=0 and mode!=1 and mode!=2):
+    while (mode!=0 and mode!=1):
         mode = int(input("\nHow do you want to execute the synthetic attacker?\n[0] : with random attack sequence\n[1] : with attack sequence read from json file\nPress 0 or 1 :   "))
-        if(mode!=0 and mode!=1 and mode!=2):
+        if(mode!=0 and mode!=1):
             print("Invalid choice, press 0 or 1")
     if(mode==0):
         main_procedure(C.ATTACKER_VM,"config.json")
     elif(mode==1):
-        main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
-    else:
         main_procedure(C.ATTACKER_VM,"config.json", "new_attack_sequence.json")
+        #main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
