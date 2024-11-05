@@ -104,7 +104,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
             print(f"{C.COL_GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
 
-    elif(attack_sequence_file == "new_attack_sequence.json")
+    elif(attack_sequence_file == "new_attack_sequence.json"):
         sequenza_prova = sequence_loader.load_attack_sequence("new_attack_sequence.json")
         print(sequenza_prova)
     
