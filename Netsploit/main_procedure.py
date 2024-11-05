@@ -116,8 +116,8 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         for i, (attack_name, target_ip, other_attribute) in enumerate(attack_sequence, start=1):
             print(f"{C.COL_GREEN}[STEP {i}] Attacking IP: {target_ip} with {attack_name}{C.COL_RESET}")
             
-            if atk_sess:
-                met_sess = mc.upgrade_shell(atk_sess)
+            #if atk_sess:
+                #met_sess = mc.upgrade_shell(atk_sess)
 
             # Gestione di una subnet diversa
             if target_ip in other_subnet:
