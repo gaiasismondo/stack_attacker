@@ -108,12 +108,13 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
     #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
     else:
 
-        print(f"{C.COL_YELLOW}\nReading attack sequence from Attack_sequence.json and attacking with that")
+        print(f"{C.COL_YELLOW}Reading attack sequence from Attack_sequence.json and attacking with that")
         print(f"{C.COL_YELLOW}ATTACK SEQUENCE:")
           
         # Viene estratta la sequenza di attacchi dalla funzione del modulo sequence_loader e viene stampata
         attack_sequence = sequence_loader.load_attack_sequence(attack_sequence_file)
         sequence_loader.print_attack_sequence(attack_sequence_file)
+        print("\n")
 
         previous_ip = None
 
@@ -121,10 +122,12 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         for i, (attack_name, target_ip, other_attribute) in enumerate(attack_sequence, start=1):
 
             if other_attribute == "Attacker":
-                print(f"{C.COL_YELLOW}\n[STEP {i}]It is not an attack technique but it expresses what machine the attacker works from{C.COL_RESET}")
+                print(f"{C.COL_YELLOW}\n[STEP {i}] It is not an attack technique but it expresses what machine the attacker works from{C.COL_RESET}")
+                print(f"{C.COL_GREEN}-{C.COL_RESET}"*70)
                 continue  
             elif other_attribute == "Target":
-                print(f"{C.COL_YELLOW}\n[STEP {i}]It is not an attack technique but it expresses the end of the attack procedure{C.COL_RESET}")
+                print(f"{C.COL_YELLOW}\n[STEP {i}] It is not an attack technique but it expresses the end of the attack procedure{C.COL_RESET}")
+                print(f"{C.COL_GREEN}-{C.COL_RESET}"*70)
                 continue  
 
             print(f"{C.COL_GREEN}[STEP {i}] Attacking IP: {target_ip} with {attack_name}{C.COL_RESET}")
