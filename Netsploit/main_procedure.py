@@ -245,11 +245,11 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                     print(f"{C.COL_YELLOW}[*] sleeping {stealth_sleep} seconds to make the attack stealthier...{C.COL_RESET}")
                     sleep(stealth_sleep)
 
-            print(f"{C.COL_GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
+            print(f"{C.COL_GREEN}-{C.COL_RESET}"*40)
 
          
 
-    print(f"{C.COL_GREEN} Attack complete!! {C.COL_RESET}")
+    print(f"{C.COL_GREEN}Attack complete!! {C.COL_RESET}")
 
 
 #Da config.json viene recuperato l'ip dell'attaccante e lo si passa al main insieme a config.json
