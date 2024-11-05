@@ -154,7 +154,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 break
 
             # Crea l'oggetto dell'attacco e lo esegue
-            print(f"{C.COL_GREEN}[+] Initiating attack {attack_name} on {target_ip} with attribute: {other_attribute if other_attribute else 'N/A'}{C.COL_RESET}")
+            print(f"{C.COL_GREEN}[+] Initialization of attack {attack_name} on {target_ip}{C.COL_RESET}")
             attack_obj = attack_db.create_attack(attack_name, target_ip, attacker_ip, LPORT)
 
             if isinstance(attack_obj, SshAttack) and OOBSession is None:
