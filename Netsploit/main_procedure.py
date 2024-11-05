@@ -121,9 +121,7 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
         # Itera su ogni step della sequenza di attacco
         for i, (attack_name, target_ip, additional_attribute) in enumerate(attack_sequence, start=1):
 
-            #Nel caso in cui l'elemento non abbia l'attributo ip o che abbia un ip non presente in config.json si passa direttamente al successivo
-            if not target_ip or target_ip not in set(machines):
-                continue
+           
             #Nel caso in cui l'elemento abbia l'attributo "Attacker" non si tratta di una tecnica di attacco ma indica la macchina da cui lavora l'attaccante
             if additional_attribute == "Attacker":
                 print(f"{C.COL_YELLOW}[STEP {i}] It is not an attack technique but it expresses what machine the attacker works from{C.COL_RESET}")
@@ -134,6 +132,9 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
                 print(f"{C.COL_YELLOW}[STEP {i}] It is not an attack technique but it expresses the end of the attack procedure{C.COL_RESET}")
                 print(f"{C.COL_GREEN}-{C.COL_RESET}"*70)
                 continue 
+            #Nel caso in cui l'elemento non abbia l'attributo ip o che abbia un ip non presente in config.json si passa direttamente al successivo
+            elif not target_ip or target_ip not in set(machines):
+                continue
             
 
 
@@ -204,5 +205,4 @@ if(__name__=='__main__'):
     if(mode==0):
         main_procedure(C.ATTACKER_VM,"config.json")
     elif(mode==1):
-        main_procedure(C.ATTACKER_VM,"config.json", "new_attack_sequence.json")
-        #main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
+        main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
