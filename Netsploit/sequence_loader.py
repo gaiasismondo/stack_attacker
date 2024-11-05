@@ -13,7 +13,7 @@ def print_attack_sequence(file_path):
     try:
         attack_sequence = load_attack_sequence(file_path)
         for i, (attack_name, ip, other_attribute) in enumerate(attack_sequence, start=1):
-            print(f"STEP {i}:   attack_name: {attack_name}  IP: {ip}  other_attribute: {other_attribute if other_attribute else 'N/A'}")
+            print(f"STEP {i}:   attack_name: {attack_name}  IP: {ip}  other_attribute: {other_attribute}")
         
     except FileNotFoundError:
         print(f"Errore: il file '{file_path}' non è stato trovato.")
