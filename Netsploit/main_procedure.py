@@ -104,12 +104,13 @@ def main_procedure(attacker_ip, config_file, attack_sequence_file=None, stealth=
 
             print(f"{C.COL_GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -{C.COL_RESET}")
 
+    elif(attack_sequence_file == "new_attack_sequence.json"){
+        sequenza_prova = sequence_loader.load_attack_sequence("new_attack_sequence.json")
+        print(sequenza_prova)
+    }
 
     #CASO 1: PROCEDURA CON ORDINE LETTO DA FILE
     else:
-
-        sequenza_prova = sequence_loader.load_attack_sequence("new_attack_sequence.json")
-        print(sequenza_prova)
 
         print(f"{C.COL_YELLOW}\nReading attack sequence from Attack_sequence.json and attacking with that")
         print(f"{C.COL_YELLOW}ATTACK SEQUENCE:")
@@ -197,5 +198,7 @@ if(__name__=='__main__'):
            print("Invalid choice, press 0 or 1")
    if(mode==0):
        main_procedure(C.ATTACKER_VM,"config.json")
-   else:
+   elif(mode==1):
        main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
+    else:
+        main_procedure(C.ATTACKER_VM,"config.json", "new_attack_sequence.json")
