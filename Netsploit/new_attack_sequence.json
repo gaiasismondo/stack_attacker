@@ -3,7 +3,7 @@
     {
       "attack_name": "compromise",
       "IP": "1.1.1.1",
-      "additional_attribute": ""
+      "additional_attribute": "Attacker"
     },
     {
       "attack_name": "scanIP",
@@ -83,7 +83,7 @@
     {
       "attack_name": "DERfailure",
       "IP": "4.4.4.4",
-      "additional_attribute": ""
+      "additional_attribute": "Target"
     }
   ]
 }
