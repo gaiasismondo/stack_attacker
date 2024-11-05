@@ -17,13 +17,9 @@ def print_attack_sequence(file_path):
     try:
         attack_sequence = load_attack_sequence(file_path)
         
-        print("\nATTACK SEQUENCE: ")
         for i, (attack_name, ip, generic_attribute) in enumerate(attack_sequence, start=1):
-            print(f"Step {i}:")
-            print(f"  Attack name: {attack_name}")
-            print(f"  IP: {ip}")
-            print(f" Other_attribute: {generic_attribute if generic_attribute else 'N/A'}")
-          
+            print(f"STEP {i}:   attack_name: {attack_name}  IP: {ip}  ther_attribute: {generic_attribute if generic_attribute else 'N/A'}\n")
+        
     except FileNotFoundError:
         print(f"Errore: il file '{file_path}' non è stato trovato.")
 
