@@ -31,6 +31,12 @@
         "wait_time": "30",
         "config": "../stack/data/attacker/custom_attacks/brute_force/config_rc.json"
       },
+     "addSSHkey": {
+       "instructions": "echo no addSSHkey attack",
+       "attack_type": "NotImplementedAttack",
+       "wait_time": "10",
+       "config": ""
+     },
      "scanIP": {
        "instructions": "echo no scanIP attack",
        "attack_type": "NotImplementedAttack",
