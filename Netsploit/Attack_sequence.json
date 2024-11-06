@@ -1,0 +1,54 @@
+{
+  "attack_sequence": [
+    {
+      "attack_name": "compromise",
+      "IP": "1.1.1.1",
+      "additional_attribute": "Attacker"
+    },
+    {
+      "attack_name": "remoteShell",
+      "IP": "192.168.40.22",
+      "additional_attribute": "None"
+    },
+    {
+      "attack_name": "bruteForce",
+      "IP": "192.168.40.21",
+      "additional_attribute": "None"
+    },
+    {
+      "attack_name": "escapeHost",
+      "IP": "192.168.40.21",
+      "additional_attribute": "None"
+    },
+    {
+      "attack_name": "shell",
+      "IP": "192.168.40.21",
+      "additional_attribute": "None"
+    },
+    {
+      "attack_name": "modAuthProc",
+      "IP": "192.168.40.21",
+      "additional_attribute": "None"
+    },
+    {
+      "attack_name": "credAcc",
+      "IP": "192.168.40.21",
+      "additional_attribute": "None"
+    },
+    {
+      "attack_name": "AITM",
+      "IP": "5.5.5.5",
+      "additional_attribute": "None"
+    },
+    {
+      "attack_name": "unauthCmdMsg",
+      "IP": "5.5.5.5",
+      "additional_attribute": "None"
+    },
+    {
+      "attack_name": "DERfailure",
+      "IP": "4.4.4.4",
+      "additional_attribute": "Target"
+    }
+  ]
+}

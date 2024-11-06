@@ -205,4 +205,4 @@ if(__name__=='__main__'):
     if(mode==0):
         main_procedure(C.ATTACKER_VM,"config.json")
     elif(mode==1):
-        main_procedure(C.ATTACKER_VM,"config.json", "attack_sequence.json")
+        main_procedure(C.ATTACKER_VM,"config.json", "Attack_sequence.json")
